@@ -1,0 +1,9 @@
+<!-- fragments/sidebar.html -->
+<div class="sidebar" th:fragment="content">
+            <a style="text-decoration: none;" th:href="@{/mypage}"> <h3  class="home-btn">마이 페이지 홈</h3></a>
+                <md-text-button th:href="@{/mypage/inquirys/1}">1:1 문의</md-text-button>
+                <md-text-button  th:href="@{/mypage/purchase-history/1}">구매 내역</md-text-button>
+                <md-text-button  th:href="@{/mypage/comments/1}">댓글 목록</md-text-button>
+                <md-text-button th:href="@{/mypage/change-personal-information}" >개인 정보 변경</md-text-button>
+                <md-text-button th:href="@{/mypage/withdrawal}">회원 탈퇴</md-text-button>
+</div>

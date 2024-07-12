@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="main-content" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/my-page/inquiry-detail.css}" />
+    <div class ="inquiry-container">
+        <div class="surface">
+            <md-elevation></md-elevation>
+            <div class="section">
+                <div class="title">질문</div>
+                <div class="content">
+                    <div class="row">
+                        <div class="label">제목</div>
+                        <div class="text" th:utext="${inquiryDetail.inquiryTitle}">구매를 어떻게 하는지 모르겠어요</div>
+                    </div>
+                    <div class="row">
+                        <div class="label">내용</div>
+                        <div class="text" th:text="${inquiryDetail.inquiryContent}">
+                            안녕하세요.<br>구매를 어떻게 해야할까요?
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="date" th:text="${#dates.format(inquiryDetail.inquiryTimestamp, 'yyyy-MM-dd HH:mm:ss')}">
+            질문 시간
+        </div>
+        <div class="surface" th:if="${replyStatus == 1}">
+            <md-elevation></md-elevation>
+            <div class="section">
+                <div class="title">답변</div>
+                <div class="content">
+                    <div class="row">
+                        <div class="label">제목</div>
+                        <div class="text" th:text="${inquiryDetail.answerTitle}">[답변]구매를 어떻게 하는지 모르겠어요</div>
+                    </div>
+                    <div class="row">
+                        <div class="label">내용</div>
+                        <div class="text" th:utext="${inquiryDetail.answerContent}">
+                            안녕하세요, 고객님. 예측의 달인팀입니다.<br>
+                            구매는 예측확인 페이지에서 제목을 입력하신 후, '예' 또는 '아니요'를 클릭하여 진행하실 수 있습니다.<br>
+                            혹시라도 추가적으로 궁금하신 점이나 불편하신 점이 있다면 언제라도 연락 부탁드립니다.<br>
+                            건강하고 행복한 하루 보내시길 바랍니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  class="date" th:text="${#dates.format(inquiryDetail.answerTimestamp, 'yyyy-MM-dd HH:mm:ss')}">
+            질문 시간
+        </div>
+    </div>
+</div>
+</body>
+</html>

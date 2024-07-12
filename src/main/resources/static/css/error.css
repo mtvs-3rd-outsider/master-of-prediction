@@ -1,0 +1,73 @@
+
+/* 기본 스타일 초기화 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: BMHANNAPro, Arial, sans-serif;
+}
+
+@font-face {
+    font-family: BMHANNAPro;
+    src: url("/font/BMHANNAPro.ttf") format("truetype");
+    font-weight: normal;
+    font-style: normal;
+}
+
+.exception-container {
+    display: flex;
+    justify-content: center;  /* 수평으로 가운데 정렬 */
+    align-items: center;      /* 수직으로 가운데 정렬 */
+    height: 100%;
+    padding: 20px;            /* 작은 화면에서의 여유 공간 */
+}
+
+
+.surface {
+    --md-elevation-level: 8;
+
+    transition-duration: 250ms;
+    transition-timing-function: ease-in-out;
+    position: relative;
+    border-radius: 16px;
+    height: auto;
+    width: 100%;
+    text-align: center;       /* 텍스트 가운데 정렬 */
+    max-width: 800px;         /* 최대 너비 증가 */
+    padding: 40px;            /* 내부 패딩 증가 */
+    font-size: 1.5em;         /* 글자 크기 증가 */
+    line-height: 1.6;         /* 글 간격 증가 */
+}
+
+.surface:active {
+    --md-elevation-level: 0;
+}
+
+#home{
+    font-size: 20px ;
+}
+
+a {
+    display: block;
+    margin: 30px 0;          /* 위아래 여백 증가 */
+    color: #007BFF;
+    text-decoration: none;
+    font-size: 1.2em;        /* 링크 글자 크기 증가 */
+}
+
+a:hover {
+    text-decoration: underline;
+}
+md-text-button {
+    padding: 10px 20px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: 16px;
+}

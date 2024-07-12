@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Inquiry History</title>
+
+</head>
+<body>
+<div class="main-content" th:fragment="content">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+  <link rel="stylesheet" th:href="@{css/my-page/inquiry.css}" />
+  <div >
+    <div class="inquiry">
+      <h1 class="inquiry-title">문의 내역</h1>
+      <div class="inquiry-button">
+        <md-text-button th:href="@{/mypage/inquiry/register}">문의 하기</md-text-button>
+      </div>
+      <div class="surface">
+        <md-elevation></md-elevation>
+        <!-- Content -->
+        <md-list id="list-container">
+          <md-list-item>
+            <div class="bmhannapro row-items">
+              <div class="item-1">제목</div>
+              <div class="item-2">상태</div>
+            </div>
+          </md-list-item>
+          <md-divider></md-divider>
+          <th:block th:each="item : ${items}">
+            <md-list-item type="link"
+                          th:href="@{/mypage/inquiry/detail/{inquiryNo}(inquiryNo=${item.inquiryNo}, replyStatus=${item.inquiryReplyStatus})}"
+                          target="_blank">
+              <div class="bmhannapro row-items">
+                <div class="item item-1" th:text="${item.inquiryTitle}"></div>
+                <div class="item item-2">
+                  <md-filled-tonal-button class="bmhannapro status-items"
+                                          th:text="${item.inquiryReplyStatus == 0 ? '대기' : '완료'}"></md-filled-tonal-button>
+                </div>
+              </div>
+            </md-list-item>
+            <md-divider></md-divider>
+          </th:block>
+        </md-list>
+      </div>
+      <script>
+        function goToPage(page) {
+          window.location.href = '/inquiry/' + page;
+        }
+        function prevPage(currentPage) {
+          if (currentPage > 1) {
+            goToPage(currentPage - 1);
+          }
+        }
+
+        function nextPage(currentPage,totalPages) {
+          if (currentPage < totalPages) {
+            goToPage(currentPage + 1);
+          }
+        }
+      </script>
+      <div class="pagination" id="pagination" th:if="${totalPages > 0}">
+        <md-icon-button id="prevBtn"  th:onclick="'prevPage(' + ${page} + ')'">
+          <md-icon>arrow_back_ios</md-icon>
+        </md-icon-button>
+        <div id="pageNumbers" >
+          <th:block th:each="page : ${#numbers.sequence(1, totalPages)}">
+            <md-text-button th:text="${page}" th:onclick="'goToPage(' + ${page} + ')'"></md-text-button>
+          </th:block>
+        </div>
+
+        <md-icon-button id="nextBtn" th:onclick="'nextPage(' + ${page} + ',' + ${totalPages} + ')'">
+          <md-icon>arrow_forward_ios</md-icon>
+        </md-icon-button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
