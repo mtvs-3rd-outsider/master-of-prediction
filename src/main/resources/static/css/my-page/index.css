@@ -1,0 +1,114 @@
+
+.profile {
+  display: flex;
+  font-size: 30px;
+  justify-content: flex-start;
+  margin-left: 50px;
+  gap:40px;
+}
+
+.card {
+  text-align: center;
+  padding: 10px; /* 헤더 높이 줄이기 */
+  flex: 0 0 20vh; /* 고정 높이 설정 */
+}
+
+.my-page-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* 버튼 사이의 간격 */
+  padding: 20px;
+}
+
+.my-page-card-one {
+  display: flex;
+  gap: 10px; /* 버튼 사이의 간격 */
+  padding: 20px;
+}
+
+.first-line-my-page {
+  justify-content:center ;
+  display: flex;
+  gap: 10px;
+
+  /* 버튼 사이의 간격 */
+  padding: 20px;
+
+}
+
+.second-line-my-page {
+  justify-content:center ;
+  display: flex;
+  gap: 10px;
+
+  /* 버튼 사이의 간격 */
+  padding: 20px;
+  margin-left: 20px;
+
+}
+
+.recent-inquiry {
+  gap: 10px; /* 버튼 사이의 간격 */
+  font-size: 15px;
+}
+
+.count {
+  gap: 10px; /* 버튼 사이의 간격 */
+  padding: 20px;
+  font-size: 60px;
+}
+
+
+.surface {
+  --md-elevation-level: 3;
+
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: center;
+  position: relative;
+  border-radius: 16px;
+  height: 140px;
+  width: 300px;
+  transition-duration: 100ms;
+  transition-timing-function: ease-in-out;
+}
+
+.surface-recent-inquiry {
+  --md-elevation-level: 3;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border-radius: 16px;
+  height: 140px;
+  width: 650px;
+  transition-duration: 100ms;
+  transition-timing-function: ease-in-out;
+}
+
+.surface-recent-inquiry:active {
+  --md-elevation-level: 0;
+}
+
+.surface:active {
+  --md-elevation-level: 0;
+}
+
+.profile-surface {
+  --md-elevation-level: 3;
+
+  display: flex;
+  justify-content: flex-end; /* 오른쪽 정렬 */
+  align-items: center;
+  position: relative;
+  border-radius: 16px;
+  height: 80px;
+  width: 80px;
+  transition-duration: 100ms;
+  transition-timing-function: ease-in-out;
+}
+
+.profile-surface:active {
+  --md-elevation-level: 0;
+}

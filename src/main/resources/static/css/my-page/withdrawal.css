@@ -1,0 +1,103 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --accent-color: #e74c3c;
+  --background-color: #ecf0f1;
+  --text-color: #2c3e50;
+}
+
+
+.inquiry-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.inquiry-button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+.inquiry-content-title
+{
+  margin: 2vh;
+}
+
+md-list {
+  border-radius: 16px;
+
+  /* --md-list-container-color:  var(--text-color);#f4fbfa; */
+}
+
+.row-items {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+}
+
+.bmhannapro {
+  font-family: BMHANNAPro;
+}
+
+.item-1 {
+  flex: 2 1 70%; /* 더 큰 기본 크기와 성장 비율 */
+}
+
+.item-2 {
+  flex: 1 2 30%; /* 더 작은 기본 크기와 축소 비율 */
+}
+
+.register-btn-group
+{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+
+}
+
+.agree
+{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin:1.5vh 1vw ;
+}
+
+.agree-item{
+  margin-right: 20px;
+}
+
+.register-btn-group md-filled-button
+{
+  width: 10%;
+  margin:1.5vh 1vw ;
+} 
+
+.register-btn-group md-text-button
+{
+  width: 10%;
+  margin:1.5vh 1vw ;
+} 
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.scrollable{
+  margin: 30px;
+  height: 340px;
+  overflow-y: scroll;
+  white-space: pre-wrap; /* 줄 바꿈과 공백을 유지 */
+}

@@ -1,0 +1,42 @@
+<div class="main-content " th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/my-page/change-personal-information.css}"/>
+    <script>
+        function previewImage(event) {
+            const input = event.target;
+            const reader = new FileReader();
+            reader.onload = function() {
+                const dataURL = reader.result;
+                const output = document.getElementById('profileImage');
+                output.src = dataURL;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    </script>
+
+    <form th:action="@{/mypage/change-personal-information}"  method="post" enctype="multipart/form-data">
+
+        <h1 class="inquiry-title">개인정보 변경</h1>
+        <div class="row">
+            <div class="surface center">
+                <md-elevation></md-elevation>
+                <!-- Content -->
+                <img id="profileImage" th:src="@{${attachmentAddress}}" width="200" height="200" onclick="document.getElementById('fileInput').click();" style="cursor: pointer; object-fit: cover;  border-radius: 8%; ">
+                <input type="file" id="fileInput" name="profileImage" style="display:none;" accept="image/*" onchange="previewImage(event)">
+            </div>
+            <div class="margin">
+                <h2 class="inquiry-content-title">닉네임</h2>
+                <md-outlined-text-field name="name" th:value="${name}" placeholder="이름을 입력해주세요." required>
+                </md-outlined-text-field>
+                <h2 class="inquiry-content-title">패스워드</h2>
+                <md-outlined-text-field name="password" type="password" placeholder="패스워드를 입력해주세요.">
+                </md-outlined-text-field>
+            </div>
+        </div>
+        <div class="register-btn-group">
+            <md-filled-button>변경</md-filled-button>
+            <md-text-button>취소</md-text-button>
+        </div>
+    </div>
+    </form>
+</div>
+

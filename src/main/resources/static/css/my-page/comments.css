@@ -1,0 +1,89 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --accent-color: #e74c3c;
+  --background-color: #ecf0f1;
+  --text-color: #2c3e50;
+}
+
+
+.comment-title {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 1vh;
+}
+
+.inquiry-button {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}
+
+md-list {
+  border-radius: 16px;
+
+  /* --md-list-container-color:  var(--text-color);#f4fbfa; */
+}
+
+.row-items {
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  gap: 10%;
+
+}
+
+.bmhannapro {
+  font-family: BMHANNAPro;
+}
+
+.item-1 {
+  flex: 2 1 70%; /* 더 큰 기본 크기와 성장 비율 */
+}
+
+.item-2 {
+  flex: 1 2 30%; /* 더 작은 기본 크기와 축소 비율 */
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.pagination button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.item{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.schema{
+  --md-list-container-color: #f4fbfa;
+  --md-list-item-label-text-color: #161d1d;
+
+  border-radius: 0;
+}
+
+.status-items{
+  width: 70px;
+  height: 10px;
+  margin: 5px;
+}
+
+.content{
+  color:#878d8d;
+  font-size: 15px;
+}
+
+.comment{
+  font-size: 18px;
+}

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<header class="header" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
+    <div>
+        <!--        <div style="display: flex; justify-content: space-between; height : 80px; align-items: center;">-->
+        <div style="display: flex;align-items: center;margin-right: 20px;margin-top: 10px;">
+            <!--            <div style="display: flex">-->
+            <div class="logo" style="display: flex;">
+                <a href="header.html">
+                    <img height="90px" src="../images/logo2.png" width="90px">
+                </a>
+                <div style="width: 100%;display: flex;align-items: center;">
+
+                    <!--                    <a href="header.html">-->
+                    <span style="font-size: 36px; color:black; white-space: nowrap;">예측의 달인</span>
+                    <!--                        <img height="40px" src="../images/예측의달인.png" style="margin-left: 20px;" width="193px">-->
+                    <!--                    </a>-->
+                </div>
+            </div>
+            <div class="search" style="margin :10px; width : 100%; ">
+                <form style="display: flex;">
+                    <!--input type="image" src="../images/search.png" width="20px" height="20px"-->
+                    <!--                    <input type="text" placeholder="검색어를 입력해주세요!" style="height: 40px; width : 90%; align-items: center; border-radius: 2px; box-shadow: 1px;">-->
+                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">
+                        <md-icon class="child" slot="leading-icon">search</md-icon>
+                    </md-outlined-text-field>
+
+                </form>
+            </div>
+            <div class="menu" style="display: flex;">
+                <!--                <a href="" style="display: flex; flex-direction: column; align-items: center; margin-right:30px; text-decoration: none;">-->
+                <a class="header-menu-hover" href=""
+                   style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
+                    <md-icon class="header-md-i1con child" style="width: 40px; height: 40px">vital_signs</md-icon>
+                    <!--                    <img src="../images/activities.png" width="40px" height="40px">-->
+                    <!--span style="color:#6750A4; height: 20px;">Activity</!--span-->
+                    <span class="child">Activity</span>
+                </a>
+                <a class="header-menu-hover" href=""
+                   style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
+                    <!--                <a href="" style="display: flex; flex-direction: column; align-items: center; margin-right:30px; text-decoration: none;">-->
+
+                    <md-icon class="header-md-icon child" style="width: 40px; height: 40px">Trophy</md-icon>
+
+                    <!--                    <img src="../images/rank.png" width="40px" height="40px">-->
+
+                    <span class="child">Rank</span>
+                </a>
+            </div>
+            <div>
+                <div style="display: flex">
+                    <md-text-button
+                            style="margin-right: 10px; --md-text-button-container-shape: 0px; --md-sys-color-primary: #1652f0; border-radius: 7px; --md-filled-tonal-button-label-text-font: system-ui;">
+                        Log in
+                    </md-text-button>
+                    <md-text-button
+                            style="--md-text-button-container-shape: 0px; --md-sys-color-primary: white; border-radius: 7px; background-color: #1652f0; --md-filled-tonal-button-label-text-font: system-ui;">
+                        Sign Up
+                    </md-text-button>
+                </div>
+            </div>
+            <div style="position: relative">
+                <md-filled-button id="usage-submenu-anchor">
+
+                    <md-icon-button id="header-icon-name-menu" toggle>
+                        <md-icon>Menu</md-icon>
+                    </md-icon-button>
+                </md-filled-button>
+                <md-menu anchor="usage-submenu-anchor" has-overflow id="usage-submenu">
+                    <md-menu-item>
+                        <div>Sign Up</div>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <div>Log in</div>
+                    </md-menu-item>
+                </md-menu>
+            </div>
+        </div>
+        <div class="category">
+            <ul id="header-ul">
+                <li><a href="">전체</a></li>
+                <li><a href="">인기</a></li>
+                <li><a href="">최신</a></li>
+                <li><a href="">많은</a></li>
+                <li><a href="">곧 마감</a></li>
+                <li><a href="">종료된</a></li>
+                <li><a href="">찜한</a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="module">
+        const anchorEl = document.body.querySelector('#usage-submenu-anchor');
+        const menuEl = document.body.querySelector('#usage-submenu');
+
+        anchorEl.addEventListener('click', () => {
+            menuEl.open = true;
+            // menuEl.open = !menuEl.open;
+        });
+    </script>
+</header>
+</body>
+</html>
