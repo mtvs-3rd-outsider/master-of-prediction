@@ -1,0 +1,113 @@
+/* 변수 정의 */
+$header-height: 20dvh;
+$button-font-size: 2dvh;
+$logo-size: 9dvh;
+$header-font-size: 3.6dvh;
+$search-width: 90%;
+$menu-icon-size: 4dvh;
+$media-small: 70vw;
+$media-extra-small: 40vw;
+
+
+.header {
+  color: white;
+  text-align: center;
+  padding: 2dvh;
+  flex: 0 0 $header-height;
+
+  .logo {
+    display: flex;
+
+    a img {
+      height: $logo-size;
+      width: $logo-size;
+    }
+
+    span {
+      font-size: $header-font-size;
+      color: black;
+      white-space: nowrap;
+    }
+  }
+
+  .search {
+    margin: 1dvh;
+    width: $search-width;
+
+    form {
+      display: flex;
+    }
+  }
+
+  .menu {
+    display: flex;
+
+    a.header-menu-hover {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-decoration: none;
+
+      .header-md-icon,
+      .header-md-i1con {
+        width: $menu-icon-size;
+        height: $menu-icon-size;
+      }
+
+      span.child {
+        font-size: $button-font-size;
+      }
+    }
+  }
+
+  md-text-button {
+    margin-right: 1dvh;
+    --md-text-button-container-shape: 0px;
+    --md-sys-color-primary: #1652f0;
+    border-radius: 0.7dvh;
+    --md-filled-tonal-button-label-text-font: system-ui;
+
+    &.sign-up {
+      --md-sys-color-primary: white;
+      background-color: #1652f0;
+    }
+  }
+
+  .category {
+    ul#header-ul {
+      display: flex;
+      list-style: none;
+
+      li {
+        margin-right: 1dvh;
+
+        a {
+          text-decoration: none;
+          color: inherit;
+        }
+      }
+    }
+  }
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: $media-small) {
+  .header {
+    .search {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: $media-extra-small) {
+  .header {
+    .menu {
+      flex-direction: column;
+
+      a.header-menu-hover {
+        margin-bottom: 1dvh;
+      }
+    }
+  }
+}
+

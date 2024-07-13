@@ -1,21 +1,13 @@
-<div class="main-content" th:fragment="content">
+<div class="inquiry-modal-content" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/my-page/inquiry-register.css}" />
     <div class="inquiry-container" >
-        <h1 class="inquiry-title">문의 접수</h1>
-
         <form th:action="@{/mypage/inquiry/register}" method="post" style="display: contents;">
             <h2 class="inquiry-content-title">제목</h2>
             <md-outlined-text-field name="inquiryTitle" placeholder="문의 사항을 입력해주세요." required>
             </md-outlined-text-field>
-
             <h2 class="inquiry-content-title">내용</h2>
             <md-outlined-text-field name="inquiryContent" type="textarea" rows="10" placeholder="문의 내용을 입력해주세요." required>
             </md-outlined-text-field>
-
-            <div class="register-btn-group">
-                <md-filled-button type="submit">접수</md-filled-button>
-                <md-text-button type="reset">취소</md-text-button>
-            </div>
         </form>
     </div>
 </div>

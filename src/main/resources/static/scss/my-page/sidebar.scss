@@ -1,0 +1,77 @@
+@charset "UTF-8";
+
+/* 변수 정의 */
+$primary-font: 'BMHANNAPro, Arial, sans-serif';
+$sidebar-width-large: 20vw;
+$padding-vertical: 2dvh;
+$padding-horizontal: 2vw;
+$font-size-large: 3dvh;
+$font-size-medium: 2dvh;
+$font-size-small: 1.5dvh;
+
+/* 기본 스타일 초기화 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: $primary-font;
+}
+
+@font-face {
+  font-family: BMHANNAPro;
+  src: url('/font/BMHANNAPro.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+.sidebar {
+  display: block;
+  flex-direction: column;
+  width: 100vw;
+  height: 100dvh;
+  float:left;
+  padding-top: $padding-vertical;
+  overflow: auto;
+
+  a {
+    text-decoration: none;
+    text-align: center;
+  }
+
+  .home-btn {
+    font-size: $font-size-large;
+    margin-bottom: $padding-vertical;
+    text-align: center;
+  }
+
+  md-text-button {
+    padding: $padding-vertical $padding-horizontal;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    font-size: $font-size-medium;
+    margin-bottom: $padding-vertical;
+  }
+}
+
+/* 반응형 스타일 */
+@media screen and (min-width: 40vw) {
+  .sidebar a,
+  .sidebar md-text-button {
+    text-align: center;
+    float: none;
+  }
+}
+
+@media screen and (min-width: 70vw) {
+  .sidebar {
+    width: $sidebar-width-large;
+    height: auto;
+    position: relative;
+  }
+}

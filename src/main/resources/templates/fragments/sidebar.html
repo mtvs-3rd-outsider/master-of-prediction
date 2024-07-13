@@ -1,5 +1,7 @@
 <!-- fragments/sidebar.html -->
+<html xmlns:th="http://www.thymeleaf.org">
 <div class="sidebar" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/my-page/sidebar.css}"/>
             <a style="text-decoration: none;" th:href="@{/mypage}"> <h3  class="home-btn">마이 페이지 홈</h3></a>
                 <md-text-button th:href="@{/mypage/inquirys/1}">1:1 문의</md-text-button>
                 <md-text-button  th:href="@{/mypage/purchase-history/1}">구매 내역</md-text-button>

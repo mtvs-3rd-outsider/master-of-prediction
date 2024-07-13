@@ -12,7 +12,7 @@ public class InquiryController {
     @GetMapping("inquirys/{page}")
     public ModelAndView getInquirys(@PathVariable int page, ModelAndView mv) {
         // Method logic here
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/inquiry");
         return mv;
@@ -21,7 +21,7 @@ public class InquiryController {
     @GetMapping("inquiry/register")
     public ModelAndView getInquiryRegister(ModelAndView mv) {
         // Method logic here
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/inquiry-register");
         return mv;
@@ -30,7 +30,7 @@ public class InquiryController {
     @GetMapping("inquiry/detail/{inquiryNo}")
     public ModelAndView getInquiryDetail(@PathVariable int inquiryNo, @RequestParam int replyStatus ,ModelAndView mv) {
         // Method logic here
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/inquiry-detail");
         mv.addObject("replyStatus", replyStatus);

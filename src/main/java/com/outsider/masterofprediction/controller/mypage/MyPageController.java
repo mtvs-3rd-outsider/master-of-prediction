@@ -1,16 +1,10 @@
 package com.outsider.masterofprediction.controller.mypage;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 
 @Controller
 @RequestMapping("/mypage")
@@ -22,7 +16,7 @@ public class MyPageController {
     public ModelAndView getMyPage(ModelAndView mv) {
         Long id = 1L; // Dummy user ID
 
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/my-page");
         mv.addObject("name", "Dummy User"); // Dummy username
@@ -34,7 +28,7 @@ public class MyPageController {
     public ModelAndView getPurchaseHistory(@PathVariable int page, ModelAndView mv) {
         Long userId = 1L; // Dummy user ID
 
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/purchase-history");
         int itemsPerPage = 4;
@@ -43,7 +37,7 @@ public class MyPageController {
 
     @GetMapping("/withdrawal")
     public ModelAndView getWithdrawal(ModelAndView mv) {
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/withdrawal");
         return mv;
@@ -52,7 +46,7 @@ public class MyPageController {
     @GetMapping("/change-personal-information")
     public ModelAndView getChangePersonalInformation(ModelAndView mv) {
         Long userId = 1L; // Dummy user ID
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/change-personal-information");
         mv.addObject("name", "Dummy User"); // Dummy username
@@ -71,7 +65,7 @@ public class MyPageController {
     @GetMapping("/comments/{page}")
     public ModelAndView comment(@PathVariable int page, ModelAndView mv) {
         Long userId = 1L; // Dummy user ID
-        mv.setViewName("layout/my-page/layout");
+        mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/comments");
         return mv;
