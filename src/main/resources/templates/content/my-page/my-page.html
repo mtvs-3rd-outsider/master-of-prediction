@@ -116,30 +116,118 @@
 
         </div>
         <div class="tabs">
-            <div class ="tablist-line">
-            <md-tabs role="tablist"  class="tablist">
-                <md-primary-tab role="tab" class="tab">문의 내역</md-primary-tab>
-                <md-primary-tab role="tab"  class="tab">댓글 내역</md-primary-tab>
-                <md-primary-tab role="tab"  class="tab">구매 내역</md-primary-tab>
-            </md-tabs>
-            <div class="border-line">
+            <div class="tablist-line">
+                <md-tabs role="tablist" class="tablist">
+                    <md-primary-tab role="tab" class="tab" id="tab1">문의 내역</md-primary-tab>
+                    <md-primary-tab role="tab" class="tab" id="tab2">댓글 내역</md-primary-tab>
+                    <md-primary-tab role="tab" class="tab" id="tab3">구매 내역</md-primary-tab>
+                </md-tabs>
+                <div class="border-line"></div>
             </div>
-            </div>
-            <div role="tabpanel" class="tabpanel">
+            <div role="tabpanel" class="tabpanel" id="panel1">
                 <div class="positions-header">
                     <span>제목</span>
                     <div class="flex">
                         <span>상태</span>
                     </div>
                 </div>
-<!--                <div class="positions-content ">No positions found</div>-->
                 <div class="positions-content-no-positions">문의 내역이 없습니다.</div>
             </div>
-
-
+            <div role="tabpanel" class="tabpanel" id="panel2">
+                <div class="positions-header">
+                    <span>제목</span>
+                    <div class="flex">
+                        <span>상태</span>
+                    </div>
+                </div>
+                <div class="positions-content-no-positions">댓글 내역이 없습니다.</div>
+            </div>
+            <div role="tabpanel" class="tabpanel" id="panel3">
+                <div class="positions-header">
+                    <span>제목</span>
+                    <div class="flex">
+                        <span>상태</span>
+                    </div>
+                </div>
+                <div class="positions-content-no-positions">구매 내역이 없습니다.</div>
+            </div>
         </div>
-    </div>
 
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabs = document.querySelectorAll('.tab');
+            const panels = document.querySelectorAll('.tabpanel');
+
+            tabs.forEach((tab, index) => {
+                tab.addEventListener('click', () => {
+                    // Hide all panels
+                    panels.forEach(panel => panel.classList.remove('active'));
+                    // Show the corresponding panel
+                    panels[index].classList.add('active');
+
+                    // Fetch data from the API
+                    fetchDataForTab(index + 1);
+                });
+            });
+
+            // Activate the first tab and panel by default
+            if (tabs.length > 0) {
+                panels[0].classList.add('active');
+                fetchDataForTab(1);  // Fetch data for the first tab
+            }
+        });
+
+        function fetchDataForTab(tabIndex) {
+            let url = '';
+            switch (tabIndex) {
+                case 1:
+                    url = 'https://api.example.com/inquiries'; // Replace with your API endpoint for inquiries
+                    break;
+                case 2:
+                    url = 'https://api.example.com/comments'; // Replace with your API endpoint for comments
+                    break;
+                case 3:
+                    url = 'https://api.example.com/purchases'; // Replace with your API endpoint for purchases
+                    break;
+                default:
+                    return;
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    updatePanelContent(tabIndex, data);
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        function updatePanelContent(tabIndex, data) {
+            const panel = document.getElementById(`panel${tabIndex}`);
+            const contentContainer = panel.querySelector('.positions-content-no-positions');
+
+            if (data.length === 0) {
+                contentContainer.textContent = `${tabIndex === 1 ? '문의' : tabIndex === 2 ? '댓글' : '구매'} 내역이 없습니다.`;
+                return;
+            }
+
+            contentContainer.innerHTML = ''; // Clear existing content
+
+            data.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.classList.add('item');
+                itemElement.innerHTML = `
+                    <span>${item.title}</span>
+                    <div class="flex">
+                        <span>${item.status}</span>
+                    </div>
+                `;
+                contentContainer.appendChild(itemElement);
+            });
+        }
+    </script>
 
     <md-dialog type="alert" id="change-inform-dialog" >
 

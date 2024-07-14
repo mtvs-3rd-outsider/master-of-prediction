@@ -9,14 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/mypage/")
 public class InquiryController {
 
-    @GetMapping("inquirys/{page}")
-    public ModelAndView getInquirys(@PathVariable int page, ModelAndView mv) {
-        // Method logic here
-        mv.setViewName("/layout/my-page/index");
-        mv.addObject("title", "Home Page");
-        mv.addObject("view", "content/my-page/inquiry");
-        return mv;
-    }
+
 
     @GetMapping("inquiry/register")
     public ModelAndView getInquiryRegister(ModelAndView mv) {

@@ -24,22 +24,19 @@ public class MyPageController {
         return mv;
     }
 
-    @GetMapping("/purchase-history/{page}")
-    public ModelAndView getPurchaseHistory(@PathVariable int page, ModelAndView mv) {
-        Long userId = 1L; // Dummy user ID
 
-        mv.setViewName("/layout/my-page/index");
-        mv.addObject("title", "Home Page");
-        mv.addObject("view", "content/my-page/purchase-history");
-        int itemsPerPage = 4;
-        return mv;
-    }
 
     @GetMapping("/withdrawal")
     public ModelAndView getWithdrawal(ModelAndView mv) {
         mv.setViewName("/layout/my-page/index");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/withdrawal");
+        return mv;
+    }
+    @PostMapping("/withdrawal")
+    public ModelAndView postWithdrawal(ModelAndView mv) {
+        mv.setViewName("/");
+
         return mv;
     }
 
@@ -57,17 +54,9 @@ public class MyPageController {
     @PostMapping("/change-personal-information")
     public String submitChangePersonalInformationForm(@RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes) {
 
-
         redirectAttributes.addFlashAttribute("flashMessage1", "변경 사항이 성공적으로 저장되었습니다.");
         return "redirect:/mypage";
     }
 
-    @GetMapping("/comments/{page}")
-    public ModelAndView comment(@PathVariable int page, ModelAndView mv) {
-        Long userId = 1L; // Dummy user ID
-        mv.setViewName("/layout/my-page/index");
-        mv.addObject("title", "Home Page");
-        mv.addObject("view", "content/my-page/comments");
-        return mv;
-    }
+
 }
