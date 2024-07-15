@@ -179,20 +179,20 @@
         });
 
         function fetchDataForTab(tabIndex) {
-            let url = '';
-            switch (tabIndex) {
-                case 1:
-                    url = 'https://api.example.com/inquiries'; // Replace with your API endpoint for inquiries
-                    break;
-                case 2:
-                    url = 'https://api.example.com/comments'; // Replace with your API endpoint for comments
-                    break;
-                case 3:
-                    url = 'https://api.example.com/purchases'; // Replace with your API endpoint for purchases
-                    break;
-                default:
-                    return;
-            }
+            // let url = '';
+            // switch (tabIndex) {
+            //     case 1:
+            //         url = 'https://api.example.com/inquiries'; // Replace with your API endpoint for inquiries
+            //         break;
+            //     case 2:
+            //         url = 'https://api.example.com/comments'; // Replace with your API endpoint for comments
+            //         break;
+            //     case 3:
+            //         url = 'https://api.example.com/purchases'; // Replace with your API endpoint for purchases
+            //         break;
+            //     default:
+            //         return;
+            // }
 
             fetch(url)
                 .then(response => response.json())

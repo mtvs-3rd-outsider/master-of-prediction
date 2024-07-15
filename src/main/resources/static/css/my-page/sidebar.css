@@ -1,0 +1,65 @@
+@charset "UTF-8";
+/* 변수 정의 */
+/* 기본 스타일 초기화 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: "BMHANNAPro, Arial, sans-serif";
+}
+
+@font-face {
+  font-family: BMHANNAPro;
+  src: url("/font/BMHANNAPro.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+.sidebar {
+  display: block;
+  flex-direction: column;
+  width: 100vw;
+  height: 100dvh;
+  float: left;
+  padding-top: 2dvh;
+  overflow: auto;
+}
+.sidebar a {
+  text-decoration: none;
+  text-align: center;
+}
+.sidebar .home-btn {
+  font-size: 3dvh;
+  margin-bottom: 2dvh;
+  text-align: center;
+}
+.sidebar md-text-button {
+  padding: 2dvh 2vw;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  font-size: 2dvh;
+  margin-bottom: 2dvh;
+}
+
+/* 반응형 스타일 */
+@media screen and (min-width: 40vw) {
+  .sidebar a,
+  .sidebar md-text-button {
+    text-align: center;
+    float: none;
+  }
+}
+@media screen and (min-width: 70vw) {
+  .sidebar {
+    width: 20vw;
+    height: auto;
+    position: relative;
+  }
+}
+
+/*# sourceMappingURL=sidebar.css.map */
