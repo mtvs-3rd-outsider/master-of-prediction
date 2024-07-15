@@ -10,17 +10,18 @@ $background-color: #f8f9fa;
 
 .change-inform-modal {
   display: flex;
-  justify-content: flex-start;
-  gap: 1%;
+  flex-direction: column;
   margin-right: 1rem;
   margin-left: 1rem;
   align-items: center;
   justify-content: center;
+
   .change-personal-information-title {
     margin: 1%;
     font-size: 1.25rem; /* 기본 폰트 사이즈 */
     white-space: nowrap;
   }
+
   .avatar {
     position: relative;
     display: flex;
@@ -51,7 +52,6 @@ $background-color: #f8f9fa;
   .margin {
     margin: 5%;
   }
-
 
 
   @media (max-width: 768px) {

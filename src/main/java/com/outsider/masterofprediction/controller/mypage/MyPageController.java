@@ -28,7 +28,7 @@ public class MyPageController {
 
     @GetMapping("/withdrawal")
     public ModelAndView getWithdrawal(ModelAndView mv) {
-        mv.setViewName("/layout/my-page/index");
+        mv.setViewName("/layout/my-page/withdrawal");
         mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/withdrawal");
         return mv;

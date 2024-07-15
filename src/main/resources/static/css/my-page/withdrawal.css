@@ -14,8 +14,12 @@
 }
 
 .withdrawal-content {
-  width: 50vw;
   margin: auto;
+}
+@media (min-width: 1024px) {
+  .withdrawal-content {
+    width: 50vw;
+  }
 }
 
 .inquiry-button {
