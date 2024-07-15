@@ -1,4 +1,4 @@
-<div class="main-content " th:fragment="content">
+<div class="change-inform-modal " th:fragment="content">
     <link rel="stylesheet" th:href="@{css/my-page/change-personal-information.css}"/>
     <script>
         function previewImage(event) {
@@ -15,27 +15,26 @@
 
     <form th:action="@{/mypage/change-personal-information}"  method="post" enctype="multipart/form-data">
 
-        <h1 class="inquiry-title">개인정보 변경</h1>
-        <div class="row">
-            <div class="surface center">
-                <md-elevation></md-elevation>
-                <!-- Content -->
-                <img id="profileImage" th:src="@{${attachmentAddress}}" width="200" height="200" onclick="document.getElementById('fileInput').click();" style="cursor: pointer; object-fit: cover;  border-radius: 8%; ">
+        <div th:if="${attachmentAddress}">
+            <img id="profileImage" th:src="${attachmentAddress}" width="80" height="80" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">
+        </div>
+        <div th:if="${attachmentAddress == null}">
+            <span id="profileImage" class="avatar" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">TY</span>
+        </div>
                 <input type="file" id="fileInput" name="profileImage" style="display:none;" accept="image/*" onchange="previewImage(event)">
-            </div>
+
             <div class="margin">
-                <h2 class="inquiry-content-title">닉네임</h2>
-                <md-outlined-text-field name="name" th:value="${name}" placeholder="이름을 입력해주세요." required>
+
+                <div class="flex">
+                    <md-outlined-text-field  name="name" label="name"  th:value="${name}" placeholder="이름을 입력해주세요." required>
+                    </md-outlined-text-field>
+
+                <md-outlined-text-field name="password" type="password" label="password"  placeholder="패스워드를 입력해주세요.">
                 </md-outlined-text-field>
-                <h2 class="inquiry-content-title">패스워드</h2>
-                <md-outlined-text-field name="password" type="password" placeholder="패스워드를 입력해주세요.">
-                </md-outlined-text-field>
+                </div>
+
             </div>
-        </div>
-        <div class="register-btn-group">
-            <md-filled-button>변경</md-filled-button>
-            <md-text-button>취소</md-text-button>
-        </div>
+
     </div>
     </form>
 </div>

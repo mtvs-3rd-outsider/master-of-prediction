@@ -1,0 +1,83 @@
+@charset "UTF-8";
+/* 변수 정의 */
+.header {
+  color: white;
+  text-align: center;
+  padding: 2dvh;
+  flex: 0 0 20dvh;
+}
+.header .logo {
+  display: flex;
+}
+.header .logo a img {
+  height: 9dvh;
+  width: 9dvh;
+}
+.header .logo span {
+  font-size: 3.6dvh;
+  color: black;
+  white-space: nowrap;
+}
+.header .search {
+  margin: 1dvh;
+  width: 90%;
+}
+.header .search form {
+  display: flex;
+}
+.header .menu {
+  display: flex;
+}
+.header .menu a.header-menu-hover {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+.header .menu a.header-menu-hover .header-md-icon,
+.header .menu a.header-menu-hover .header-md-i1con {
+  width: 4dvh;
+  height: 4dvh;
+}
+.header .menu a.header-menu-hover span.child {
+  font-size: 2dvh;
+}
+.header md-text-button {
+  margin-right: 1dvh;
+  --md-text-button-container-shape: 0px;
+  --md-sys-color-primary: #1652f0;
+  border-radius: 0.7dvh;
+  --md-filled-tonal-button-label-text-font: system-ui;
+}
+.header md-text-button.sign-up {
+  --md-sys-color-primary: white;
+  background-color: #1652f0;
+}
+.header .category ul#header-ul {
+  display: flex;
+  list-style: none;
+}
+.header .category ul#header-ul li {
+  margin-right: 1dvh;
+}
+.header .category ul#header-ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* 반응형 스타일 */
+@media screen and (max-width: 70vw) {
+  .header .search {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 40vw) {
+  .header .menu {
+    flex-direction: column;
+  }
+  .header .menu a.header-menu-hover {
+    margin-bottom: 1dvh;
+  }
+}
+
+/*# sourceMappingURL=header.css.map */

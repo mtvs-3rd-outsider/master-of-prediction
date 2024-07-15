@@ -1,0 +1,67 @@
+<!-- templates//layout/my-page/index.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="@{/}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title}">Default Title</title>
+    <link rel="stylesheet" th:href="@{/css/my-page/common.css}" />
+
+</head>
+<body>
+    <header th:replace="~{fragments/header :: content}" >Header</header>
+<!--    <div class="container">-->
+<!--    <main class="main-content">-->
+<!--        <div th:replace="~{fragments/sidebar :: content}"></div>-->
+        <div th:replace="~{${view} :: content}">Right Content</div>
+<!--    </main>-->
+<!--</div>-->
+    <style>
+        md-fab {
+            position: fixed;
+            bottom: 16px; /* 하단에서의 거리 */
+            right: 16px;  /* 오른쪽에서의 거리 */
+            z-index: 1000; /* 다른 요소보다 위에 표시되도록 설정 */
+            background-color: #6200ea; /* 버튼 배경색 */
+            color: #ffffff; /* 버튼 텍스트 색상 */
+            border: none;
+            border-radius: 50%;
+            width: 56px;
+            height: 56px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.26);
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        md-fab:hover {
+            background-color: #3700b3; /* 버튼 호버 시 배경색 */
+        }
+
+        md-icon {
+            font-size: 24px; /* 아이콘 크기 */
+        }
+    </style>
+    <md-fab aria-label="Edit">
+        <md-icon slot="icon">edit</md-icon>
+        1 대 1 문의
+    </md-fab>
+</body>
+</html>

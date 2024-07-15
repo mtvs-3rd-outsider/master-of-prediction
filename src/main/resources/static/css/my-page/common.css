@@ -1,156 +1,158 @@
+@charset "UTF-8";
+/* 변수 정의 */
 /* 기본 스타일 초기화 */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 html,
 body {
-    height: 100%;
-    font-family: BMHANNAPro, Arial, sans-serif;
+  height: 100%;
+  font-family: "BMHANNAPro, Arial, sans-serif";
 }
 
 @font-face {
-    font-family: BMHANNAPro;
-    src: url("/font/BMHANNAPro.ttf") format("truetype");
-    font-weight: normal;
-    font-style: normal;
+  font-family: BMHANNAPro;
+  src: url("/font/BMHANNAPro.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
 }
-
 .container {
-  width: 1024px;
+  width: 80vw;
   margin: 0 auto;
 }
 
-.header {
-    color: white;
-    text-align: center;
-    padding: 10px;
-
-    /* 헤더 높이 줄이기 */
-    flex: 0 0 20vh;
-
-    /* 고정 높이 설정 */
-}
-
-.my-page-menu {
-    padding-top: 10px;
-
-    /* 위쪽 패딩 */
-    padding-left: 10px;
-
-    /* 왼쪽 패딩 */
-    text-align: center;
-
-    /* 헤더 높이 줄이기 */
-    flex: 0 0 20vh;
-
-    /* 고정 높이 설정 */
-
-}
-
 .main-content {
-    display: flex;
-    flex: 4;
-    place-content: center space-between;
+  margin: auto auto;
+}
+@media (min-width: 1024px) {
+  .main-content {
+    width: 80vw;
+  }
 }
 
-.sidebar {
-    display: flex;
-    width: 250px;
-    height: 100%;
-    flex-direction: column;
-    align-items: stretch;
-    padding-top: 20px;
-    position: fixed;
-    overflow: auto;
+.inquiry-modal-content {
+  margin: auto auto;
+}
+@media (min-width: 300px) {
+  .inquiry-modal-content {
+    width: 95vw;
+  }
+}
+@media (min-width: 900px) {
+  .inquiry-modal-content {
+    width: 50vw;
+  }
+}
+@media (min-width: 1024px) {
+  .inquiry-modal-content {
+    width: 35vw;
+  }
 }
 
-/* .left-content { */
-
-/*  !* background-color: #e0e0e0; *! */
-
-/*  flex: 1; */
-
-/*  padding-top: 50px; */
-
-/* } */
-
-/* .main-content { */
-
-/*  flex: 3; */
-
-/*  padding: 20px; */
-
-/* } */
 :root {
-    --md-elevated-button-container-shape: 0px;
-    --md-text-button-label-text-font: bmhannapro;
-
-    /* --md-sys-color-primary: #006A6A; */
+  --md-elevated-button-container-shape: 0px;
+  --md-text-button-label-text-font: bmhannapro;
 }
 
-.button-list {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-
-    /* 버튼 사이의 간격 */
-    align-items: center;
-
-    /* 버튼을 중앙 정렬 */
-    padding: 20px;
+md-branded-fab {
+  position: fixed;
+  bottom: 16px;
+  right: 16px;
+  z-index: 1000;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  --md-sys-color-surface-container-high: #e3e9e9;
+  --md-sys-color-on-surface: #161d1d;
+  --md-sys-color-primary: #3a79c8;
+  --md-fab-icon-size: 24px;
+  background-color: #f4fbfa;
 }
 
-.list-title {
-    font-size: 22px;
+md-dialog > div[slot=headline] {
+  margin-top: 1rem;
+  margin-left: 1.5rem;
+  display: flex;
+  font-size: 1rem;
 }
 
-.sidebar>md-text-button,
-a {
-    padding: 10px 20px;
-    border: none;
-    cursor: pointer;
-    text-align: center;
-    font-size: 16px;
+md-dialog > form[slot=content] {
+  text-align: center;
 }
 
-@media screen and (width <=700px) {
-    .sidebar {
-        width: 100%;
-        height: auto;
-        position: relative;
-    }
-
-    .sidebar a {
-        float: left;
-    }
-
-    div.content {
-        margin-left: 0;
-    }
+md-dialog > div[slot=actions] {
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-between;
+}
+md-dialog > div[slot=actions] a {
+  white-space: nowrap;
+  text-decoration: none;
+  margin: auto 1.5rem;
+  font-size: 0.8rem;
+  color: black;
 }
 
-@media screen and (width <=400px) {
-    .sidebar a {
-        text-align: center;
-        float: none;
-    }
+#change-inform-dialog {
+  margin: auto;
 }
 
-.home-btn {
-    cursor: pointer;
-    font-size: 20px;
-
-    /* 버튼의 글자 크기를 키웁니다 */
+#inquiry-dialog {
+  margin: auto;
+}
+@media (min-width: 300px) {
+  #inquiry-dialog {
+    margin: auto;
+  }
+}
+@media (min-width: 1024px) {
+  #inquiry-dialog {
+    margin: auto;
+  }
 }
 
-.surface {
-    --md-elevation-level: 3;
-
-    position: relative;
-    border-radius: 16px;
-    height: auto;
-    width: 100%;
+md-dialog {
+  max-width: 100vw;
+  max-height: 100vh;
+  --md-dialog-container-color: #ffffff;
+  --md-dialog-headline-color: #000000;
+  --md-dialog-supporting-text-color: #020d12;
+  --md-sys-color-surface-container-highest: #dde4e3;
+  --md-sys-color-on-surface: #161d1d;
+  --md-sys-color-on-surface-variant: #3f4948;
+  --md-sys-typescale-headline-small: system-ui 24px/32px;
 }
+
+.register-btn-group {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  gap: 1%;
+}
+
+.register-btn-group md-filled-button,
+.register-btn-group md-text-button {
+  margin: 1% 1%;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  padding: 0.5rem 1rem;
+  --md-filled-button-label-text-font: system-ui;
+  --md-sys-color-primary: #336fba;
+  --md-sys-color-on-primary: #FFFFFF;
+}
+
+md-outlined-text-field {
+  width: 100%;
+  --md-sys-typescale-body-large: 400 1rem system-ui;
+  --md-sys-color-primary: rgb(46, 131, 251);
+  --md-sys-color-surface-container-highest: #e0e3e2;
+  --md-filled-text-field-label-text-color: #3f4948;
+  --md-filled-text-field-input-text-color: #161d1d;
+}
+
+/*# sourceMappingURL=common.css.map */

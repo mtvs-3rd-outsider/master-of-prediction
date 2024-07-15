@@ -1,0 +1,79 @@
+:root {
+  --primary-color: #3498db;
+  --secondary-color: #2ecc71;
+  --accent-color: #e74c3c;
+  --background-color: #ecf0f1;
+  --text-color: #2c3e50;
+}
+$muted-foreground-color: #4c4c4c;
+$background-color: #f8f9fa;
+
+.change-inform-modal {
+  display: flex;
+  justify-content: flex-start;
+  gap: 1%;
+  margin-right: 1rem;
+  margin-left: 1rem;
+  align-items: center;
+  justify-content: center;
+  .change-personal-information-title {
+    margin: 1%;
+    font-size: 1.25rem; /* 기본 폰트 사이즈 */
+    white-space: nowrap;
+  }
+  .avatar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 6rem;
+    height: 6rem;
+    overflow: hidden;
+    border-radius: 50%;
+    background-color: $muted-foreground-color;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: $background-color;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8%;
+    cursor: pointer;
+  }
+
+  #fileInput {
+    display: none;
+  }
+
+  .margin {
+    margin: 5%;
+  }
+
+
+
+  @media (max-width: 768px) {
+    .change-personal-information-title {
+      font-size: 2vw; /* 반응형 폰트 사이즈 */
+      white-space: nowrap;
+    }
+
+    .row {
+      grid-template-columns: 1fr;
+    }
+
+    .margin {
+      margin: 5% 0;
+
+    }
+
+
+  }
+}
+.flex{
+  display: flex;
+  flex-direction: column;
+  gap:0.5rem;
+}

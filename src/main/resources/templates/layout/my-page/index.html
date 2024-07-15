@@ -1,0 +1,70 @@
+<!-- templates//layout/my-page/index.html -->
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="@{/}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title th:text="${title}">Default Title</title>
+    <link rel="stylesheet" th:href="@{/css/my-page/common.css}" />
+
+</head>
+<body>
+    <header th:replace="~{fragments/mypage-header :: content}" >Header</header>
+
+<!--    <div class="container">-->
+<!--    <main class="main-content">-->
+        <div th:replace="~{${view} :: content}">Right Content</div>
+<!--    </main>-->
+<!--</div>-->
+
+
+    <md-branded-fab label="문의" id="open-inquiry-dialog-btn">
+        <md-icon slot="icon">comment</md-icon>
+    </md-branded-fab>
+    <md-dialog type="alert" id="inquiry-dialog">
+        <div slot="headline">문의접수</div>
+        <form slot="content" id="form-id2" method="dialog">
+            <div th:replace="~{content/my-page/inquiry-register :: content}">Right Content</div>
+        </form>
+        <div slot="actions">
+            <div class="register-btn-group">
+                <md-filled-button form="form-id2" value="change">접수</md-filled-button>
+                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
+            </div>
+        </div>
+    </md-dialog>
+</body>
+
+<script>
+    const inquiryDialog = document.getElementById('inquiry-dialog');
+    const openInquiryDialogBtn = document.getElementById('open-inquiry-dialog-btn');
+    const inquiryForm = inquiryDialog.querySelector('form');
+    openInquiryDialogBtn.addEventListener('click', () => {
+        console.log("등록 됨")
+        inquiryDialog.show(); // 다이얼로그를 엽니다.
+    });
+    const closeButton = inquiryDialog.querySelector('#inquiry-register-close-button');
+
+    closeButton.addEventListener('click', () => {
+        inquiryForm.reportValidity()
+            inquiryDialog.close();
+
+    });
+
+</script>
+</html>
