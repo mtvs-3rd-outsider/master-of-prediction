@@ -1,4 +1,3 @@
-
 .header .category {
     width: 700px;
     height: 40px;
@@ -198,7 +197,4 @@ ul, li {
 
     --md-menu-container-color: white;
 }
-
-.category > #header-ul > li > a {
-    white-space: nowrap;
-}
+    
