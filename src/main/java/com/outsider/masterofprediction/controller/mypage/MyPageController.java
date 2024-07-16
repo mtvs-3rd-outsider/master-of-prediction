@@ -5,31 +5,43 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
+@RestController
 @Controller
 @RequestMapping("/mypage")
 public class MyPageController {
 
+//    REST API
 
+    @GetMapping("/api/purchase-history/{page}")
+    public ModelAndView getPurchaseHistory(@PathVariable int page, ModelAndView mv) {
 
+        return mv;
+    }
+    @GetMapping("/api/comments/{page}")
+    public ModelAndView comment(@PathVariable int page, ModelAndView mv) {
+
+        return mv;
+    }
+    @GetMapping("/api/inquirys/{page}")
+    public ModelAndView getInquirys(@PathVariable int page, ModelAndView mv) {
+
+        return mv;
+    }
+//페이지
     @GetMapping()
     public ModelAndView getMyPage(ModelAndView mv) {
         Long id = 1L; // Dummy user ID
 
         mv.setViewName("/layout/my-page/index");
-        mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/my-page");
         mv.addObject("name", "Dummy User"); // Dummy username
 
         return mv;
     }
-
-
-
+//탈퇴
     @GetMapping("/withdrawal")
     public ModelAndView getWithdrawal(ModelAndView mv) {
         mv.setViewName("/layout/my-page/withdrawal");
-        mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/withdrawal");
         return mv;
     }
@@ -39,12 +51,11 @@ public class MyPageController {
 
         return mv;
     }
-
+//회원정보변경
     @GetMapping("/change-personal-information")
     public ModelAndView getChangePersonalInformation(ModelAndView mv) {
         Long userId = 1L; // Dummy user ID
         mv.setViewName("/layout/my-page/index");
-        mv.addObject("title", "Home Page");
         mv.addObject("view", "content/my-page/change-personal-information");
         mv.addObject("name", "Dummy User"); // Dummy username
         mv.addObject("password", "dummyPassword"); // Dummy password
