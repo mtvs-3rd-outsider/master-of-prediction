@@ -1,4 +1,4 @@
-package com.outsider.masterofprediction.controller.activitypage;
+package com.outsider.masterofprediction.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;

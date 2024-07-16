@@ -1,4 +1,4 @@
-package com.outsider.masterofprediction.controller.api;
+package com.outsider.masterofprediction.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
