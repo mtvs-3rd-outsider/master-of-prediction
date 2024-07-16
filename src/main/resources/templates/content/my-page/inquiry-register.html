@@ -2,11 +2,11 @@
     <link rel="stylesheet" th:href="@{css/my-page/inquiry-register.css}" />
     <div class="inquiry-container" >
         <form th:action="@{/mypage/inquiry/register}" method="post" style="display: contents;">
-            <h2 class="inquiry-content-title">제목</h2>
-            <md-outlined-text-field name="inquiryTitle" placeholder="문의 사항을 입력해주세요." required>
+<!--            <h2 class="inquiry-content-title">문의 제목</h2>-->
+            <md-outlined-text-field class="inquiry-content-title" label="문의 제목" name="inquiryTitle" placeholder="문의 사항을 입력해주세요." required>
             </md-outlined-text-field>
-            <h2 class="inquiry-content-title">내용</h2>
-            <md-outlined-text-field name="inquiryContent" type="textarea" rows="10" placeholder="문의 내용을 입력해주세요." required>
+<!--            <h2 class="inquiry-content-title">문의 내용</h2>-->
+            <md-outlined-text-field class="inquiry-content-title" label="문의 내용" name="inquiryContent" type="textarea" rows="10" placeholder="문의 내용을 입력해주세요." required>
             </md-outlined-text-field>
         </form>
     </div>

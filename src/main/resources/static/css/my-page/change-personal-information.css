@@ -9,8 +9,7 @@
 
 .change-inform-modal {
   display: flex;
-  justify-content: flex-start;
-  gap: 1%;
+  flex-direction: column;
   margin-right: 1rem;
   margin-left: 1rem;
   align-items: center;

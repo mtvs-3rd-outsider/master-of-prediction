@@ -15,10 +15,10 @@
 
     <form th:action="@{/mypage/change-personal-information}"  method="post" enctype="multipart/form-data">
 
-        <div th:if="${attachmentAddress}">
+        <div th:remove="tag" th:if="${attachmentAddress}">
             <img id="profileImage" th:src="${attachmentAddress}" width="80" height="80" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">
-        </div>
-        <div th:if="${attachmentAddress == null}">
+        </div >
+        <div th:remove="tag" th:if="${attachmentAddress == null}">
             <span id="profileImage" class="avatar" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">TY</span>
         </div>
                 <input type="file" id="fileInput" name="profileImage" style="display:none;" accept="image/*" onchange="previewImage(event)">

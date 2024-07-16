@@ -27,7 +27,12 @@
 }
 
 .inquiry-content-title {
-  margin: 2dvh;
+  font-size: medium;
+  text-align: start;
+  font-weight: normal;
+  margin-right:0.7dvh;
+  margin-bottom: 0.7dvh;
+  margin-top: 1dvh;
 }
 
 md-list {
