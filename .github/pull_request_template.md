@@ -21,5 +21,5 @@
 ## PR Checklist
 PR이 다음 요구 사항을 충족하는지 확인하세요.
 
-- [ ] 커밋 메시지 컨벤션에 맞게 작성했습니다.  Commit message convention 참고  (Ctrl + 클릭하세요.) 
+- [ ] 커밋 메시지 컨벤션에 맞게 작성했습니다.  [Commit message convention 참고](https://github.com/mtvs-3rd-outsider/master-of-prediction/wiki/2.-%EC%BB%A8%EB%B2%A4%EC%85%98-%EB%B0%8F-%EA%B9%83-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8-%EA%B4%80%EB%A6%AC)
 - [ ] 변경 사항에 대한 테스트를 했습니다.(버그 수정/기능에 대한 테스트).
