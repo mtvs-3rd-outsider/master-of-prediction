@@ -1,0 +1,77 @@
+.admin-main-head {
+  padding-bottom: 1em;
+}
+
+/* .create-notification-title{
+	padding:100px
+	
+} */
+
+#wrapper {
+  /* display: flex; */
+  width: 100%;
+
+  /* padding-left: 300px; */
+  /* padding-right: 300px; */
+}
+
+#response-section {
+  max-width: 800px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+.create-button,
+.cansle-button {
+  --md-filled-tonal-button-container-shape: 0px;
+  --md-filled-tonal-button-label-text-font: system-ui;
+  --md-sys-color-secondary-container: #cce8e7;
+  --md-sys-color-on-secondary-container: #051f1f;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.admin-main-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+md-checkbox,
+span {
+  vertical-align: middle;
+}
+
+textarea,
+md-outlined-text-field {
+  max-width: 75%;
+  width: 95%;
+  line-height: 1.5;
+  letter-spacing: 1px;
+  font-size: 1rem;
+}
+
+#button-frame {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 50px;
+}
+
+.create-button {
+  margin-right: 30px;
+}
+
+.admin-main-body-frame {
+  background-color: white;
+  border: 1px solid #c8c8c8;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.create-notification-title,
+.create-notification-body {
+  width: 97%;
+}
+
+.cansle-button {
+  margin-right: 5%;
+}
