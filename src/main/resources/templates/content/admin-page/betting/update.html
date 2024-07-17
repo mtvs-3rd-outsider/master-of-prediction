@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="@{/}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import {styles as typescaleStyles} from "@material/web/typography/md-typescale-styles.js";
+
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+
+    <link rel="stylesheet" th:href="@{/css/admin-page/index.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/notification/create.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/betting/update.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/betting/create.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/font.css}">
+</head>
+<body>
+<div id="main">
+    <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
+    <div id="wrapper">
+        <section id="response-section">
+            <div class="admin-main-head">
+                <h1 th:attr="data-id=${betting.subjectNo}">배팅상품 수정</h1>
+            </div>
+            <div class="admin-main-body-frame">
+                <form enctype="multipart/form-data" id="send-data" method="post"
+                      onsubmit="return validateForm()"
+                      th:action="@{/admin-page/betting/update/{id}(id=${betting.subjectNo})}"
+                      th:object="${betting}">
+                    <div class="admin-main-body">
+                        <div class="custom-file-input">
+                            <img class="img-tag" th:src="*{attachmentFileAddress}"/>
+                            <input class="file-input" name="attachmentFileAddress" onchange="previewImage(event)"
+                                   type="file"/>
+                        </div>
+                        <div class="betting-create-body">
+                            <div>
+                                <span>주제</span>
+                                <md-outlined-text-field class="body-value" id="notification-text-field"
+                                                        name="subjectTitle"
+                                                        th:attr="value=${betting.subjectTitle}"
+                                                        th:field="*{subjectTitle}"
+                                ></md-outlined-text-field>
+                            </div>
+
+                            <div>
+                                <span>카테고리</span>
+                                <select class="body-value" name="subjectCategoryNo"
+                                        th:value="${betting.subjectCategoryNo}">
+                                    <option th:each="category : ${categories}" th:text="${category.categoryName}"
+                                            th:value="${category.categoryNo}"></option>
+                                </select>
+                            </div>
+                            <div>
+                                <span>날짜</span>
+                                <input class="body-value" id="calendar" name="deadline" th:value="${deadline}"
+                                       type="date"/>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <div id="button-frame">
+                    <md-filled-tonal-button class="create-button" form="send-data" type="submit">수정
+                    </md-filled-tonal-button>
+                    <form th:action="@{/admin-page/betting/result/{id}(id=${betting.getSubjectNo()})}">
+                        <md-filled-tonal-button class="create-button" type="submit">결과발표
+                        </md-filled-tonal-button>
+                    </form>
+                    <md-filled-tonal-button class="cansle-button" onclick="history.back()">취소</md-filled-tonal-button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<!--이미지 태그 미리보기-->
+
+<script>
+    function previewImage(event) {
+        const file = event.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = function () {
+            document.getElementsByClassName("img-tag")[0].src = reader.result;
+        };
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            document.getElementsByClassName("img-tag")[0].src = "";
+        }
+    }
+</script>
+<script>
+    function validateForm() {
+        const textField = document.getElementById("notification-text-field");
+        const calender = document.getElementById("calendar");
+
+        if (
+            textField.value.trim("").length == 0 ||
+            calender.value.trim("").length == 0
+        ) {
+            return false;
+        }
+        // 등록 로직 추가
+        return true;
+        // window.location.href = "./";
+    }
+</script>
+</body>
+</html>
