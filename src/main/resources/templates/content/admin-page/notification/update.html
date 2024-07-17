@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import {styles as typescaleStyles} from "@material/web/typography/md-typescale-styles.js";
+
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+
+    <link rel="stylesheet" th:href="@{/css/admin-page/index.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/notification/create.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/font.css}">
+</head>
+<body>
+<div id="main">
+    <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
+    <div id="wrapper">
+        <section id="response-section">
+            <div class="admin-main-head">
+                <h1 th:attr="data-id=${notice.id}">공지사항 수정</h1>
+            </div>
+            <div class="admin-main-body-frame">
+                <form th:action="@{/admin-page/notification/update/{id}(id=${notice.id})}" id="send-data" method="post"
+                      onsubmit="return validateForm()" th:object="${notice}">
+                    <div class="admin-main-body">
+                        <div class="create-notification-title">
+                            <h2>제목</h2>
+                            <md-outlined-text-field id="notification-text-field" name="title"
+                                                    th:attr="value=${notice.title}"
+                                                    th:field="*{title}"></md-outlined-text-field>
+                        </div>
+                        <div class="create-notification-body">
+                            <h2>내용</h2>
+                            <textarea id="notification-text-body" name="body" rows="5" th:field="*{content}"
+                                      th:text="${notice.content}" type="textarea"></textarea>
+                        </div>
+                    </div>
+                </form>
+                <div id="button-frame">
+                    <md-filled-tonal-button class="create-button" form="send-data" type="submit">수정
+                    </md-filled-tonal-button>
+                    <md-filled-tonal-button class="cansle-button" onclick="history.back()">취소</md-filled-tonal-button>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>
+<script>
+    function validateForm() {
+        const textField = document.getElementById("notification-text-field");
+        const textArea = document.getElementById("notification-text-body");
+
+        if (
+            textField.value.trim("").length == 0 ||
+            textArea.value.trim("").length == 0
+        ) {
+            return false;
+        }
+        // 등록 로직 추가
+        return true;
+        // window.location.href = "./";
+    }
+</script>
+<script src="/admin-page/component/sidebar.js"></script>
+</body>
+</html>
