@@ -1,6 +1,9 @@
 package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.dto.TblCategoryDTO;
+import com.outsider.masterofprediction.dto.response.BettingAndAttachmentDTO;
+import com.outsider.masterofprediction.service.BettingService;
+import com.outsider.masterofprediction.service.BettingUpdateService;
 import com.outsider.masterofprediction.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -45,7 +48,7 @@ public class AdminBettingResultController {
         BettingAndAttachmentDTO bettingDetail = bettingService.getBettingAndAttachmentBySubjectNo(subjectNo);
         TblCategoryDTO categoryDTO = categoryService.findByCategoryNo(bettingDetail.getSubjectCategoryNo());
         model.addAttribute("betting", bettingDetail);
-        model.addAttribute("category", categoryDTO);
+        model.addAttribute( "category", categoryDTO);
         model.addAttribute("deadline", new Date(bettingDetail.getSubjectSettlementTimestamp().getTime()));
 
         return "content/admin-page/betting/result";
