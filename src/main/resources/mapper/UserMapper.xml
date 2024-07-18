@@ -10,4 +10,22 @@
         SET user_withdrawal_status = #{withdrawalStatus}
         WHERE user_no = #{id}
     </update>
+
+    <select id="getUserProfitLossRate" parameterType="long" resultType="double">
+        SELECT
+            (SUM(CASE
+                     WHEN s.subject_finish_result = '승리' THEN bo.order_amount * (s.subject_total_yes_point / s.subject_total_no_point)
+                     ELSE -bo.order_amount
+                END) / SUM(bo.order_amount)) * 100 AS profit_loss_rate
+        FROM
+            TBL_USER u
+                JOIN
+            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+                JOIN
+            TBL_SUBJECT s ON bo.order_subject_no = s.subject_no
+        WHERE
+            u.user_no = #{userNo}
+        GROUP BY
+            u.user_no, u.user_name, u.user_email;
+    </select>
 </mapper>
