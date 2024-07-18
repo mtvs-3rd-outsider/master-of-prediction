@@ -4,11 +4,12 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
-public class UserPaginationDTO {
+public class UserWithdrawalStatusDTO {
     private Long userId;
-    private int start;
-    private int itemsPerPage;
+    private boolean withdrawal;
+
+
 }
