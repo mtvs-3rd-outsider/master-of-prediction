@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.outsider.masterofprediction.mapper.BettingOrderMapper">
+
+    <!-- 종목 수 조회 -->
+    <select id="getOrderCountByUserId" resultType="int">
+        SELECT
+            COUNT(order_subject_no)
+        FROM
+            TBL_BETTING_ORDER
+        WHERE
+            order_user_no = #{userId}
+    </select>
+
+    <!-- 구매내역 조회 -->
+    <select id="getBettingOrdersByUserId" resultType="map">
+        SELECT
+            b.subject_title, a.order_choice, b.subject_status, b.subject_finish_result
+        FROM
+            TBL_BETTING_ORDER a
+        JOIN
+            TBL_SUBJECT b ON b.subject_no = a.order_subject_no
+        ORDER BY
+            order_timestamp DESC
+        LIMIT #{itemsPerPage} OFFSET #{start}
+    </select>
+
+</mapper>
