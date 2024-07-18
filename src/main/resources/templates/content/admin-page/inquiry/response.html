@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+    rel="stylesheet"
+  />
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    import "@material/web/all.js";
+    import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+  </script>
+
+  <link rel="stylesheet" th:href="@{/css/admin-page/index.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin-page/inquiry/response.css}" />
+  <link rel="stylesheet" th:href="@{/css/admin-page/font.css}" />
+</head>
+<body>
+  <div id="main">
+      <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
+    <div id="wrapper">
+      <section id="response-section">
+        <div class="admin-main-head">
+          <h1>문의 답변</h1>
+        </div>
+        <div class="admin-main-body-frame">
+          <div class="admin-main-body" th:object="${inquiry}">
+            <div class="inquiry-title">
+              <h2>제목</h2>
+              <md-outlined-text-field
+                readOnly="true"
+                id="user-inquiry"
+                th:value="*{inquiryTitle}"
+              ></md-outlined-text-field>
+            </div>
+            <div class="inquiry-body">
+              <h2>내용</h2>
+              <textarea type="textarea" rows="5" th:text="*{inquiryContent}" readonly></textarea>
+            </div>
+          </div>
+          <form
+            th:action="@{/admin-page/inquiry/result}" th:object="${replyInquiry}"
+            method="post"
+            id="send-data"
+            onsubmit="return validateForm()"
+          >
+            <input type="hidden" th:field="*{answerInquiryNo}" />
+            <div class="admin-main-body">
+              <div class="inquiry-title" th:name="answerInquiryNo">
+                <h2>제목</h2>
+                <md-outlined-text-field
+                        name="answerTitle"
+                  required
+                  id="admin-response-title"
+                ></md-outlined-text-field>
+              </div>
+<!--                  name="answerTitle"-->
+              <div class="inquiry-body">
+                <h2>내용</h2>
+                <textarea
+                        th:name="answerContent"
+                  type="textarea"
+                  rows="5"
+                  required
+                ></textarea>
+<!--                  name="body" -->
+              </div>
+            </div>
+          </form>
+          <div id="button-frame">
+            <md-filled-tonal-button
+              class="create-button"
+              type="submit"
+              form="send-data"
+              >답변</md-filled-tonal-button
+            >
+            <md-filled-tonal-button
+              class="cansle-button"
+              onclick="history.back()"
+              >취소</md-filled-tonal-button
+            >
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <!-- 문의에 대한 답변을 등록 -->
+  <!-- 이미 등록한 답변이라면 예외처리한다-->
+  <script>
+    function validateForm() {
+      const textField = document.getElementById("admin-response-title");
+      const textArea = document.querySelectorAll("textarea");
+
+      if (
+        textField.shadowRoot.querySelector("input").value.trim().length ===
+          0 ||
+        textArea[1].value.trim().length === 0
+      ) {
+        textField.setCustomValidity("제목을 입력해주세요.");
+        textField.reportValidity();
+        // textArea.setCustomValidity("내용을 입력해주세요.");
+        // textArea.reportValidity();
+        return false;
+      }
+      // 등록 로직 추가
+      return true;
+      // window.location.href = "./";
+    }
+  </script>
+</body>

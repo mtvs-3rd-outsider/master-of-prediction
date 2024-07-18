@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+            rel="stylesheet"
+    />
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import {styles as typescaleStyles} from "@material/web/typography/md-typescale-styles.js";
+
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+
+    <link rel="stylesheet" th:href="@{/css/admin-page/betting/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin-page/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin-page/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin-page/font.css}"/>
+</head>
+<body>
+<div id="main">
+    <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
+    <div id="wrapper">
+        <section>
+            <div class="admin-main-head">
+                <div class="subject"><h1>문의사항</h1></div>
+                <!--                <div>-->
+                <!--                    <a href="/admin-page/inquiry/create-form">-->
+                <!--                        <md-filled-tonal-button class="create-button"-->
+                <!--                        >등록버튼-->
+                <!--                        </md-filled-tonal-button-->
+                <!--                        >-->
+                <!--                    </a>-->
+                <!--                    <md-filled-tonal-button-->
+                <!--                            class="delete-button"-->
+                <!--                            onclick="showDeleteDialog()"-->
+                <!--                    >삭제버튼-->
+                <!--                    </md-filled-tonal-button-->
+                <!--                    >-->
+                <!--                </div>-->
+            </div>
+            <div id="admin-main-title">
+                <div class="checkbox">
+                    <span>선택</span>
+                </div>
+                <div class="title">
+                    <span>제목</span>
+                </div>
+                <div class="status">
+                    <span>결과</span>
+                </div>
+                <div class="timestamp">
+                    <span>작성일</span>
+                </div>
+            </div>
+
+            <!--            삭제 전용 form-->
+            <form action="#" id="delete-form" method="post" th:action="@{/admin-page/inquiry/delete}">
+                <div class="admin-main-body" th:each="item: ${inquiry}">
+                    <div class="main-node">
+                        <div class="checkbox">
+                            <md-checkbox th:name="ids" th:value="${item.getInquiryNo()}" touch-target="wrapper">
+                            </md-checkbox>
+                        </div>
+                        <div class="title" onclick="updateNotification(event)" th:data-id="${item.getInquiryNo()}">
+                            <span th:text="${item.getInquiryTitle()}"></span>
+                        </div>
+                        <div class="status">
+                            <span class="reply-status" th:text="${item.getInquiryReplyStatus().getValue()}"></span>
+                        </div>
+                        <div class="timestamp">
+                            <span class="timestamp" th:text="${item.getInquiryTimestamp()}"></span>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+
+            <div class="dialog-overlay" id="delete-dialog">
+                <div class="dialog">
+                    <p>정말 삭제하시겠습니까?</p>
+                    <button form="delete-form" onclick="confirmDelete()" type="submit">삭제</button>
+                    <button onclick="cancelDelete()">취소</button>
+                </div>
+            </div>
+
+            <script>
+                function updateNotification(event) {
+                    const data_id = event.currentTarget.getAttribute("data-id");
+                    window.location.href = `./inquiry/${data_id}`
+                }
+
+            </script>
+            <!-- 문의 사항 결과 커스텀-->
+            <script>
+                const replyStatus = document.getElementsByClassName("reply-status");
+                for (const item of replyStatus) {
+                    console.log(item.innerText);
+                    if (item.innerText === "0") {
+                        item.innerText = '답변대기';
+                        item.style.color = '#03C04A';
+                    } else if (item.innerText === '1') {
+                        item.innerText = '답변';
+                        item.style.color = 'red';
+                    }
+
+                }
+            </script>
+
+
+            <!-- 삭제 dialog -->
+            <script>
+                const status = document.getElementsByClassName("status");
+                for (const item of status) {
+                    if (item.innerText === '결과') {
+                        continue;
+                    }
+                    item.style.color = 'green'
+                    if (item.innerText === "종료") {
+                        item.style.color = 'red';
+                    }
+                }
+
+                // innerText
+                function showDeleteDialog() {
+                    // 체크된게 있으면 체크
+                    const checkboxes = document.querySelectorAll(
+                        ".admin-main-body md-checkbox"
+                    );
+                    if (!Array.from(checkboxes).some((checkbox) => checkbox.checked)) {
+                        return;
+                    }
+                    document.getElementById("delete-dialog").style.display = "flex";
+                }
+
+                function confirmDelete() {
+                    // deleteNode();
+                    document.getElementById("delete-dialog").style.display = "none";
+                }
+
+                function cancelDelete() {
+                    document.getElementById("delete-dialog").style.display = "none";
+                }
+            </script>
+        </section>
+        <div id="paginnation-frame">
+            <md-icon-button th:href="@{/admin-page/inquiry(page=${currentPage - 1})}">
+                <md-icon class="material-symbols-outlined">
+                    arrow_back_ios
+                </md-icon>
+            </md-icon-button>
+
+
+            <div th:each="page : ${#numbers.sequence(start, end)}">
+                <div class="active">
+                    <a th:if="${page == currentPage}" th:text="${page}"></a>
+                </div>
+                <div>
+                    <a th:href="@{/admin-page/inquiry(page=${page})}" th:if="${page != currentPage}"
+                       th:text="${page}"></a>
+                </div>
+            </div>
+
+            <md-icon-button th:href="@{/admin-page/inquiry(page=${currentPage + 1})}">
+                <md-icon class="material-symbols-outlined">
+                    arrow_forward_ios
+                </md-icon>
+            </md-icon-button>
+            <!--            <a th:href="@{/admin-page/notification(page=${currentPage + 1})}">Next</a>-->
+        </div>
+    </div>
+</div>
+</body>
+</html>
