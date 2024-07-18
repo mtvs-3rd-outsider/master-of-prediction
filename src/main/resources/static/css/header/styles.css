@@ -3,6 +3,8 @@
     height: 40px;
 }
 
+
+
 .header .category ul li {
     /*float: left;*/
 
@@ -119,7 +121,8 @@ ul, li {
 .category > ul {
     display: flex;
     gap: 5%;
-    margin-left: 25px;
+    margin: 0;
+    padding-left: 22px;
 }
 
 .menu md-icon,
@@ -136,6 +139,15 @@ ul, li {
 
 .header-menu-hover:hover .child,
 #header-ul > li > a:hover {
+    color: black;
+}
+
+.header-menu-hover:hover {
+    background-color: #F2F2F2;
+    border-radius: 10px;
+;
+
+    /*border: 1px solid black;*/
     color: black;
 }
 

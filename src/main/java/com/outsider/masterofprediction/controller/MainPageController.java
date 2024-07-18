@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
-@RequestMapping("/mainpage")
+@RequestMapping("/")
 public class MainPageController {
 
     @GetMapping()
@@ -15,7 +15,7 @@ public class MainPageController {
         // mv.addObject();
         mv.setViewName("/layout/main-page/index");
         mv.addObject("title", "Main Page");
-        mv.addObject("view", "content/main-page/main-page");
+        mv.addObject("view", "content/main-page/test");
 
         return mv;
     }
