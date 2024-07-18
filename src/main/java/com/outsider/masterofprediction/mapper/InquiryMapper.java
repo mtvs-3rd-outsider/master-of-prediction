@@ -1,6 +1,7 @@
 package com.outsider.masterofprediction.mapper;
 
 import com.outsider.masterofprediction.dto.CustomTblInquiryDTO;
+import com.outsider.masterofprediction.dto.InquiryDetailDTO;
 import com.outsider.masterofprediction.dto.TblInquiryDTO;
 import com.outsider.masterofprediction.dto.constatnt.InquiryReplyStatus;
 import org.apache.ibatis.annotations.Mapper;
@@ -35,7 +36,7 @@ public interface InquiryMapper {
     @Update("UPDATE tbl_inquiry set inquiry_reply_status=#{replyStatus} where inquiry_no=#{inquiryNo}")
     void updateReplyStatus(int inquiryNo, int replyStatus);
     // 최근 문의 내역 조회
-    String getLatestInquiryByUserId(@Param("userId") Long userId);
+    String getLatestInquiryByUserId(Long userId);
 
     @Select("SELECT COUNT(*) as count FROM tbl_inquiry")
     int totalCount();
@@ -48,7 +49,7 @@ public interface InquiryMapper {
             "LIMIT #{first}, #{count};")
     List<CustomTblInquiryDTO> getTBLInquiryLimit(int first, int count);
     // 상세 문의 조회
-    InquiryDetailDTO getInquiryDetailByUserId(@Param("userId") Long userId, @Param("inquiryNo") int inquiryNo, @Param("replyStatus") int replyStatus);
+    InquiryDetailDTO getInquiryDetailByUserId(TblInquiryDTO tblInquiryDTO);
 
    @Select("SELECT * FROM tbl_inquiry where inquiry_no = #{inquiryNo}")
     CustomTblInquiryDTO getTBLInquiryById(Long inquiryNo);
