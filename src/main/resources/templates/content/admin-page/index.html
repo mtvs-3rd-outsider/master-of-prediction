@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+  <link
+    href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+    rel="stylesheet"
+  />
+  <script type="importmap">
+    {
+      "imports": {
+        "@material/web/": "https://esm.run/@material/web/"
+      }
+    }
+  </script>
+  <script type="module">
+    import "@material/web/all.js";
+    import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+
+    document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+  </script>
+
+  <link th:href="@{/css/admin-page/index.css}" rel="stylesheet"/>
+  <link th:href="@{/css/admin-page/font.css}" rel="stylesheet"/>
+</head>
+<body>
+  <div id="main">
+      <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
+    <div id="wrapper">
+      <section>
+        <div><a>test</a></div>
+      </section>
+    </div>
+  </div>
+</body>
+</html>
