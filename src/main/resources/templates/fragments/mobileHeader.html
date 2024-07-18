@@ -2,7 +2,7 @@
 <html lang="en">
 
 <body>
-<header id="DeskHeader" class="header" th:fragment="content">
+<header id="MobileHeader" class="header" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
     <div style="box-shadow: 0 2px 2px -2px gray;">
         <div style="display: flex;align-items: center;">
@@ -10,10 +10,6 @@
                 <a href="header.html">
                     <img height="90px" src="../images/logo2.png" width="90px">
                 </a>
-                <div style="width: 100%;display: flex;align-items: center;">
-
-                    <span style="font-size: 30px; color:black; white-space: nowrap;">예측의 달인</span>
-                </div>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
                 <form style="display: flex;">
@@ -52,13 +48,12 @@
                 </div>
             </div>
             <div style="position: relative">
-                <md-filled-button id="usage-submenu-anchor">
-
+                <md-filled-button id="usage-submenu-anchor-mobile">
                     <md-icon-button id="header-icon-name-menu" toggle>
                         <md-icon>Menu</md-icon>
                     </md-icon-button>
                 </md-filled-button>
-                <md-menu anchor="usage-submenu-anchor" has-overflow id="usage-submenu">
+                <md-menu anchor="usage-submenu-anchor-mobile" has-overflow id="usage-submenu-mobile">
                     <md-menu-item>
                         <div>Sign Up</div>
                     </md-menu-item>
@@ -81,8 +76,8 @@
         </div>
     </div>
     <script type="module">
-        const anchorEl = document.body.querySelector('#usage-submenu-anchor');
-        const menuEl = document.body.querySelector('#usage-submenu');
+        const anchorEl =     document.body.querySelector('#usage-submenu-anchor-mobile');
+        const menuEl = document.body.querySelector('#usage-submenu-mobile');
 
         anchorEl.addEventListener('click', () => {
             menuEl.open = true;
