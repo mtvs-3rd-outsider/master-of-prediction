@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.outsider.masterofprediction.mapper.InquiryMapper">
+    <!-- ResultMap for TblInquiryDTO -->
+    <resultMap id="TblInquiryResultMap" type="TblInquiryDTO">
+        <id property="inquiryNo" column="inquiry_no" />
+        <result property="inquiryTitle" column="inquiry_title" />
+        <result property="inquiryContent" column="inquiry_content" />
+        <result property="inquiryTimestamp" column="inquiry_timestamp" />
+        <result property="inquiryReplyStatus" column="inquiry_reply_status" />
+        <result property="inquiryUserNo" column="inquiry_user_no" />
+    </resultMap>
+
+    <resultMap id="InquiryDetailResultMap" type="InquiryDetailDTO">
+        <result property="inquiryTitle" column="inquiry_title" />
+        <result property="inquiryContent" column="inquiry_content" />
+        <result property="inquiryTimestamp" column="inquiry_timestamp" />
+        <result property="answerContent" column="answer_content" />
+        <result property="answerTitle" column="answer_title" />
+        <result property="answerTimestamp" column="answer_timestamp" />
+    </resultMap>
+    <!-- 최근 문의 내역 조회 -->
+    <select id="getLatestInquiryByUserId" resultType="string">
+        SELECT
+            inquiry_title
+        FROM
+            TBL_INQUIRY
+        WHERE
+            inquiry_user_no = #{userId}
+        ORDER BY
+            inquiry_timestamp DESC
+        LIMIT 1
+    </select>
+
+    <!-- 문의 등록 -->
+    <insert id="insertInquiry">
+        INSERT
+        INTO TBL_INQUIRY
+            (
+              inquiry_no
+            , inquiry_title
+            , inquiry_content
+            , inquiry_timestamp
+            , inquiry_reply_status
+            , inquiry_user_no
+            )
+        VALUES
+            (
+             #{inquiryNo}
+             , #{inquiryTitle}
+             , #{inquiryContent}
+             , #{inquiryTimestamp}
+             , #{inquiryReplyStatus}
+             , #{inquiryUserNo}
+            )
+    </insert>
+
+    <!-- 문의 내역 조회 -->
+    <select id="getInquiriesByUserId" resultMap="InquiryDetailResultMap">
+        SELECT inquiry_title, inquiry_reply_status, inquiry_no
+        FROM TBL_INQUIRY
+        WHERE inquiry_user_no = #{userId}
+        ORDER BY inquiry_timestamp DESC
+            LIMIT #{itemsPerPage}
+        OFFSET #{start}
+    </select>
+
+    <!-- 총 문의 수 조회 -->
+    <select id="getTotalInquiriesCountByUserId" resultType="int">
+        SELECT COUNT(*)
+        FROM TBL_INQUIRY
+        WHERE inquiry_user_no = #{userId}
+    </select>
+
+    <!-- 상세 문의 조회 -->
+    <select id="getInquiryDetailByUserId" resultMap="InquiryDetailResultMap">
+        <if test="replyStatus == 0">
+            SELECT inquiry_title, inquiry_content, inquiry_timestamp
+            FROM TBL_INQUIRY
+            WHERE inquiry_user_no = #{userId}
+            AND inquiry_no = #{inquiryNo}
+        </if>
+        <if test="replyStatus != 0">
+            SELECT a.inquiry_title, a.inquiry_content, a.inquiry_timestamp,
+            b.answer_content, b.answer_title, b.answer_timestamp
+            FROM TBL_INQUIRY a
+            JOIN TBL_INQUIRY_REPLY b ON a.inquiry_no = b.answer_inquiry_no
+            WHERE a.inquiry_user_no = #{userId}
+        </if>
+    </select>
+
+</mapper>
