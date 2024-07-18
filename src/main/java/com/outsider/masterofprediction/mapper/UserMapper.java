@@ -26,7 +26,7 @@ public interface UserMapper {
 
     //id로유저 조회
     @Select("SELECT * FROM tbl_user WHERE user_no=#{id}")
-    TblUserDTO getUserById(Long id);
+    User getUserById(Long id);
 
     @Select("SELECT * FROM tbl_user WHERE user_no > #{id}")
     @ResultMap("userResultMap")
@@ -62,4 +62,6 @@ public interface UserMapper {
     )
     void updateUserPointById(Long id, double point);
 
+    // 회원 탈퇴 여부 수정
+    void updateWithdrawalStatusByUser(User user);
 }
