@@ -221,5 +221,5 @@ ul, li {
 , #usage-submenu-anchor{
     --_hover-state-layer-color  : white;
     --_pressed-state-layer-color  : white;
-    --md-text-button-container-shape: 50px;
+    /*--md-text-button-container-shape: 50px;*/
 }
