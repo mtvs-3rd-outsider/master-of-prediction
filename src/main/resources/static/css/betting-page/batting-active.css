@@ -1,0 +1,307 @@
+
+
+.user_activity-container{
+    width: 100%;
+    height: 100%;
+}
+
+.user_activity-container ul{
+    list-style:none;
+    color: gray;
+    margin:0;
+    padding-left: 0;
+}
+.user_activity-container li {
+    margin: 0 0 0 0;
+    border : 0;
+    float: left;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+}
+.user-activity-button{
+    color: gray;
+    border: none;
+    background-color: white;
+    font-size: 15px;
+    height: 40px;
+    width: 80px;
+    margin:0 10px;
+    padding: 0;
+    cursor: pointer;
+    font-weight: bold;
+}
+.user-activity-button:hover {
+    color: black;
+    border-bottom:2px solid gray;
+}
+.active{
+    color: black;
+    border-bottom: 1px solid black;
+}
+
+.user_ranking-container{
+    width: 100%;
+    height: 100%;
+}
+.comment_safe-content{
+    width: 97%;
+    margin: 0 10px;
+    display: flex;
+    background-color: #f0f0f0;
+    justify-content: center;
+    align-items: center;
+    border-radius: 7px;
+    font-size: 13px;
+}
+.comment_sort-content{
+    display: block;
+    width: 100%;
+    height: 50px;
+    margin-top:20px;
+}
+.comment_sort-content ul{
+    display: flex;
+}
+.comment_sort-content li{
+    margin-left: 10px;
+}
+.comment_sort-content li>select{
+    border:1px solid rgba(128,128,128,0.25);
+    width: 100px;
+    background-color: #f0f0f0;
+}
+.comment-container img,
+.recomment-content img,
+.user_ranking-content img,
+.user_active-content img{
+    width: 50px;
+    height: 50px;
+    padding-top: 5px;
+    border-radius: 75%;
+}
+.comment-container {
+    position: relative;
+    align-items: flex-start;
+}
+.comment-content{
+    display: flex;
+    margin-left: 10px;
+    margin-bottom: 15px;
+}
+.recomment-container{
+    display: flex;
+    margin-left: 50px;
+    flex-direction: column;
+}
+.recomment-content {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px;
+}
+.recomment-content img{
+    margin-right: 10px;
+}
+
+.comment-content img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-info {
+    flex: 1;
+}
+
+.comment-info .info-name {
+    margin-top: 0;
+    margin-bottom: 5px;
+}
+
+.comment-info .info-content {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+    opacity: 0.75;
+
+}
+
+.comment-info .info-buttons {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
+.comment-info .info-buttons button {
+    margin-left: 10px;
+}
+.heartImg{
+    border:none;
+    background-color: white;
+    color: gray;
+
+}
+.heartImg img{
+    border: none;
+    background-color: white;
+    width: 25px;
+    height: 25px;
+    cursor:pointer;
+}
+
+
+
+.user_ranking-content {
+    display: flex;
+    justify-content: space-between;
+}
+.user_ranking-content {
+    display: flex;
+    justify-content: space-between;
+
+}
+
+
+.ranking_yes-content ul,
+.ranking_no-content ul {
+    display: flex;
+    justify-content: space-between;
+    list-style-type: none;
+    padding: 7px 0;
+}
+
+.ranking_yes-content li,
+.ranking_no-content li {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    height: 55px;
+    margin-right: 10px;
+    font-size: 15px;
+}
+
+.ranking_yes-content img,
+.ranking_no-content img {
+    margin-right: 10px; /* 이미지와 텍스트 사이의 간격을 조정 */
+}
+.ranking_yes-content,.ranking_no-content{
+    margin-left: 10px;
+    width: 48%;
+    border-bottom: 1px solid rgba(128,128,128,0.25);
+}
+
+.ranking_yes-amount{
+    color: lightgreen;
+}
+.ranking_no-amount{
+    color:red;
+}
+
+#ranking-holders{
+    color: black;
+    font-weight: bold;
+}
+#ranking-shares{
+    font-size: 0.85em;
+    color:rgba(128,128,128);
+}
+
+.ranking-shares{
+    color: black;
+}
+
+.user_activity-content ul{
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    align-items: center;
+    padding: 10px;
+    border-bottom: 1px solid rgba(128,128,128,0.25);
+}
+.user_activity-content ul li {
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+}
+
+.user_activity-content ul li img {
+    width: 50px; /* 이미지 크기는 필요에 따라 조정하세요 */
+    height: 50px; /* 이미지 크기는 필요에 따라 조정하세요 */
+    margin-right: 10px;
+}
+
+.user_activity-content ul li span {
+    margin-right: 5px; /* 필요한 경우 추가 간격을 조정하세요 */
+}
+
+.comment-recomment-btn{
+    border:none;
+    background-color: white;
+    color: #6750A4;
+    cursor: pointer;
+}
+
+.active-name-span{
+    font-weight: bold;
+}
+
+.active-num-span{
+    color: green;
+    font-weight: bold;
+}
+.active-yesno-span{
+    color: green;
+    font-weight: bold;
+}
+
+.comment_input-content input{
+    height: 40px;
+    margin: 10px;
+    width: 87%;
+    border: 1px solid rgba(128,128,128,0.25);
+    border-radius: 7px;
+}
+.comment_input-content input::placeholder{
+    font-size: 17px;
+    opacity: 0.75;
+}
+.comment_input-content button{
+    font-size: 20px;
+    color: #6750A4;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+
+.recomment_input-content input{
+    height: 40px;
+    margin: 6px;
+    width: 87%;
+    border: 1px solid rgba(128,128,128,0.25);
+    border-radius: 7px;
+}
+.recomment_input-content input::placeholder{
+    font-size: 17px;
+    opacity: 0.75;
+}
+.recomment_input-content button{
+    font-size: 20px;
+    color: #6750A4;
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+
+.user_active-content-btns{
+    display: flex;
+    margin-bottom: 0;
+    border-bottom: 1px solid rgba(128,128,128,0.25);
+}
+
+.comment_input-time{
+    font-size: 0.75em;
+    color: gray;
+}

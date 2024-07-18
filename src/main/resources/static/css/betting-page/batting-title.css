@@ -1,0 +1,41 @@
+.title-content{
+    display: flex; /* flexbox 사용 */
+    align-items: center; /* 세로 방향 중앙 정렬 */
+}
+
+.title_text-content ul{
+    list-style-type: none;
+    padding: 0;
+    display: flex;
+    font-size: 13px;
+    align-items: center;
+    margin-bottom: 0;
+    color: gray;
+
+}
+
+#title-schedule-icon{
+    margin-right: 5px;
+}
+
+.title_text-content li {
+    display: flex;
+    align-items: center;
+    padding-right: 30px;
+}
+
+.title_text-content h1 {
+    margin-top: 10px;
+}
+
+.title-content img {
+    margin : 10px 10px 10px 10px;
+    width:100px;
+    height: 100px;
+}
+
+#betting-state{
+    font-size: 15px;
+    font-weight: bold;
+    color: red;
+}
