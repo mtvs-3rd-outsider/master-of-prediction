@@ -12,6 +12,14 @@
         <result property="orderSubjectNo" column="order_subject_no" />
         <result property="orderUserNo" column="order_user_no" />
     </resultMap>
+    <resultMap id="ActiveResultMap" type="com.outsider.masterofprediction.dto.ActiveDTO">
+        <result property="name" column="user_name"/>
+        <result property="amount" column="order_amount"/>
+        <result property="choice" column="order_choice"/>
+        <result property="activeTimestamp" column="order_timestamp"/>
+    </resultMap>
+
+
 
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
@@ -42,5 +50,30 @@
         FROM TBL_USER u
                  JOIN TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
         WHERE u.user_no = #{userId}
+    </select>
+
+    <select id="getBettingOrdersBySubjectNo" parameterType="long" resultMap="ActiveResultMap">
+        SELECT user_name,order_amount,order_choice,order_timestamp
+        FROM TBL_BETTING_ORDER
+        join tbl_user
+          on order_user_no=user_no
+         and ORDER_SUBJECT_NO=#{subjectNo}
+        ORDER BY ORDER_TIMESTAMP DESC;
+
+    </select>
+
+    <select id="getRankingBySubjectNo" parameterType="long" resultMap="TblBettingOrderResultMap">
+        SELECT
+            order_user_no,
+            SUM(order_amount) AS `sum`
+        FROM
+            tbl_betting_order
+        WHERE
+            order_subject_no = #{orderSubjectNo}
+          AND order_choice = #{orderChoice}
+        GROUP BY
+            order_user_no
+        ORDER BY
+            `sum` DESC;
     </select>
 </mapper>
