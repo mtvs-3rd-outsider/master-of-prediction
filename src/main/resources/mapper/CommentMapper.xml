@@ -4,6 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.outsider.masterofprediction.mapper.CommentMapper">
+    <resultMap id="TblCommentResultMap" type="TblCommentDTO">
+        <id property="commentNo" column="comment_no" />
+        <result property="commentContent" column="comment_content" />
+        <result property="commentTimestamp" column="comment_timestamp" />
+        <result property="commentUserNo" column="comment_user_no" />
+        <result property="commentSubjectNo" column="comment_subject_no" />
+    </resultMap>
+    <!-- ResultMap for CommentDTO -->
+    <resultMap id="CommentResultMap" type="CommentDTO">
+        <result property="subjectTitle" column="subject_title" />
+        <result property="commentContent" column="comment_content" />
+        <result property="commentSubjectNo" column="comment_subject_no" />
+    </resultMap>
+
     <!-- 댓글 수 조회 -->
     <select id="getCommentCountByUserId" resultType="int">
         SELECT
@@ -15,7 +29,7 @@
     </select>
 
     <!-- 댓글목록 조회 -->
-    <select id="getCommentsByUserId" resultType="map">
+    <select id="getCommentsByUserId" resultMap="TblCommentResultMap">
         SELECT
             b.subject_title, a.comment_content, a.comment_subject_no
         FROM
