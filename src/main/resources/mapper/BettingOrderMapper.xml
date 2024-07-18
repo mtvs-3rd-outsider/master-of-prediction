@@ -4,6 +4,14 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.outsider.masterofprediction.mapper.BettingOrderMapper">
+    <resultMap id="TblBettingOrderResultMap" type="TblBettingOrderDTO">
+        <id property="orderNo" column="order_no" />
+        <result property="orderAmount" column="order_amount" />
+        <result property="orderChoice" column="order_choice" />
+        <result property="orderTimestamp" column="order_timestamp" />
+        <result property="orderSubjectNo" column="order_subject_no" />
+        <result property="orderUserNo" column="order_user_no" />
+    </resultMap>
 
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
@@ -16,7 +24,7 @@
     </select>
 
     <!-- 구매내역 조회 -->
-    <select id="getBettingOrdersByUserId" resultType="map">
+    <select id="getBettingOrdersByUserId" resultMap="TblBettingOrderResultMap">
         SELECT
             b.subject_title, a.order_choice, b.subject_status, b.subject_finish_result
         FROM
@@ -28,4 +36,11 @@
         LIMIT #{itemsPerPage} OFFSET #{start}
     </select>
 
+    <select id="getUserTotalPointsByUserId" resultType="Long">
+        SELECT
+               SUM(bo.order_amount) AS totalPoints
+        FROM TBL_USER u
+                 JOIN TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+        WHERE u.user_no = #{userId}
+    </select>
 </mapper>
