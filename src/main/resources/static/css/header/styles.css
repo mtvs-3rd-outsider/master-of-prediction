@@ -3,8 +3,6 @@
     height: 40px;
 }
 
-
-
 .header .category ul li {
     /*float: left;*/
 
@@ -131,12 +129,6 @@ ul, li {
     color: gray;
 }
 
-/*.menu md-icon:hover,*/
-/*#header-ul a:hover,*/
-/*.menu > a{*/
-/*  color: black;*/
-/*}*/
-
 .header-menu-hover:hover .child,
 #header-ul > li > a:hover {
     color: black;
@@ -145,16 +137,8 @@ ul, li {
 .header-menu-hover:hover {
     background-color: #F2F2F2;
     border-radius: 10px;
-;
-
-    /*border: 1px solid black;*/
     color: black;
 }
-
-
-/*#header-ul  a{*/
-/*  color: gray;*/
-/*}*/
 
 .header-md-icon {
     margin-left: 10px;
@@ -168,10 +152,6 @@ ul, li {
     --md-icon-button-container-width: 40px;
 }
 
-/*md-icon.child{*/
-/*  color: #DBDBDB;*/
-/*}*/
-
 #header-search-parent {
     --_focus-outline-color: #E4E4E5;
     --_input-text-line-height: 0rem;
@@ -181,8 +161,6 @@ ul, li {
     --_container-shape-start-end: 10px;
     --_container-shape-end-start: 10px;
     --_container-shape-end-end: 10px;
-
-
 }
 
 #header-search-parent:hover {
@@ -210,8 +188,6 @@ ul, li {
     --md-menu-container-color: white;
 }
 
-
-
 .a-attr-remove {
     text-decoration: none; /* 링크의 밑줄 제거 */
     color: inherit; /* 링크의 색상 제거 */
@@ -221,5 +197,4 @@ ul, li {
 , #usage-submenu-anchor{
     --_hover-state-layer-color  : white;
     --_pressed-state-layer-color  : white;
-    /*--md-text-button-container-shape: 50px;*/
 }
