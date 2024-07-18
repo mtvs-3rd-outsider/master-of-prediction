@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.outsider.masterofprediction.mapper.CommentMapper">
-    <resultMap id="TblCommentResultMap" type="TblCommentDTO">
+    <resultMap id="TblCommentResultMap" type="com.outsider.masterofprediction.dto.TblCommentDTO">
         <id property="commentNo" column="comment_no" />
         <result property="commentContent" column="comment_content" />
         <result property="commentTimestamp" column="comment_timestamp" />
@@ -12,7 +12,7 @@
         <result property="commentSubjectNo" column="comment_subject_no" />
     </resultMap>
     <!-- ResultMap for CommentDTO -->
-    <resultMap id="CommentResultMap" type="CommentDTO">
+    <resultMap id="CommentResultMap" type="com.outsider.masterofprediction.dto.CommentDTO">
         <result property="subjectTitle" column="subject_title" />
         <result property="commentContent" column="comment_content" />
         <result property="commentSubjectNo" column="comment_subject_no" />
