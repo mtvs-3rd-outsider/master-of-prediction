@@ -15,7 +15,7 @@ public class MainPageController {
         // mv.addObject();
         mv.setViewName("/layout/main-page/index");
         mv.addObject("title", "Main Page");
-        mv.addObject("view", "content/main-page/test");
+        mv.addObject("view", "content/main-page/main-page");
 
         return mv;
     }

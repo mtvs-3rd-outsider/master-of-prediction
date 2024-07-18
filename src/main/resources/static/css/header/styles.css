@@ -209,4 +209,17 @@ ul, li {
 
     --md-menu-container-color: white;
 }
-    
+
+
+
+.a-attr-remove {
+    text-decoration: none; /* 링크의 밑줄 제거 */
+    color: inherit; /* 링크의 색상 제거 */
+}
+
+#usage-submenu-anchor-mobile
+, #usage-submenu-anchor{
+    --_hover-state-layer-color  : white;
+    --_pressed-state-layer-color  : white;
+    --md-text-button-container-shape: 50px;
+}
