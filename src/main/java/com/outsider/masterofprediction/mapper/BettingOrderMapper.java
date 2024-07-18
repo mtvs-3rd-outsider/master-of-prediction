@@ -17,6 +17,8 @@ public interface BettingOrderMapper {
 
     Long getUserTotalPointsByUserId(Long userId);
 
+    public List<TblBettingOrderDTO> findActivity();
+
     List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo);
 
     List<RankingDTO> getRankingBySubjectNo(Long subjectNo);

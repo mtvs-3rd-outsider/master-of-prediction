@@ -9,8 +9,10 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/activitypage")
 public class ActivityPageController {
 
-    @GetMapping()
-    public ModelAndView getActivityPage(ModelAndView mv){
+    @GetMapping
+    public ModelAndView getActivityPage(ModelAndView mv) {
+
+
 
         // mv.addObject();
         mv.setViewName("/layout/activity-page/index");

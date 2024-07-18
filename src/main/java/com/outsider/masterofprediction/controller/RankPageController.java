@@ -1,15 +1,27 @@
 package com.outsider.masterofprediction.controller;
 
+import com.outsider.masterofprediction.dto.TblUserDTO;
+import com.outsider.masterofprediction.dto.User;
+import com.outsider.masterofprediction.service.RankFindService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/rankpage")
 public class RankPageController {
 
-    @GetMapping()
+    private final RankFindService rankFindService;
+
+    public RankPageController(RankFindService rankFindService){
+        this.rankFindService = rankFindService;
+    }
+
+    @GetMapping
     public ModelAndView getRankPage(ModelAndView mv){
 
         // mv.addObject();
@@ -17,6 +29,19 @@ public class RankPageController {
         mv.addObject("title", "User Ranking");
         mv.addObject("view", "content/rank-page/rank-page");
 
+        //List<User> userList = rankFindService.findRank();
+        //mv.addObject("userList", userList);
+
         return mv;
+    }
+
+    @GetMapping("/test")
+    public String findRankList(Model model){
+
+        List<User> userList = rankFindService.findRank();
+
+        model.addAttribute("userList", userList);
+
+        return "rankpage";
     }
 }
