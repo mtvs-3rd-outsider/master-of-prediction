@@ -3,3 +3,10 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: mapper/**/*.xml
   type-aliases-package: com.outsider.masterofprediction.dto
+google:
+  client:
+    id: ${GOOGLE_CLIENT_ID}
+    secret: ${GOOGLE_CLIENT_SECRET}
+    uri: ${GOOGLE_REDIRECT_URI}
+
+
