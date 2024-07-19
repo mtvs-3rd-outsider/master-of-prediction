@@ -79,4 +79,8 @@ public class UserManagementService {
     public int getCommentCountByUserId(Long userId) {
         return commentMapper.getCommentCountByUserId(userId);
     }
+
+    public String getAuthorityBySubjectUserNo(long subjectUserNo) {
+        return userMapper.getAuthorityBySubjectUserNo(subjectUserNo);
+    }
 }

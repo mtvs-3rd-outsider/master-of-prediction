@@ -2,17 +2,17 @@
 <html lang="en">
 
 <body>
-<header class="header" th:fragment="content">
+<header id="DeskHeader" class="header" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
     <div style="box-shadow: 0 2px 2px -2px gray;">
-        <div style="display: flex;align-items: center; padding: 10px;">
+        <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
                 <a href="header.html">
                     <img height="90px" src="../images/logo2.png" width="90px">
                 </a>
                 <div style="width: 100%;display: flex;align-items: center;">
 
-                    <span style="font-size: 36px; color:black; white-space: nowrap;">예측의 달인</span>
+                    <span style="font-size: 30px; color:black; white-space: nowrap;">예측의 달인</span>
                 </div>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
@@ -26,15 +26,16 @@
             <div class="menu" style="display: flex;">
                 <a class="header-menu-hover" href=""
                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
-                    <md-icon class="header-md-i1con child" style="width: 40px; height: 40px">vital_signs</md-icon>
+                    <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
+    padding-right: 12px;">vital_signs
+                    </md-icon>
                     <span class="child">Activity</span>
                 </a>
                 <a class="header-menu-hover" href=""
                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
-
-                    <md-icon class="header-md-icon child" style="width: 40px; height: 40px">Trophy</md-icon>
-
-
+                    <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
+    padding-right: 12px;">Trophy
+                    </md-icon>
                     <span class="child">Rank</span>
                 </a>
             </div>
@@ -51,12 +52,11 @@
                 </div>
             </div>
             <div style="position: relative">
-                <md-filled-button id="usage-submenu-anchor">
-
+                <md-text-button id="usage-submenu-anchor">
                     <md-icon-button id="header-icon-name-menu" toggle>
                         <md-icon>Menu</md-icon>
                     </md-icon-button>
-                </md-filled-button>
+                </md-text-button>
                 <md-menu anchor="usage-submenu-anchor" has-overflow id="usage-submenu">
                     <md-menu-item>
                         <div>Sign Up</div>

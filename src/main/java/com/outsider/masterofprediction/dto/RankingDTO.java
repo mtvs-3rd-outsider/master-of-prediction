@@ -4,20 +4,50 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Setter
-@Getter
-@ToString
 public class RankingDTO {
-    private Long orderUserNo;
-    private Long orderChoice;
+    private String name;
+    private String choice;
     private long sum;
 
     public RankingDTO() {
     }
 
-    public RankingDTO(Long orderUserNo, long orderChoice, long sum) {
-        this.orderUserNo = orderUserNo;
-        this.orderChoice = orderChoice;
+    public RankingDTO(String name, String choice, long sum) {
+        this.name = name;
+        this.choice = choice;
         this.sum = sum;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getChoice() {
+        return choice;
+    }
+
+    public void setChoice(String choice) {
+        this.choice = choice;
+    }
+
+    public long getSum() {
+        return sum;
+    }
+
+    public void setSum(long sum) {
+        this.sum = sum;
+    }
+
+    @Override
+    public String toString() {
+        return "RankingDTO{" +
+                "name='" + name + '\'' +
+                ", choice='" + choice + '\'' +
+                ", sum=" + sum +
+                '}';
     }
 }
