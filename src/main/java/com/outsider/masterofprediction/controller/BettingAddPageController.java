@@ -46,14 +46,14 @@ public class BettingAddPageController {
     @PostMapping("/create")
     public String createBettingGame(@ModelAttribute BettingAddDTO bettingAddDTO
                                     ,@RequestParam("attachmentFileAddress")MultipartFile file
-                                    ,@RequestParam("date")Date data,
-                                    ,@RequestParam("time")Time
+//                                    ,@RequestParam("date")Date data,
+//                                    ,@RequestParam("time")Time
     )
     {
 
         System.out.println(bettingAddDTO);
         System.out.println(file);
-        bettingAddDTO.setSubjectSettlementTimestamp(new TimeStamp);
+//        bettingAddDTO.setSubjectSettlementTimestamp(new TimeStamp);
 //        System.out.println(file);
 //        bettingAddService.create(bettingAddDTO);
         return "redirect:/mainpage";
