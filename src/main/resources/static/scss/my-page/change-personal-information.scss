@@ -5,9 +5,23 @@
   --background-color: #ecf0f1;
   --text-color: #2c3e50;
 }
+
 $muted-foreground-color: #4c4c4c;
 $background-color: #f8f9fa;
-
+.action-buttions{
+  margin-bottom: 1rem;
+  margin-right: 1rem;
+  display: flex;
+  font-size: 1rem;
+  justify-content: space-between;
+}
+.action-buttions a {
+  white-space: nowrap;
+  text-decoration: none;
+  margin: auto 1.5rem;
+  font-size: 0.8rem;
+  color: black;
+}
 .change-inform-modal {
   display: flex;
   flex-direction: column;
@@ -35,6 +49,7 @@ $background-color: #f8f9fa;
     font-size: 1.5rem;
     font-weight: bold;
     color: $background-color;
+    margin: auto;
   }
 
   img {
