@@ -12,6 +12,26 @@
             </div>
         </div>
         <div class="rank-notice">랭킹은 매일 자정에 초기화됩니다!</div>
+
+        <div th:each="user : ${userList}" class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span th:text="${user.count}"></span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img th:src="@{${user.attachmentFileAddress}}">
+                    </div>
+                    <div class="rank-user-name">
+                        <span th:text="${user.name}"></span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span th:text="${user.userPoint} + 포인트"></span>
+                </div>
+            </div>
+        </div>
+
         <div class="rank-content">
             <div class="rank-content-box">
                 <div class="rank-user-info">

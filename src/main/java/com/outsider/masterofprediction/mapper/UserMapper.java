@@ -67,4 +67,6 @@ public interface UserMapper {
     Double getUserProfitLossRate(Long userNo);
 
     String getAuthorityBySubjectUserNo(long subjectUserNo);
+
+    List<User> findRank();
 }
