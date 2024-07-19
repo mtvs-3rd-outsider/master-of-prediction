@@ -5,7 +5,7 @@ public class TblBettingOrderDTO {
 
     private long orderNo;
     private long orderAmount;
-    private long orderChoice;
+    private String orderChoice;
     private java.sql.Timestamp orderTimestamp;
     private long orderSubjectNo;
     private long orderUserNo;
@@ -13,7 +13,7 @@ public class TblBettingOrderDTO {
     public TblBettingOrderDTO() {
     }
 
-    public TblBettingOrderDTO(long orderNo, long orderAmount, long orderChoice, java.sql.Timestamp orderTimestamp, long orderSubjectNo, long orderUserNo) {
+    public TblBettingOrderDTO(long orderNo, long orderAmount, String orderChoice, java.sql.Timestamp orderTimestamp, long orderSubjectNo, long orderUserNo) {
         this.orderNo = orderNo;
         this.orderAmount = orderAmount;
         this.orderChoice = orderChoice;
@@ -40,11 +40,11 @@ public class TblBettingOrderDTO {
     }
 
 
-    public long getOrderChoice() {
+    public String getOrderChoice() {
         return orderChoice;
     }
 
-    public void setOrderChoice(long orderChoice) {
+    public void setOrderChoice(String orderChoice) {
         this.orderChoice = orderChoice;
     }
 

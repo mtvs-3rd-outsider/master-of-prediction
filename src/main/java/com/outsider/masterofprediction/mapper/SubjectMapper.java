@@ -41,6 +41,9 @@ public interface SubjectMapper {
     @Select("SELECT COUNT(*) as count FROM tbl_subject")
     int totalCount();
 
+    @Select("SELECT * FROM tbl_subject WHERE subject_no=#{subjectNo}")
+    TblSubjectDTO getSubjectBySubjectNo(long subjectNo);
+
 
     @Insert("INSERT INTO tbl_subject (" +
             "subject_title, " +

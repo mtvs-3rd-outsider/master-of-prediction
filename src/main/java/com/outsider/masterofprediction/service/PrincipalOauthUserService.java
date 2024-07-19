@@ -1,10 +1,8 @@
 package com.outsider.masterofprediction.service;
 
 
-import com.outsider.masterofprediction.dto.CustomUserDetail;
-import com.outsider.masterofprediction.dto.GoogleUserInfo;
-import com.outsider.masterofprediction.dto.OAuth2UserInfo;
-import com.outsider.masterofprediction.dto.User;
+import com.outsider.masterofprediction.dto.*;
+import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,12 +18,14 @@ import java.util.UUID;
 @Service
 public class PrincipalOauthUserService extends DefaultOAuth2UserService {
 
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private UserMapper userMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper userMapper;
+    private final AttachmentMapper attachmentMapper;
     @Autowired
-    public PrincipalOauthUserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper) {
+    public PrincipalOauthUserService(BCryptPasswordEncoder bCryptPasswordEncoder, UserMapper userMapper, AttachmentMapper attachmentMapper) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.userMapper = userMapper;
+        this.attachmentMapper = attachmentMapper;
     }
 
     //구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
@@ -61,6 +61,7 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
         String username = oAuth2UserInfo.getName();
         String password =  bCryptPasswordEncoder.encode(UUID.randomUUID().toString()); //중요하지 않음 그냥 패스워드 암호화 하
         String email = oAuth2UserInfo.getEmail();
+        String pictureUrl = oAuth2UserInfo.getPictureUrl();
 
         User user = userMapper.findByEmail(email);
         //처음 서비스를 이용한 회원일 경우
@@ -77,8 +78,18 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
                     .build();
 
             userMapper.createUser(user.getName(), user.getEmail(),  user.getPassword(), user.getAuthority());
+            User user1=userMapper.findByEmail(email);
+            if(!pictureUrl.equals(""))
+            {
+                TblAttachmentDTO tblAttachmentDTO = new TblAttachmentDTO();
+                tblAttachmentDTO.setAttachmentRegistUserNo(user1.getId());
+                tblAttachmentDTO.setAttachmentUserNo(user1.getId());
+                tblAttachmentDTO.setAttachmentFileAddress(pictureUrl);
+                attachmentMapper.setAttachmentsByAttachmentUserNo(tblAttachmentDTO);
+            }
 
         }
+
 
         return new CustomUserDetail(user, oAuth2User.getAttributes());
     }

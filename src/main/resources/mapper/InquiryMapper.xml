@@ -5,7 +5,7 @@
 
 <mapper namespace="com.outsider.masterofprediction.mapper.InquiryMapper">
     <!-- ResultMap for TblInquiryDTO -->
-    <resultMap id="TblInquiryResultMap" type="TblInquiryDTO">
+    <resultMap id="TblInquiryResultMap" type="com.outsider.masterofprediction.dto.TblInquiryDTO">
         <id property="inquiryNo" column="inquiry_no" />
         <result property="inquiryTitle" column="inquiry_title" />
         <result property="inquiryContent" column="inquiry_content" />
@@ -14,7 +14,7 @@
         <result property="inquiryUserNo" column="inquiry_user_no" />
     </resultMap>
 
-    <resultMap id="InquiryDetailResultMap" type="InquiryDetailDTO">
+    <resultMap id="InquiryDetailResultMap" type="com.outsider.masterofprediction.dto.InquiryDetailDTO">
         <result property="inquiryTitle" column="inquiry_title" />
         <result property="inquiryContent" column="inquiry_content" />
         <result property="inquiryTimestamp" column="inquiry_timestamp" />

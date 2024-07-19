@@ -1,5 +1,6 @@
 package com.outsider.masterofprediction.service;
 
+import com.outsider.masterofprediction.config.SecurityConfig;
 import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.CommentMapper;
@@ -20,6 +21,12 @@ public class UserManagementService {
     public UserManagementService(AttachmentMapper attachmentMapper, UserMapper userMapper) {
         this.attachmentMapper = attachmentMapper;
         this.userMapper = userMapper;
+    }
+    public void createDefaultUser(User user) {
+        String pwd = user.getPassword();
+        user.setPassword(new SecurityConfig().passwordEncoder().encode(pwd));
+        user.setAuthority("ROLE_USER");
+        userMapper.createUser(user.getName(), user.getEmail(),  user.getPassword(), user.getAuthority());
     }
 
     public String getUserNameById(Long userId) {
@@ -78,5 +85,9 @@ public class UserManagementService {
     }
     public int getCommentCountByUserId(Long userId) {
         return commentMapper.getCommentCountByUserId(userId);
+    }
+
+    public String getAuthorityBySubjectUserNo(long subjectUserNo) {
+        return userMapper.getAuthorityBySubjectUserNo(subjectUserNo);
     }
 }

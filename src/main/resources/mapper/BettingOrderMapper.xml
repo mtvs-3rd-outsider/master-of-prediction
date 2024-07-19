@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.outsider.masterofprediction.mapper.BettingOrderMapper">
-    <resultMap id="TblBettingOrderResultMap" type="TblBettingOrderDTO">
+    <resultMap id="TblBettingOrderResultMap" type="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         <id property="orderNo" column="order_no" />
         <result property="orderAmount" column="order_amount" />
         <result property="orderChoice" column="order_choice" />
@@ -12,6 +12,19 @@
         <result property="orderSubjectNo" column="order_subject_no" />
         <result property="orderUserNo" column="order_user_no" />
     </resultMap>
+    <resultMap id="ActiveResultMap" type="com.outsider.masterofprediction.dto.ActiveDTO">
+        <result property="name" column="user_name"/>
+        <result property="amount" column="order_amount"/>
+        <result property="choice" column="order_choice"/>
+        <result property="activeTimestamp" column="order_timestamp"/>
+    </resultMap>
+    <resultMap id="RankingResultMap" type="com.outsider.masterofprediction.dto.RankingDTO">
+        <result property="name" column="userName"/>
+        <result property="choice" column="choice"/>
+        <result property="sum" column="sum"/>
+    </resultMap>
+
+
 
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
@@ -42,5 +55,48 @@
         FROM TBL_USER u
                  JOIN TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
         WHERE u.user_no = #{userId}
+    </select>
+
+    <select id="getBettingOrdersBySubjectNo" parameterType="long" resultMap="ActiveResultMap">
+        SELECT user_name,order_amount,order_choice,order_timestamp
+        FROM TBL_BETTING_ORDER
+        join tbl_user
+          on order_user_no=user_no
+         and ORDER_SUBJECT_NO=#{subjectNo}
+        ORDER BY ORDER_TIMESTAMP DESC
+    </select>
+
+    <select id="getRankingBySubjectNo" parameterType="long" resultMap="RankingResultMap">
+        SELECT
+            u.user_name AS userName,
+            'yes' AS choice,
+            SUM(CASE WHEN bo.order_choice = 'yes' THEN bo.order_amount ELSE 0 END) AS sum
+        FROM
+            tbl_betting_order bo
+            JOIN
+            tbl_user u ON bo.order_user_no = u.user_no
+        WHERE
+            bo.order_subject_no = #{subjectNo}
+        GROUP BY
+            u.user_name
+        HAVING
+            SUM(CASE WHEN bo.order_choice = 'yes' THEN bo.order_amount ELSE 0 END) > 0
+        UNION ALL
+        SELECT
+            u.user_name AS userName,
+            'no' AS choice,
+            SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) AS sum
+        FROM
+            tbl_betting_order bo
+            JOIN
+            tbl_user u ON bo.order_user_no = u.user_no
+        WHERE
+            bo.order_subject_no = #{subjectNo}
+        GROUP BY
+            u.user_name
+        HAVING
+            SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) > 0
+        ORDER BY
+            choice, sum
     </select>
 </mapper>

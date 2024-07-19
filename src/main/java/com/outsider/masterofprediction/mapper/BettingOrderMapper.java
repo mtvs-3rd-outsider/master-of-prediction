@@ -1,8 +1,6 @@
 package com.outsider.masterofprediction.mapper;
 
-import com.outsider.masterofprediction.dto.BettingOrderDTO;
-import com.outsider.masterofprediction.dto.User;
-import com.outsider.masterofprediction.dto.UserPaginationDTO;
+import com.outsider.masterofprediction.dto.*;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
@@ -18,4 +16,8 @@ public interface BettingOrderMapper {
     int getOrderCountByUserId(Long userId);
 
     Long getUserTotalPointsByUserId(Long userId);
+
+    List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo);
+
+    List<RankingDTO> getRankingBySubjectNo(Long subjectNo);
 }

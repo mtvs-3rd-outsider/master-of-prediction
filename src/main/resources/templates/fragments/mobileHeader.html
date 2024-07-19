@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+        swiper-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body>
+<header id="MobileHeader" class="header" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
+    <div style="box-shadow: 0 2px 2px -2px gray;">
+        <div style="display: flex;align-items: center;">
+            <div class="logo" style="display: flex;">
+                <a href="header.html">
+                    <img height="90px" src="../images/logo2.png" width="90px">
+                </a>
+            </div>
+            <div class="search" style="margin :10px; width : 100%; ">
+                <form style="display: flex;">
+                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">
+                        <md-icon class="child" slot="leading-icon">search</md-icon>
+                    </md-outlined-text-field>
+
+                </form>
+            </div>
+            <div style="position: relative">
+                <md-text-button id="usage-submenu-anchor-mobile" style="">
+                    <md-icon-button id="header-icon-name-menu" toggle>
+                        <md-icon>Menu</md-icon>
+                    </md-icon-button>
+                </md-text-button>
+                <md-menu anchor="usage-submenu-anchor-mobile" has-overflow id="usage-submenu-mobile">
+                    <md-menu-item>
+                        <div>Sign Up</div>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <div>Log in</div>
+                    </md-menu-item>  <md-menu-item>
+                        <div>Activity</div>
+                    </md-menu-item>  <md-menu-item>
+                        <div>Rank</div>
+                    </md-menu-item>
+                </md-menu>
+            </div>
+        </div>
+        <div>
+            <swiper-container class="mySwiper" slides-per-view="5"
+                                  space-between="1" free-mode="true">
+<!--            <ul id="header-ul">-->
+                <swiper-slide><a class="a-attr-remove" href="">전체</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="">인기</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="">최신</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="">많은</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="">곧 마감</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="">종료된</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="">찜한</a></swiper-slide>
+<!--            </ul>-->
+            </swiper-container>
+        </div>
+    </div>
+    <script type="module">
+        const anchorEl = document.body.querySelector('#usage-submenu-anchor-mobile');
+        const menuEl = document.body.querySelector('#usage-submenu-mobile');
+
+        anchorEl.addEventListener('click', () => {
+            menuEl.open = true;
+            // menuEl.open = !menuEl.open;
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
+</header>
+</body>
+</html>
