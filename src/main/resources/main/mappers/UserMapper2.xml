@@ -1,0 +1,42 @@
+<!--<?xml version="1.0" encoding="UTF-8" ?>-->
+<!--<!DOCTYPE mapper-->
+<!--        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"-->
+<!--        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">-->
+
+<!--<mapper namespace="com.outsider.masterofprediction.mapper.UserMapper">-->
+
+<!--    <resultMap id="userResultMap" type="com.outsider.masterofprediction.dto.TblUserDTO">-->
+<!--        <id property="userNo" column="USER_NAME"/>-->
+<!--        <result property="userName" column="USER_NAME"/>-->
+<!--        <result property="userEmail" column="USER_EMAIL"/>-->
+<!--        <result property="userPassword" column="USER_PASSWORD"/>-->
+<!--        <result property="userJoinDate" column="USER_JOIN_DATE"/>-->
+<!--        <result property="userAuthority" column="USER_AUTHORITY"/>-->
+<!--        <result property="userWithdrawalStatus" column="USER_WITHDRAWAL_STATUS"/>-->
+<!--        <result property="userPoint" column="USER_POINT"/>-->
+
+<!--        <association property="attachment" javaType="com.outsider.masterofprediction.dto.TblAttachmentDTO">-->
+<!--            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>-->
+<!--            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>-->
+<!--            <result property="attachmentRegistUserNo" column="ATTACHMENT_REGIST_USER_NO"/>-->
+<!--            <result property="answerNo" column="ANSWER_NO"/>-->
+<!--            <result property="inquiryNo" column="INQUIRY_NO"/>-->
+<!--            <result property="attachmentUserNo" column="ATTACHMENT_USER_NO"/>-->
+<!--            <result property="subjectNo" column="SUBJECT_NO"/>-->
+<!--            <result property="noticeNo" column="NOTICE_NO"/>-->
+<!--        </association>-->
+<!--    </resultMap>-->
+
+<!--    <select id="findRank" resultMap="userResultMap">-->
+<!--        SELECT-->
+<!--                A.USER_CODE-->
+<!--                , A.USER_NAME-->
+<!--                , A.USER_POINT-->
+<!--                , B.ATTACHMENT_FILE_ADDRESS-->
+<!--        FROM-->
+<!--                TBL_USER A-->
+<!--                JOIN TBL_ATTACHMENT B ON (A.USER_NO = B.ATTACHMENT_USER_NO)-->
+<!--        ORDER BY-->
+<!--                A.USER_POINT-->
+<!--    </select>-->
+<!--</mapper>-->

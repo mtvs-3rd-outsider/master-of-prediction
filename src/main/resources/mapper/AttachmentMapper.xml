@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.outsider.masterofprediction.mapper.AttachmentMapper">
+
+    <resultMap id="attachmentResultMap" type="com.outsider.masterofprediction.dto.TblAttachmentDTO">
+        <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
+        <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
+        <association property="attachmentUserNo" javaType="com.outsider.masterofprediction.dto.TblUserDTO">
+            <id property="userNo" column="USER_NO"/>
+            <result property="userName" column="USER_NAME"/>
+            <result property="userPoint" column="USER_POINT"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="com.outsider.masterofprediction.dto.TblUserDTO">
+        <id property="userNo" column="USER_NO"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="userPoint" column="USER_POINT"/>
+    </resultMap>
+
+    <select id="findRank" resultMap="attachmentResultMap">
+        SELECT
+            B.ATTACHMENT_FILE_NO
+             , B.ATTACHMENT_FILE_ADDRESS
+             , A.USER_NO
+             , A.USER_NAME
+             , A.USER_POINT
+        FROM
+            TBL_USER A
+                LEFT JOIN TBL_ATTACHMENT B ON (A.USER_NO = B.ATTACHMENT_USER_NO)
+        ORDER BY
+            A.USER_POINT
+    </select>
+</mapper>

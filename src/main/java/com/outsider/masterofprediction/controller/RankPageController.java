@@ -1,5 +1,6 @@
 package com.outsider.masterofprediction.controller;
 
+import com.outsider.masterofprediction.dto.TblAttachmentDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
 import com.outsider.masterofprediction.service.RankFindService;
@@ -24,24 +25,17 @@ public class RankPageController {
     @GetMapping
     public ModelAndView getRankPage(ModelAndView mv){
 
+
         // mv.addObject();
         mv.setViewName("/layout/rank-page/index");
         mv.addObject("title", "User Ranking");
         mv.addObject("view", "content/rank-page/rank-page");
 
-        //List<User> userList = rankFindService.findRank();
-        //mv.addObject("userList", userList);
+        List<TblAttachmentDTO> userList = rankFindService.findRank();
+        mv.addObject("userList", userList);
+
+        System.out.println(userList);
 
         return mv;
-    }
-
-    @GetMapping("/test")
-    public String findRankList(Model model){
-
-        List<User> userList = rankFindService.findRank();
-
-        model.addAttribute("userList", userList);
-
-        return "rankpage";
     }
 }
