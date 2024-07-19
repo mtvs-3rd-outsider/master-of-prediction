@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+</head>
+<body>
+<div class="register-wrap"  th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/login-page/login-page.css}">
+    <div class="login-html">
+        <div class="login-form">
+            <form class="sign-up-htm" method="post" th:action="@{/register}">
+                <div class="group">
+                    <div enctype="multipart/form-data" id="registerForm" >
+                        <div class="custom-file-input">
+                            <input class="file-input" type="file" id="imageUpload" name="imageUpload">
+                        </div>
+                    </div>
+                </div>
+<!--                <div class="group">-->
+<!--                    <label for="email" class="label">Email</label>-->
+<!--                    <input id="email" type="email" class="input"/>-->
+<!--                </div>-->
+<!--                <div class="group">-->
+<!--                    <label for="pw" class="label">Password</label>-->
+<!--                    <input id="pw" type="password" class="input" data-type="password" >-->
+<!--                </div>-->
+<!--                <div class="group">-->
+<!--                    <label for="pwr" class="label">Repeat Password</label>-->
+<!--                    <input id="pwr" type="password" class="input" data-type="password">-->
+<!--                </div>-->
+                <div class="group">
+<!--                    <label for="username" class="label">Username</label>-->
+<!--                    <input id="username" type="text" class="input">-->
+                    <md-outlined-text-field label="username" type="username" class="input">
+                    </md-outlined-text-field>
+                </div>
+                <md-filled-button  type="submit"  id="google-login-button" class="google-button">
+                    <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="google-icon">
+                    Sign Up with Google
+                </md-filled-button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

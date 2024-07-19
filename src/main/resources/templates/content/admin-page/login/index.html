@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <link
+            href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
+            rel="stylesheet"
+    />
+
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import {styles as typescaleStyles} from "@material/web/typography/md-typescale-styles.js";
+
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+    <style>
+        :root {
+            --md-filled-tonal-button-container-shape: 0px;
+            --md-filled-tonal-button-label-text-font: system-ui;
+            --md-sys-color-secondary-container: #cce8e7;
+            --md-sys-color-on-secondary-container: #051f1f;
+        }
+    </style>
+
+    <!--  <link rel="stylesheet" href="../../../../static/css/admin-page/login/login.css" />-->
+    <link rel="stylesheet" th:href="@{/css/admin-page/login/login.css}"/>
+</head>
+<body>
+<!--검증하고 전환-->
+<form method="post" onsubmit=""  action="/admin-loginProc">
+    <div>
+        <div id="admin">
+            <div class="white-board">
+                <div id="admin-login-img">
+                    <img style="height: 500px" th:src="@{/css/admin-page/login/admin-img.jpg}"/>
+                </div>
+                <div id="admin-login">
+                    <div>
+                        <span class="admin-login-text">Sign in</span>
+                    </div>
+                    <div>
+                        <md-outlined-text-field class="admin-login" th:name="username" label="email" required>
+                            </md-outlined-text-field>
+                        </div>
+                    <div>
+                        <md-outlined-text-field label="Password" required th:name="password" type="password">
+                            <md-icon-button slot="trailing-icon" toggle>
+                                <md-icon>visibility</md-icon>
+                                <md-icon slot="selected">visibility_off</md-icon>
+                            </md-icon-button>
+                        </md-outlined-text-field>
+                    </div>
+                    <div>
+                        <md-filled-tonal-button type="submit"
+                        >Login
+                        </md-filled-tonal-button
+                        >
+                    </div>
+                    <script>
+                        function validateForm() {
+                            const textField = document.getElementById("md-outlined-text-field");
+                            console.log(textField[0]);
+                            if (
+                                textField[0].value.trim("").length == 0 ||
+                                textField[1].value.trim("").length == 0
+                            ) {
+                                return false;
+                            }
+                            // 등록 로직 추가
+                            return true;
+                            // window.location.href = "./";
+                        }
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
