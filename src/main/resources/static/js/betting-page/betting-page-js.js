@@ -287,9 +287,8 @@ function userActivityRanking(value){
                 `;
 }
 
-function userActivityActive(value){
+function userActivityActive(value) {
     const userActivityContent = document.querySelector('.user_active-content');
-
     const buttons = document.querySelectorAll('.user-activity-button');
 
     buttons.forEach((button, index) => {
@@ -298,20 +297,42 @@ function userActivityActive(value){
 
     buttons[value].classList.add('active');
 
+    $.ajax({
+        url: '/active',
+        type: 'GET',
+        success: function(data) {
+            userActivityContent.innerHTML = '';
+            data.forEach(activity => {
+                const date = new Date(activity.activeTimestamp);
+                const formattedDate = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+                let activeYesNoClass = 'active-yesno-span';
+                let activeNumClass = 'active-num-span';
+                let purchaseOrSale = '구매';
 
-    userActivityContent.innerHTML=` <div class="user_activity-content">
-                    <ul>
-                        <li><img src="../images/me.jpg"/><span class="active-name-span">jjh</span>님께서 &nbsp<span class="active-yesno-span">YES</span>&nbsp를&nbsp <span class="active-num-span">갯수</span> 만큼 &nbsp<span>구매</span> 하였습니다</li>
-                        <li>21min ago</li>
-                    </ul>
-                </div>
-                <div class="user_activity-content">
-                    <ul>
-                        <li><img src="../images/me.jpg"/><span class="active-name-span">jjh</span>님께서 &nbsp<span class="active-yesno-span">YES</span>&nbsp를&nbsp <span class="active-num-span">갯수</span> 만큼 &nbsp<span>구매</span> 하였습니다</li>
-                        <li>21min ago</li>
-                    </ul>
-                </div>`;
+                if (activity.choice === 'No') {
+                    activeYesNoClass += ' red-text';
+                    activeNumClass += ' red-text';
+                } else {
+                    activeYesNoClass += ' green-text';
+                    activeNumClass += ' green-text';
+                }
+
+                if (activity.amount < 0) {
+                    purchaseOrSale = '판매';
+                }
+
+                userActivityContent.innerHTML += `
+                        <div class="user_activity-content">
+                            <ul>
+                                <li><img src="../images/me.jpg"/><span class="active-name-span">${activity.name}</span>님께서 &nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;를&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> 만큼 &nbsp;<span>${purchaseOrSale}</span> 하였습니다</li>
+                                <li>${formattedDate}</li>
+                            </ul>
+                        </div>`;
+            });
+        }
+    });
 }
+
 
 function buyModal(){
     const battingModalContainer = document.querySelector('.batting_modal-container');
