@@ -2,6 +2,7 @@ package com.outsider.masterofprediction.config;
 
 
 
+import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
 import com.outsider.masterofprediction.service.PrincipalOauthUserService;
 import org.springframework.beans.factory.annotation.Value;
@@ -33,6 +34,8 @@ import java.util.Set;
 @EnableWebSecurity
 public class SecurityConfigUser {
 
+    private final AttachmentMapper attachmentMapper;
+
     @Value("${google.client.id}")
     private String clientId;
 
@@ -44,8 +47,9 @@ public class SecurityConfigUser {
 
     UserMapper userMapper;
 
-    public SecurityConfigUser(UserMapper userMapper) {
+    public SecurityConfigUser(UserMapper userMapper, AttachmentMapper attachmentMapper) {
         this.userMapper = userMapper;
+        this.attachmentMapper = attachmentMapper;
     }
 
     @Bean
@@ -58,35 +62,28 @@ public class SecurityConfigUser {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/css/**").permitAll()
-                        .requestMatchers("/login", "/register", "/loginProc").permitAll()
-                        .requestMatchers("/home").hasRole("USER")
+                        .requestMatchers("/","/login", "/register", "/loginProc").permitAll()
+                        .requestMatchers("/").hasRole("USER")
                         .anyRequest().authenticated()
                 )
                 .formLogin(auth -> auth
-                        .loginPage("/login")
                         .loginProcessingUrl("/loginProc")
                         .usernameParameter("email")// 로그인 처리를 위한 URL 설정
                         .passwordParameter("password")// 로그인 처리를 위한 URL 설정
-                        .defaultSuccessUrl("/home", true)
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
-
-
 
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
+//                        .loginPage("/login")
                         .authorizationEndpoint(authorization -> authorization
                                 .baseUri("/oauth2/authorization"))
                         .redirectionEndpoint(redirection -> redirection
                                 .baseUri("/login/oauth2/code/*"))
-
                         .userInfoEndpoint(userInfo -> userInfo
 //                                .oidcUserService(this.oidcUserService())
                                 .userService(this.oauth2UserService()))
-                        .defaultSuccessUrl("/my-page", true)
-
-
-
+                        .defaultSuccessUrl("/", true)
                 )
                 .csrf(auth -> auth.disable())
                 .sessionManagement(auth -> auth
@@ -100,7 +97,7 @@ public class SecurityConfigUser {
         return http.build();
     }
     private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService( ) {
-        final PrincipalOauthUserService delegate = new PrincipalOauthUserService(passwordEncoder(),userMapper);
+        final PrincipalOauthUserService delegate = new PrincipalOauthUserService(passwordEncoder(),userMapper ,attachmentMapper);
         return (userRequest) -> {
             // Delegate to the default implementation for loading a user
             OAuth2User oAuth2User = delegate.loadUser(userRequest);
