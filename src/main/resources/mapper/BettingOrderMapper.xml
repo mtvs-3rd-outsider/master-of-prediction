@@ -18,6 +18,11 @@
         <result property="choice" column="order_choice"/>
         <result property="activeTimestamp" column="order_timestamp"/>
     </resultMap>
+    <resultMap id="RankingResultMap" type="com.outsider.masterofprediction.dto.RankingDTO">
+        <result property="name" column="userName"/>
+        <result property="choice" column="choice"/>
+        <result property="sum" column="sum"/>
+    </resultMap>
 
 
 
@@ -58,22 +63,40 @@
         join tbl_user
           on order_user_no=user_no
          and ORDER_SUBJECT_NO=#{subjectNo}
-        ORDER BY ORDER_TIMESTAMP DESC;
-
+        ORDER BY ORDER_TIMESTAMP DESC
     </select>
 
-    <select id="getRankingBySubjectNo" parameterType="long" resultMap="TblBettingOrderResultMap">
+    <select id="getRankingBySubjectNo" parameterType="long" resultMap="RankingResultMap">
         SELECT
-            order_user_no,
-            SUM(order_amount) AS `sum`
+            u.user_name AS userName,
+            'yes' AS choice,
+            SUM(CASE WHEN bo.order_choice = 'yes' THEN bo.order_amount ELSE 0 END) AS sum
         FROM
-            tbl_betting_order
+            tbl_betting_order bo
+            JOIN
+            tbl_user u ON bo.order_user_no = u.user_no
         WHERE
-            order_subject_no = #{orderSubjectNo}
-          AND order_choice = #{orderChoice}
+            bo.order_subject_no = #{subjectNo}
         GROUP BY
-            order_user_no
+            u.user_name
+        HAVING
+            SUM(CASE WHEN bo.order_choice = 'yes' THEN bo.order_amount ELSE 0 END) > 0
+        UNION ALL
+        SELECT
+            u.user_name AS userName,
+            'no' AS choice,
+            SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) AS sum
+        FROM
+            tbl_betting_order bo
+            JOIN
+            tbl_user u ON bo.order_user_no = u.user_no
+        WHERE
+            bo.order_subject_no = #{subjectNo}
+        GROUP BY
+            u.user_name
+        HAVING
+            SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) > 0
         ORDER BY
-            `sum` DESC;
+            choice, sum
     </select>
 </mapper>

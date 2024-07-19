@@ -28,4 +28,12 @@
         GROUP BY
             u.user_no, u.user_name, u.user_email;
     </select>
+
+    <select id="getAuthorityBySubjectUserNo" parameterType="long" resultType="String">
+        SELECT user_authority
+        FROM tbl_subject
+        JOIN tbl_user
+        ON subject_register_user_no=user_no
+        and subject_register_user_no=#{subjectUserNo}
+    </select>
 </mapper>

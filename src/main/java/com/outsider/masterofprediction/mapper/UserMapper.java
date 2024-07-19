@@ -65,4 +65,6 @@ public interface UserMapper {
     // 회원 탈퇴 여부 수정
     void updateWithdrawalStatusByUser(User user);
     Double getUserProfitLossRate(Long userNo);
+
+    String getAuthorityBySubjectUserNo(long subjectUserNo);
 }
