@@ -46,7 +46,7 @@ public class InquiryController {
 
     @GetMapping("inquiry/register")
     public ModelAndView getInquiryRegister(ModelAndView mv) {
-        mv.setViewName("layout/my-page/change");
+        mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-register2");
         return mv;
     }
@@ -58,7 +58,7 @@ public class InquiryController {
         tblInquiryDTO.setInquiryNo(inquiryNo);
         tblInquiryDTO.setInquiryReplyStatus(replyStatus);
         InquiryDetailDTO inquiryDetailDTO = userInquiryService.getInquiryDetail(tblInquiryDTO);
-        mv.setViewName("layout/my-page/index");
+        mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-detail");
         mv.addObject("inquiryDetail", inquiryDetailDTO);
         mv.addObject("replyStatus", replyStatus);
