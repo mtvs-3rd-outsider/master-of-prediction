@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -20,9 +21,14 @@ public class PreviousFileUtils {
      * @param tblAttachmentDTO 파일의 주소가 담긴 DTO
      * @return 생성한 파일 | IOException
      */
-    public File create(TblAttachmentDTO tblAttachmentDTO) throws IOException {
+    public File create(TblAttachmentDTO tblAttachmentDTO) throws IOException  {
         String previousFilePath = tblAttachmentDTO.getAttachmentFileAddress();
-        Path file = Paths.get(uploadDir).resolve(previousFilePath);
+        Path file;
+        try {
+            file = Paths.get(uploadDir).resolve(previousFilePath);
+        } catch (InvalidPathException e) {
+            throw new IOException("Invalid path: " + previousFilePath, e);
+        }
 
         return new File(file.toString());
     }

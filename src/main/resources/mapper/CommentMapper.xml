@@ -18,6 +18,17 @@
         <result property="commentSubjectNo" column="comment_subject_no" />
     </resultMap>
 
+    <!-- ResultMap for CommentReDTO -->
+    <resultMap id="CommentReResultMap" type="com.outsider.masterofprediction.dto.CommentReDTO">
+        <id property="commnetNo" column="comment_no" />
+        <result property="commentContent" column="comment_content" />
+        <result property="commentTimestamp" column="comment_timestamp" />
+        <result property="commentUserName" column="comment_user_name" />
+        <result property="replyNo" column="reply_no" />
+        <result property="replyTimestamp" column="reply_timestamp" />
+        <result property="replyUserName" column="reply_user_name" />
+    </resultMap>
+
     <!-- 댓글 수 조회 -->
     <select id="getCommentCountByUserId" resultType="int">
         SELECT
@@ -42,5 +53,37 @@
             comment_timestamp DESC
         LIMIT #{itemsPerPage} OFFSET #{start}
     </select>
+
+
+    <select id="getCommentBySubjectNo" parameterType="long" resultMap="CommentReResultMap">
+        SELECT
+            c.comment_no,
+            c.comment_content,
+            c.comment_timestamp,
+            u1.user_name AS comment_user_name,
+            r.reply_no,
+            r.reply_content,
+            r.reply_timestamp,
+            u2.user_name AS reply_user_name
+        FROM TBL_COMMENT c
+                 LEFT JOIN TBL_COMMENT_REPLY r ON c.comment_no = r.reply_comment_no
+                 LEFT JOIN TBL_USER u1 ON c.comment_user_no = u1.user_no
+                 LEFT JOIN TBL_USER u2 ON r.reply_user_no = u2.user_no
+        WHERE c.comment_subject_no = #{subjectNo}
+        ORDER BY c.comment_timestamp DESC , r.reply_timestamp DESC;
+    </select>
+
+
+    <insert id="insertComment" parameterType="com.outsider.masterofprediction.dto.TblCommentDTO">
+        INSERT INTO tbl_comment (
+            comment_content,
+            comment_user_no,
+            comment_subject_no
+        ) VALUES (
+                     #{commentContent},
+                     #{commentUserNo},
+                     #{commentSubjectNo}
+                 )
+    </insert>
 
 </mapper>
