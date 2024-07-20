@@ -5,6 +5,7 @@ import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
+import com.outsider.masterofprediction.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -39,7 +40,7 @@ public class BettingCreateService {
         
         long userId = UserSession.getUserId();
 
-        validation(tblSubjectDTO);
+        Validation.subject(tblSubjectDTO);
         tblSubjectDTO.setSubjectRegisterUserNo(userId);
         tblSubjectDTO.setSubjectStatus(SubjectStatus.IN_PROGRESS.getValue());
         try {
