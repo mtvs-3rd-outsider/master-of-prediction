@@ -7,11 +7,14 @@ import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 
 @Service
@@ -36,28 +39,37 @@ public class BettingCreateService {
         
         long userId = UserSession.getUserId();
 
+        validation(tblSubjectDTO);
         tblSubjectDTO.setSubjectRegisterUserNo(userId);
-        // 임시 데이터
-        tblSubjectDTO.setSubjectCategoryNo(tblSubjectDTO.getSubjectCategoryNo());
         tblSubjectDTO.setSubjectStatus(SubjectStatus.IN_PROGRESS.getValue());
-        subjectMapper.insertSubject(tblSubjectDTO);
+        try {
+            subjectMapper.insertSubject(tblSubjectDTO);
+            TblAttachmentDTO tblAttachmentDTO = new TblAttachmentDTO();
+            tblAttachmentDTO.setAttachmentRegistUserNo(userId);
+            tblAttachmentDTO.setSubjectNo(tblSubjectDTO.getSubjectNo());
 
-        TblAttachmentDTO tblAttachmentDTO = new TblAttachmentDTO();
-        tblAttachmentDTO.setAttachmentRegistUserNo(userId);
-        tblAttachmentDTO.setSubjectNo(tblSubjectDTO.getSubjectNo());
-
-        // 이미지 파일이 없을 경우
-        if ("".equals(file.getOriginalFilename())) {
-            tblAttachmentDTO.setAttachmentFileAddress(defaultImage);
+            // 사용자가 이미지를 안넣었을 경우 기본이미지 부여
+            if ("".equals(file.getOriginalFilename())) {
+                tblAttachmentDTO.setAttachmentFileAddress(defaultImage);
+                attachmentMapper.setAttachmentsBySubjectNo(tblAttachmentDTO);
+                return;
+            }
+            // 사용자가 이미지 파일을 넣을 경우
+            File uploadFile = fileStorageService.storeFile(file);
+            tblAttachmentDTO.setAttachmentFileAddress(uploadFile.getName());
             attachmentMapper.setAttachmentsBySubjectNo(tblAttachmentDTO);
-            return;
+        }catch (IllegalStateException e){
+            System.out.println("종료");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data provided");
         }
+    }
 
-
-        // 이미지 파일이 있을 경우
-        File uploadFile = fileStorageService.storeFile(file);
-        tblAttachmentDTO.setAttachmentFileAddress(uploadFile.getName());
-        attachmentMapper.setAttachmentsBySubjectNo(tblAttachmentDTO);
-        // processFileService.execute(tblAttachmentDTO, file, attachmentMapper::setAttachmentsBySubjectNo);
+    private void validation(TblSubjectDTO tblSubjectDTO){
+        if (tblSubjectDTO.getSubjectTitle().isBlank() ||
+                tblSubjectDTO.getSubjectCategoryNo() == 0 ||
+            tblSubjectDTO.getSubjectSettlementTimestamp() == null ||
+                LocalDateTime.now().isAfter(tblSubjectDTO.getSubjectSettlementTimestamp().toLocalDateTime())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data provided");
+        }
     }
 }

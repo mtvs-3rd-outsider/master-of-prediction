@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <base th:href="@{/}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <meta charset="UTF-8">
+<!--    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"-->
+<!--          name="viewport">-->
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title th:text="${title}">제목확인</title>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     <script type="importmap">
         {
           "imports": {
@@ -18,91 +22,72 @@
 
         document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
     </script>
-
     <link rel="stylesheet" th:href="@{/css/admin-page/index.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-page/notification/create.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-page/betting/update.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-page/betting/create.css}">
     <link rel="stylesheet" th:href="@{/css/admin-page/font.css}">
+
 </head>
 <body>
+
 <div id="main">
     <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
     <div id="wrapper">
-        <section id="response-section">
-            <div class="admin-main-head">
-                <h1>배팅상품 등록</h1>
-            </div>
-            <div class="admin-main-body-frame">
-                <form enctype="multipart/form-data" id="send-data" method="post"
-                      onsubmit="return validateForm()" th:action="@{/admin-page/betting/create}" th:object="${betting}">
-                    <div class="admin-main-body">
-                        <div class="custom-file-input">
-                            <img class="img-tag" th:src="@{images/logo.png}"/>
-                            <input class="file-input" name="attachmentFileAddress" onchange="previewImage(event)"
-                                   type="file"/>
-                        </div>
-                        <div class="betting-create-body">
-                            <div>
-                                <span>주제</span>
-                                <md-outlined-text-field class="body-value" id="notification-text-field"
-                                                        name="subjectTitle"
-                                ></md-outlined-text-field>
-                            </div>
-
-                            <div>
-                                <span>카테고리</span>
-                                <select class="body-value" name="subjectCategoryNo" th:value="${betting.subjectCategoryNo}">
-                                    <option th:each="category : ${categories}" th:value="${category.categoryNo}"
-                                            th:text="${category.categoryName}"></option>
-                                </select>
-                            </div>
-                            <div>
-                                <span>날짜</span>
-                                <input id="calendar" class="body-value" name="deadline" type="date"/>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <div id="button-frame">
-                    <md-filled-tonal-button class="create-button" form="send-data" type="submit">등록
-                    </md-filled-tonal-button>
-                    <md-filled-tonal-button class="cansle-button" onclick="history.back()">취소</md-filled-tonal-button>
+    <section class="section" th:fragment="betting-add">
+        <link rel="stylesheet" th:href="@{css/betting-add-page/betting-add-page.css}">
+        <div class="container">
+            <h2 class="form-title">게임을 등록하세요.</h2>
+            <form class="form" enctype="multipart/form-data" method="post"
+                  th:action="@{/admin-page/betting/create}" onsubmit="">
+                <div class="image-preview-container">
+                    <img class="image-preview" id="image-preview"/>
                 </div>
-            </div>
-        </section>
+                <div class="form-group">
+                    <label class="form-label" for="image">Select image</label>
+                    <input
+                            accept="image/*"
+                            class="form-input"
+                            id="image"
+                            name="attachmentFileAddress"
+                            type="file"
+                    />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="subjectTitle">Title</label>
+                    <input class="form-input" id="subjectTitle" name="subjectTitle" type="text"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="category">Category</label>
+                    <select class="form-select" id="category" name="subjectCategoryNo">
+                        <option th:each="category : ${categories}" th:text="${category.categoryName}"
+                                th:value="${category.categoryNo}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="date">Date</label>
+                    <input class="form-input" id="date" name="deadlineDate" type="date" required/></div>
+                <div class="form-group">
+                    <label class="form-label" for="time">Select End Time</label>
+                    <input class="form-input" id="time" name="deadlineTime" type="time" required/>
+                </div>
+                <button class="submit-button" type="submit">Submit</button>
+            </form>
+        </div>
+        <script>
+            const imageInputElement = document.querySelector("#image");
+            const imagePreviewImgElement = document.querySelector("#image-preview");
+            imageInputElement.addEventListener("change", (event) => {
+                let imageFile = event.target.files[0];
+                console.log(imageFile.size)
+                if (imageFile.size > 1000000) {
+                    alert("Too big!")
+                    imageInputElement.value = null;
+                    imagePreviewImgElement.src = ""; // 빈값 넣어주기.
+                } else {
+                    imagePreviewImgElement.src = URL.createObjectURL(imageFile);
+                }
+            });
+        </script>
+    </section>
     </div>
 </div>
-<!--이미지 태그 미리보기-->
-<script>
-    function previewImage(event) {
-            const file = event.target.files[0];
-            const reader = new FileReader();
-        reader.onloadend = function () {
-            document.getElementsByClassName("img-tag")[0].src = reader.result;
-        };
-        if (file) {
-            reader.readAsDataURL(file);
-        } else {
-            document.getElementsByClassName("img-tag")[0].src = "";
-        }
-    }
-</script>
-<script>
-    function validateForm() {
-        const textField = document.getElementById("notification-text-field");
-        const calender = document.getElementById("calendar");
-
-        if (
-            textField.value.trim("").length == 0 ||
-            calender.value.trim("").length == 0
-        ) {
-            return false;
-        }
-        // 등록 로직 추가
-        return true;
-        // window.location.href = "./";
-    }
-</script>
 </body>
 </html>
