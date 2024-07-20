@@ -152,50 +152,6 @@
                 </div>
                 <div class="user_active-content" id="user_active-content">
 
-                    <div class="user_ranking-content">
-                        <div class="ranking_yes-content">
-                            <ul>
-                                <li id="ranking-holders">Yes holders</li>
-                                <li id="ranking-shares">SHARES</li>
-                            </ul>
-                            <ul>
-                                <li>
-                                    <img src="../images/me.jpg">
-                                    Joe-Biden
-                                </li>
-                                <li class="ranking_yes-amount">355,270</li>
-                            </ul>
-                            <ul>
-                                <li>
-                                    <img src="../images/me.jpg">
-                                    Joe-Biden
-                                </li>
-                                <li class="ranking_yes-amount">355,270</li>
-                            </ul>
-                        </div>
-                        <div class="ranking_no-content">
-                            <ul>
-                                <li id="ranking-holders">No holders</li>
-                                <li id="ranking-shares">SHARES</li>
-                            </ul>
-                            <ul>
-                                <li>
-                                    <img src="../images/me.jpg">
-                                    Joe-Biden
-                                </li>
-                                <li class="ranking_no-amount">355,270</li>
-                            </ul>
-                            <ul>
-                                <li>
-                                    <img src="../images/me.jpg">
-                                    Joe-Biden
-                                </li>
-                                <li class="ranking_no-amount">355,270</li>
-                            </ul>
-                        </div>
-                    </div>
-
-
                 </div>
             </div>
 
@@ -230,7 +186,8 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="loggedSubjectNo" value="1"/>
+<input type="hidden" id="loggedInUserId" th:value="${loggedInUserId}" />
 </body>
 <script type="text/javascript" th:src="@{/js/betting-page/betting-page-js.js}"></script>
 
