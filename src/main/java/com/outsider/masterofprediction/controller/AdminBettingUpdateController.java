@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.*;
 
 @Controller
 public class AdminBettingUpdateController {
@@ -36,8 +38,14 @@ public class AdminBettingUpdateController {
     @PostMapping("/admin-page/betting/update/{subjectNo}")
     public String adminBettingUpdateSend(@ModelAttribute TblSubjectDTO tblSubjectDTO,
                                          @RequestParam("attachmentFileAddress") MultipartFile file,
-                                         @RequestParam("deadline") Date date) {
+                                         @RequestParam("deadlineDate") Date date,
+                                         @RequestParam("deadlineTime") String time) {
         try {
+            tblSubjectDTO.setSubjectSettlementTimestamp(
+                    Timestamp.valueOf(
+                            LocalDateTime.of(
+                                    LocalDate.parse(date.toString()),
+                                    LocalTime.parse(time))));;
             bettingUpdateService.update(tblSubjectDTO, file, date);
         } catch (IOException e) {
             e.printStackTrace();
@@ -51,10 +59,12 @@ public class AdminBettingUpdateController {
 
         betting.setAttachmentFileAddress(Paths.get(imgUrl).resolve(betting.getAttachmentFileAddress()).toString());
 
+        ZonedDateTime zonedDateTime = betting.getSubjectSettlementTimestamp().toInstant().atZone(ZoneId.systemDefault());
 
 
-        model.addAttribute("deadline", new Date(betting.getSubjectSettlementTimestamp().getTime()));
         model.addAttribute("betting", betting);
+        model.addAttribute("deadlineDate", zonedDateTime.toLocalDate());
+        model.addAttribute("deadlineTime", zonedDateTime.toLocalTime());
         model.addAttribute("categories", categoryService.findAll());
 
         return "content/admin-page/betting/update";
