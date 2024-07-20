@@ -59,7 +59,7 @@
     </insert>
 
     <!-- 문의 내역 조회 -->
-    <select id="getInquiriesByUserId" resultMap="InquiryDetailResultMap">
+    <select id="getInquiriesByUserId" resultMap="TblInquiryResultMap">
         SELECT inquiry_title, inquiry_reply_status, inquiry_no
         FROM TBL_INQUIRY
         WHERE inquiry_user_no = #{userId}
@@ -77,18 +77,18 @@
 
     <!-- 상세 문의 조회 -->
     <select id="getInquiryDetailByUserId" resultMap="InquiryDetailResultMap">
-        <if test="replyStatus == 0">
+        <if test="inquiryReplyStatus == 0">
             SELECT inquiry_title, inquiry_content, inquiry_timestamp
             FROM TBL_INQUIRY
-            WHERE inquiry_user_no = #{userId}
+            WHERE inquiry_user_no = #{inquiryUserNo}
             AND inquiry_no = #{inquiryNo}
         </if>
-        <if test="replyStatus != 0">
+        <if test="inquiryReplyStatus != 0">
             SELECT a.inquiry_title, a.inquiry_content, a.inquiry_timestamp,
             b.answer_content, b.answer_title, b.answer_timestamp
             FROM TBL_INQUIRY a
             JOIN TBL_INQUIRY_REPLY b ON a.inquiry_no = b.answer_inquiry_no
-            WHERE a.inquiry_user_no = #{userId}
+            WHERE a.inquiry_user_no = #{inquiryUserNo}
         </if>
     </select>
 

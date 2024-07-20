@@ -28,11 +28,9 @@
 
 .inquiry-content-title {
   font-size: medium;
+  margin: 0.7dvh;
   text-align: start;
   font-weight: normal;
-  margin-right:0.7dvh;
-  margin-bottom: 0.7dvh;
-  margin-top: 1dvh;
 }
 
 md-list {
