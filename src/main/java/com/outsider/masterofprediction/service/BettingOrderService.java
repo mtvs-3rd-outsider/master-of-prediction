@@ -32,14 +32,17 @@ public class BettingOrderService {
     }
 
     public Long getMonthTotalPointsByUser(Long userId) {
-        return bettingOrderMapper.getMonthTotalPointsByUser(userId);
+        Long totalPoints = bettingOrderMapper.getMonthTotalPointsByUser(userId);
+        return totalPoints != null ? totalPoints : 0L;
     }
 
-    public Long getMonthTotalProfitsByUser(Long userId) {
-        return bettingOrderMapper.getMonthTotalProfitsByUserId(userId);
+    public Long getMonthTotalProfitsByUserId(Long userId) {
+        Long totalProfits = bettingOrderMapper.getMonthTotalProfitsByUserId(userId);
+        return totalProfits != null ? totalProfits : 0L;
     }
     public Long getTotalPositionValueByUserId(Long userId) {
-        return bettingOrderMapper.getTotalPositionValueByUserId(userId);
+        Long totalPositionValue =  bettingOrderMapper.getTotalPositionValueByUserId(userId);
+        return totalPositionValue != null ? totalPositionValue : 0L;
     }
     public List<BettingInfoDTO> getPositionValueByUserId(Long userId) {
         return bettingOrderMapper.getPositionValueByUserId(userId);
@@ -47,6 +50,19 @@ public class BettingOrderService {
 
     public List<BettingInfoDTO> getMonthProfitsByUserId(Long userId) {
         return bettingOrderMapper.getMonthProfitsByUserId(userId);
+    }
+    public Long getMonthTotalProfitRateByUserId(Long userId) {
+        long totalProfits = getMonthTotalProfitsByUserId(userId);
+        long totalPoints = getMonthTotalPointsByUser(userId);
+        long totalProfitRate;
+        if( totalPoints != 0) {
+            totalProfitRate = totalProfits / totalPoints;
+        }
+        else
+        {
+            totalProfitRate = 0L;
+        }
+        return totalProfitRate;
     }
 
 
