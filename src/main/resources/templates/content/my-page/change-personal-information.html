@@ -13,14 +13,14 @@
         }
     </script>
 
-    <form th:action="@{/mypage/change-personal-information}"  method="post" enctype="multipart/form-data">
+    <form id="changeForm"  th:action="@{/mypage/change-personal-information}"  method="post" enctype="multipart/form-data">
 
-        <div th:remove="tag" th:if="${attachmentAddress}">
-            <img id="profileImage" th:src="${attachmentAddress}" width="80" height="80" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">
-        </div >
-        <div th:remove="tag" th:if="${attachmentAddress == null}">
-            <span id="profileImage" class="avatar" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">TY</span>
-        </div>
+<!--        <th:block th:if="${attachmentAddress}">-->
+            <img id="profileImage" th:src="${attachmentAddress}" class="avatar" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">
+<!--        </th:block >-->
+<!--        <th:block  th:unless="${attachmentAddress}">-->
+<!--            <span id="profileImage" class="avatar" onclick="document.getElementById('fileInput').click();" style="object-fit: cover; cursor: pointer; ">TY</span>-->
+<!--        </th:block>-->
                 <input type="file" id="fileInput" name="profileImage" style="display:none;" accept="image/*" onchange="previewImage(event)">
 
             <div class="margin">
@@ -34,8 +34,14 @@
                 </div>
 
             </div>
-
-    </div>
+        <div class="action-buttions">
+        <a th:href="@{/mypage/withdrawal}">회원탈퇴</a>
+        <div class="register-btn-group">
+            <md-filled-button id="changeFormSubmitButton"  form="changeForm" value="change">변경</md-filled-button>
+            <md-text-button id="change-inform-close-button" form="form-id" value="cancel">취소</md-text-button>
+        </div>
+        </div>
     </form>
 </div>
+
 

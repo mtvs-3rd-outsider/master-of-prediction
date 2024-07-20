@@ -14,7 +14,7 @@
                 <div th:if="${attachmentAddress == null}">
                     <span class="avatar">TY</span>
                 </div>
-                    <button class="edit-button surface" id="open-dialog-btn">
+                    <button onclick="location.href='/mypage/change-personal-information'" class="edit-button surface" id="open-dialog-btn">
                         <md-elevation></md-elevation>
                        <span class="material-symbols-outlined">settings</span>
                     </button>
@@ -132,7 +132,10 @@
                     </div>
                 </div>
                 <div class="positions-content-no-positions">문의 내역이 없습니다.</div>
+                <div class="positions-content" id="panel1-content"></div>
+                <div class="pagination" id="pagination1"></div>
             </div>
+
             <div role="tabpanel" class="tabpanel" id="panel2">
                 <div class="positions-header">
                     <span>제목</span>
@@ -141,6 +144,8 @@
                     </div>
                 </div>
                 <div class="positions-content-no-positions">댓글 내역이 없습니다.</div>
+                <div class="positions-content" id="panel2-content"></div>
+                <div class="pagination" id="pagination2"></div>
             </div>
             <div role="tabpanel" class="tabpanel" id="panel3">
                 <div class="positions-header">
@@ -150,14 +155,37 @@
                     </div>
                 </div>
                 <div class="positions-content-no-positions">구매 내역이 없습니다.</div>
+                <div class="positions-content" id="panel3-content"></div>
+                <div class="pagination" id="pagination3"></div>
             </div>
         </div>
 
     </div>
+
+    <script>
+        function goToPage(page) {
+            window.location.href = '/purchase-history/' + page;
+        }
+        function prevPage(currentPage) {
+            if (currentPage > 1) {
+                goToPage(currentPage - 1);
+            }
+        }
+
+        function nextPage(currentPage,totalPages) {
+            if (currentPage < totalPages) {
+                goToPage(currentPage + 1);
+            }
+        }
+    </script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const tabs = document.querySelectorAll('.tab');
             const panels = document.querySelectorAll('.tabpanel');
+            const state = {
+                currentPage: 1,
+                currentTab: 1
+            };
 
             tabs.forEach((tab, index) => {
                 tab.addEventListener('click', () => {
@@ -165,47 +193,86 @@
                     panels.forEach(panel => panel.classList.remove('active'));
                     // Show the corresponding panel
                     panels[index].classList.add('active');
-
+                    state.currentTab = index + 1;
+                    state.currentPage = 1;
                     // Fetch data from the API
-                    fetchDataForTab(index + 1);
+                    fetchDataForTab(state.currentTab, state.currentPage);
                 });
             });
 
             // Activate the first tab and panel by default
             if (tabs.length > 0) {
                 panels[0].classList.add('active');
-                fetchDataForTab(1);  // Fetch data for the first tab
+                fetchDataForTab(state.currentTab, state.currentPage);  // Fetch data for the first tab
             }
         });
 
-        function fetchDataForTab(tabIndex) {
-            // let url = '';
-            // switch (tabIndex) {
-            //     case 1:
-            //         url = 'https://api.example.com/inquiries'; // Replace with your API endpoint for inquiries
-            //         break;
-            //     case 2:
-            //         url = 'https://api.example.com/comments'; // Replace with your API endpoint for comments
-            //         break;
-            //     case 3:
-            //         url = 'https://api.example.com/purchases'; // Replace with your API endpoint for purchases
-            //         break;
-            //     default:
-            //         return;
-            // }
-
+        function fetchDataForTab(tabIndex , page) {
+            let url = '';
+            switch (tabIndex) {
+                case 1:
+                    url = '/mypage/api/inquirys/${page}'; // Replace with your API endpoint for inquiries
+                    break;
+                case 2:
+                    url = '/mypage/api/comments/${page}'; // Replace with your API endpoint for comments
+                    break;
+                case 3:
+                    url = '/mypage/api/purchase-history/${page}'; // Replace with your API endpoint for purchases
+                    break;
+                default:
+                    return;
+            }
+    //TODO: 활성화
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
                     updatePanelContent(tabIndex, data);
+                    updatePagination(tabIndex, data.totalPages, page);
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
         }
+        function updatePagination(tabIndex, totalPages, currentPage) {
+            const pagination = document.getElementById(`pagination${tabIndex}`);
+            pagination.innerHTML = '';  // Clear previous pagination buttons
+
+            const maxButtons = 10;
+            let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+            let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+
+            if (endPage - startPage < maxButtons - 1) {
+                startPage = Math.max(1, endPage - maxButtons + 1);
+            }
+
+            for (let i = startPage; i <= endPage; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                if (i === currentPage) {
+                    button.disabled = true;
+                }
+                button.addEventListener('click', () => fetchDataForTab(tabIndex, i));
+                pagination.appendChild(button);
+            }
+
+            // Add previous and next buttons
+            if (currentPage > 1) {
+                const prevButton = document.createElement('button');
+                prevButton.textContent = 'Prev';
+                prevButton.addEventListener('click', () => fetchDataForTab(tabIndex, currentPage - 1));
+                pagination.insertBefore(prevButton, pagination.firstChild);
+            }
+
+            if (currentPage < totalPages) {
+                const nextButton = document.createElement('button');
+                nextButton.textContent = 'Next';
+                nextButton.addEventListener('click', () => fetchDataForTab(tabIndex, currentPage + 1));
+                pagination.appendChild(nextButton);
+            }
+        }
 
         function updatePanelContent(tabIndex, data) {
-            const panel = document.getElementById(`panel${tabIndex}`);
+            const panel = document.getElementById(`panel${tabIndex}-content`);
             const contentContainer = panel.querySelector('.positions-content-no-positions');
 
             if (data.length === 0) {
@@ -214,6 +281,8 @@
             }
 
             contentContainer.innerHTML = ''; // Clear existing content
+            if(tabIndex === 1)
+            {
 
             data.forEach(item => {
                 const itemElement = document.createElement('div');
@@ -226,6 +295,35 @@
                 `;
                 contentContainer.appendChild(itemElement);
             });
+            }else if(tabIndex === 2)
+            {
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('item');
+                    itemElement.innerHTML = `
+                    <span>${item.title}</span>
+                    <div class="flex">
+                        <span>${item.status}</span>
+                    </div>
+                `;
+                    contentContainer.appendChild(itemElement);
+                });
+            }else if(tabIndex === 3)
+            {
+                data.forEach(item => {
+                    const itemElement = document.createElement('div');
+                    itemElement.classList.add('item');
+                    itemElement.innerHTML = `
+                    <span>${item.title}</span>
+                    <div class="flex">
+                        <span>${item.status}</span>
+                    </div>
+                `;
+                    contentContainer.appendChild(itemElement);
+                });
+            }
+
+
         }
     </script>
 
@@ -239,29 +337,46 @@
         <div slot="actions">
             <a th:href="@{/mypage/withdrawal}">회원탈퇴</a>
             <div class="register-btn-group">
-                <md-filled-button form="form-id" value="change">변경</md-filled-button>
+                <md-filled-button id="changeFormSubmitButton"  form="changeForm" value="change">변경</md-filled-button>
                 <md-text-button id="change-inform-close-button" form="form-id" value="cancel">취소</md-text-button>
             </div>
         </div>
     </md-dialog>
-    <script>
-        const dialog = document.getElementById('change-inform-dialog');
-        const openDialogBtn = document.getElementById('open-dialog-btn');
+<!--    <script>-->
+<!--        document.addEventListener('DOMContentLoaded', function() {-->
+<!--            // 폼 요소 선택-->
+<!--            const changeForm = document.querySelector('.change-inform-modal');-->
 
-        openDialogBtn.addEventListener('click', () => {
-            dialog.show(); // 다이얼로그를 엽니다.
-        });
+<!--            // md-filled-button 요소 선택-->
+<!--            const submitButton = document.getElementById('changeFormSubmitButton');-->
 
-        const form = dialog.querySelector('form');
+<!--            // 버튼 클릭 이벤트 리스너 추가-->
+<!--            if (submitButton) {-->
+<!--                submitButton.addEventListener('click', function(event) {-->
+<!--                    event.preventDefault();  // 기본 동작 방지-->
+<!--                    changeForm.submit();     // 폼 제출-->
+<!--                });-->
+<!--            }-->
+<!--        });-->
+<!--    </script>-->
+<!--    <script>-->
+<!--        const dialog = document.getElementById('change-inform-dialog');-->
+<!--        const openDialogBtn = document.getElementById('open-dialog-btn');-->
 
-        const chageInformCloseButton = dialog.querySelector('#change-inform-close-button');
+<!--        openDialogBtn.addEventListener('click', () => {-->
+<!--            dialog.show(); // 다이얼로그를 엽니다.-->
+<!--        });-->
 
-        chageInformCloseButton.addEventListener('click', () => {
-            form.reportValidity();
-            dialog.close();
-        });
+<!--        const form = dialog.querySelector('form');-->
 
-    </script>
+<!--        const chageInformCloseButton = dialog.querySelector('#change-inform-close-button');-->
+
+<!--        chageInformCloseButton.addEventListener('click', () => {-->
+<!--            form.reportValidity();-->
+<!--            dialog.close();-->
+<!--        });-->
+
+<!--    </script>-->
     <script>
 
         const message = '[[${flashMessage1}]]';
@@ -281,6 +396,8 @@
             document.body.insertAdjacentHTML('beforeend', dialogHTML);
         }
     </script>
+
+
 </div>
 
 </html>

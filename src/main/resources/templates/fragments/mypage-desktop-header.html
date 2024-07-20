@@ -5,7 +5,9 @@
 <header id="DeskHeader" class="header" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
     <link rel="stylesheet" th:href="@{css/login-page/common.css}"/>
-    <div style="box-shadow: 0 2px 2px -2px gray;">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <div >
         <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
                 <a href="header.html">
@@ -17,12 +19,12 @@
                 </div>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
-                <form style="display: flex;">
-                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">
-                        <md-icon class="child" slot="leading-icon">search</md-icon>
-                    </md-outlined-text-field>
+<!--                <form style="display: flex;">-->
+<!--                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">-->
+<!--                        <md-icon class="child" slot="leading-icon">search</md-icon>-->
+<!--                    </md-outlined-text-field>-->
 
-                </form>
+<!--                </form>-->
             </div>
             <div class="menu" style="display: flex;">
                 <a class="header-menu-hover" href=""
@@ -40,14 +42,14 @@
                     <span class="child">Rank</span>
                 </a>
             </div>
-            <div>
-                <th:block th:if="${userId == 0}">
-                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>
-                </th:block>
-                <th:block  th:unless="${userId == 0 }">
-                    <th:block th:replace="~{fragments/login-header-profile :: content}"/>
-                </th:block>
-            </div>
+<!--            <div>-->
+<!--                <th:block th:if="${userId == 0}">-->
+<!--                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>-->
+<!--                </th:block>-->
+<!--                <th:block  th:unless="${userId == 0 }">-->
+                    <th:block th:replace="~{fragments/login-mypage-header-profile :: content}"/>
+<!--                </th:block>-->
+<!--            </div>-->
             <div style="position: relative">
                 <md-text-button id="usage-submenu-anchor">
                     <md-icon-button id="header-icon-name-menu" toggle>
@@ -66,13 +68,7 @@
         </div>
         <div class="category">
             <ul id="header-ul">
-                <li><a href="">전체</a></li>
-                <li><a href="">인기</a></li>
-                <li><a href="">최신</a></li>
-                <li><a href="">많은</a></li>
-                <li><a href="">곧 마감</a></li>
-                <li><a href="">종료된</a></li>
-                <li><a href="">찜한</a></li>
+                <li><a href="/mypage">마이 페이지 홈</a></li>
             </ul>
         </div>
     </div>

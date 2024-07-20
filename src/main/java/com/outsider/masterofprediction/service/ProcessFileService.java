@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 
 @Service
@@ -39,10 +40,10 @@ public class ProcessFileService {
         File uploadFile = null;
         try {
             // 이전 파일 객체 생성
-            File previousFile = previousFileUtils.create(tblAttachmentDTO);
 
             // 유니크한 파일 이름 생성 및 저장
             uploadFile = fileStorageService.storeFile(profileImage);
+            File previousFile = previousFileUtils.create(tblAttachmentDTO);
 
             if (!FileUtil.compareFiles(uploadFile, previousFile)) {
                 if (!StringConstants.BASIC_IMAGE.equals(tblAttachmentDTO.getAttachmentFileAddress())) {
@@ -54,11 +55,12 @@ public class ProcessFileService {
             // 저장한 파일 이름 데이터베이스 동기화
             tblAttachmentDTO.setAttachmentFileAddress(uploadFile.getName());
             processFileInterface.execute(tblAttachmentDTO);
-        } catch (FileNotFoundException e) {
+        } catch ( IOException e) {
             // 이전 파일이 없을 경우 사용자에게 받은 파일 저장
             tblAttachmentDTO.setAttachmentFileAddress(uploadFile.getName());
             processFileInterface.execute(tblAttachmentDTO);
-        } catch (NoSuchAlgorithmException e) {
+        }
+        catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
