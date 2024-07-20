@@ -23,9 +23,26 @@
         <result property="choice" column="choice"/>
         <result property="sum" column="sum"/>
     </resultMap>
+    <resultMap id="BettingInfoResultMap" type="BettingInfoDTO">
+        <id property="userNo" column="user_no" />
+        <result property="orderAmount" column="order_amount" />
+        <result property="orderChoice" column="order_choice" />
+        <result property="subjectTotalYesPoint" column="subject_total_yes_point" />
+        <result property="subjectTotalNoPoint" column="subject_total_no_point" />
+        <result property="subjectFinalResult" column="subject_final_result" />
+        <result property="orderDate" column="order_date" />
+        <result property="subjectTitle" column="subject_title" />
+        <result property="subjectNo" column="subject_no" />
+        <result property="currentPositionValue" column="current_position_value" />
+        <result property="profitPoints" column="profit_points" />
+        <result property="lossPoints" column="loss_points" />
+    </resultMap>
 
-
-
+    <resultMap id="ProfitLossResultMap" type="ProfitLossDTO">
+        <result property="totalProfitPoints" column="total_profit_points" />
+        <result property="totalLossPoints" column="total_loss_points" />
+        <result property="netProfitPoints" column="net_profit_points" />
+    </resultMap>
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
         SELECT
@@ -98,5 +115,139 @@
             SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) > 0
         ORDER BY
             choice, sum
+    </select>
+    <select id="getMonthTotalPointsByUser" resultType="java.lang.Long">
+        SELECT
+            SUM(bo.order_amount) AS totalPoints
+        FROM
+            TBL_USER u
+                JOIN
+            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+        WHERE
+            u.user_no = #{userId}
+          AND
+            bo.order_date
+                BETWEEN
+                DATEADD(MONTH, -1, GETDATE()) AND GETDATE()
+    </select>
+    <select id="getMonthProfitsByUserId" resultMap="BettingInfoResultMap">
+        -- 사용자의 수익 포인트와 손실 포인트 계산
+        SELECT
+            u.user_no,
+            bo.order_amount,
+            bo.order_choice,
+            c.subject_total_yes_point,
+            c.subject_total_no_point,
+            c.subject_final_result,
+            bo.order_date,
+            c.subject_title,
+            c.subject_no
+            CASE
+        WHEN bo.order_choice = 'YES' AND c.subject_final_result = 'YES' THEN
+            (bo.order_amount / c.subject_total_yes_point) * c.subject_total_no_point
+        WHEN bo.order_choice = 'NO' AND c.subject_final_result = 'NO' THEN
+            (bo.order_amount / c.subject_total_no_point) * c.subject_total_yes_point
+        ELSE 0
+        END AS profit_points,
+    CASE
+        WHEN bo.order_choice = 'YES' AND c.subject_final_result = 'NO' THEN
+            bo.order_amount
+        WHEN bo.order_choice = 'NO' AND c.subject_final_result = 'YES' THEN
+            bo.order_amount
+        ELSE 0
+        END AS loss_points
+FROM
+    TBL_USER u
+JOIN
+    TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+JOIN
+    TBL_Subject c ON bo.subject_no = c.subject_no
+WHERE
+    u.user_no = #{userId}
+        AND bo.order_date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+        AND c.subject_status = '완료';
+    </select>
+    <select id="getMonthTotalProfitsByUserId" resultMap="ProfitLossResultMap">
+        -- 사용자의 수익 포인트와 손실 포인트 계산
+        SELECT
+            SUM(profit_points) AS total_profit_points,
+            SUM(loss_points) AS total_loss_points,
+            SUM(profit_points) - SUM(loss_points) AS net_profit_points
+        FROM (
+                 SELECT
+                     CASE
+                         WHEN bo.order_choice = 'YES' AND c.subject_final_result = 'YES' THEN
+                             (bo.order_amount / c.subject_total_yes_point) * c.subject_total_no_point
+                         WHEN bo.order_choice = 'NO' AND c.subject_final_result = 'NO' THEN
+                             (bo.order_amount / c.subject_total_no_point) * c.subject_total_yes_point
+                         ELSE 0
+                         END AS profit_points,
+                     CASE
+                         WHEN bo.order_choice = 'YES' AND c.subject_final_result = 'NO' THEN
+                             bo.order_amount
+                         WHEN bo.order_choice = 'NO' AND c.subject_final_result = 'YES' THEN
+                             bo.order_amount
+                         ELSE 0
+                         END AS loss_points
+                 FROM
+                     TBL_USER u
+                         JOIN
+                     TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+                         JOIN
+                     TBL_Subject c ON bo.subject_no = c.subject_no
+                 WHERE
+                     u.user_no = #{userId}
+                   AND bo.order_date >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
+                   AND c.subject_status = '완료'
+             ) AS UserBettingData;
+    </select>
+
+    <select id="getPositionValueByUserId" resultMap="BettingInfoResultMap">
+        SELECT
+            u.user_no,
+            bo.order_amount,
+            bo.order_choice,
+            c.subject_total_yes_point,
+            c.subject_total_no_point,
+            c.subject_title,
+            c.subject_no,
+            c.subject_final_result,
+            bo.order_date
+            CASE
+                WHEN bo.order_choice = 'YES' THEN
+                    (bo.order_amount / c.subject_total_yes_point) * c.subject_total_no_point
+                WHEN bo.order_choice = 'NO' THEN
+                    (bo.order_amount / c.subject_total_no_point) * c.subject_total_yes_point
+                ELSE 0
+                END AS current_position_value
+        FROM
+            TBL_USER u
+                JOIN
+            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+                JOIN
+            TBL_Subject c ON bo.subject_no = c.subject_no
+        WHERE
+            u.user_no = #{userId}
+          AND c.subject_status = '진행중';
+    </select>
+    <select id="getTotalPositionValueByUserId" resultType="java.lang.Long">
+        SELECT
+            SUM(
+                    CASE
+                        WHEN bo.order_choice = 'YES' THEN
+                            (bo.order_amount / c.subject_total_yes_point) * c.subject_total_no_point
+                        WHEN bo.order_choice = 'NO' THEN
+                            (bo.order_amount / c.subject_total_no_point) * c.subject_total_yes_point
+                        ELSE 0
+                        END
+            ) AS total_position_value
+        FROM
+            TBL_USER u
+                JOIN
+            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+                JOIN
+            TBL_Subject c ON bo.subject_no = c.subject_no
+        WHERE
+            c.subject_status = '진행중';
     </select>
 </mapper>

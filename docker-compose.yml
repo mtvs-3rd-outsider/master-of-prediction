@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+#  devcontainer:
+#    restart: always
+#    image: "mcr.microsoft.com/devcontainers/java:1-17-bullseye"
+#    volumes:
+#      - .:/workspaces:cached
+#    ports:
+#      - "8080:8080"
+#    environment:
+#      - CUSTOMIZATIONS_JETBRAINS_BACKEND=gradle
+#    depends_on:
+#      - db
+  db:
+    restart: always
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: outsider
+      MYSQL_USER: ohgiraffers
+      MYSQL_PASSWORD: ohgiraffers
+      MYSQL_SSL_CA: ""
+      MYSQL_SSL_CERT: ""
+      MYSQL_SSL_KEY: ""
+
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
+      - ./my.cnf:/etc/mysql/my.cnf

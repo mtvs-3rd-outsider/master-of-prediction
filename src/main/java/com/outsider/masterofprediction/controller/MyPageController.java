@@ -108,15 +108,14 @@ public class MyPageController {
         mv.addObject("name", "Dummy User"); // Dummy username
         mv.addObject("name",user.getUsername() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
-
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
-//      현재 베팅 포인트
-//        mv.addObject("positionValue",);
-//      총 손익률
-//        mv.addObject("profitLoss",userManagementService. );
-//      총 거래 포인트
-//        mv.addObject("volumeTraded",userManagementService. );
+//      현재 포지션 가치
+        mv.addObject("positionValue",bettingOrderService.getPositionValueByUserId(user.getId()));
+//      한달 손익률
+        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitsByUser(user.getId()) / bettingOrderService.getMonthTotalPointsByUser(user.getId()) );
+//      한달 거래 포인트
+        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()));
 //      거래수
         mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
         return mv;
@@ -137,7 +136,7 @@ public class MyPageController {
     @GetMapping("/change-personal-information")
     public ModelAndView getChangePersonalInformation(ModelAndView mv ,@AuthenticationPrincipal CustomUserDetail user) {
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
-        mv.setViewName("layout/my-page/change");
+        mv.setViewName("layout/my-page/nofab");
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
 
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);

@@ -47,9 +47,11 @@
                     <path d="M3 3h6l6 18h6"></path>
                     <path d="M14 3h7"></path>
                 </svg>
-                <h2 class="title">현재 배팅한 포인트</h2>
+                <h2 class="title">현재 포지션의 가치</h2>
                     </div>
-                <p class="value" th:text="${bettingCount}">$0.00</p>
+                <div class="left-flex">
+                <p class="value" th:text="${positionValue}">$0.00</p>
+                </div>
             </div>
             <div class="card surface">
                 <md-elevation></md-elevation>
@@ -70,7 +72,10 @@
                 </svg>
                 <h2 class="title">이번달 이익/손실</h2>
                     </div>
-                <p class="value" th:text="${commentCount}">$0.00</p>
+                <div class="left-flex">
+
+                <p class="value" th:text="${monthProfit}">$0.00</p>
+                </div>
             </div>
             <div class="card surface">
                 <md-elevation></md-elevation>
@@ -91,7 +96,9 @@
 
                 <h2 class="title">한달 거래량</h2>
                 </div>
-                <p class="value" th:text="${latestInquiry}">$0.00</p>
+                <div class="left-flex">
+                <p class="value" th:text="${volumeTraded}">$0.00</p>
+                    <div>
             </div>
             <div class="card surface">
                 <md-elevation></md-elevation>
@@ -109,9 +116,11 @@
                     <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"></path>
                     <polyline points="10 2 10 10 13 7 16 10 16 2"></polyline>
                 </svg>
-                <h2 class="title">배팅했던 종목</h2>
+                <h2 class="title">거래 수</h2>
                 </div>
-                <p class="value">0</p>
+                <div class="left-flex">
+                <p class="value" th:text="${marketsTraded}">0</p>
+                </div>
             </div>
 
         </div>
@@ -140,7 +149,7 @@
                 <div class="positions-header">
                     <span>제목</span>
                     <div class="flex">
-                        <span>상태</span>
+                        <span>내용</span>
                     </div>
                 </div>
                 <div class="positions-content-no-positions">댓글 내역이 없습니다.</div>
@@ -151,7 +160,9 @@
                 <div class="positions-header">
                     <span>제목</span>
                     <div class="flex">
+                        <span>선택</span>
                         <span>상태</span>
+                        <span>결과</span>
                     </div>
                 </div>
                 <div class="positions-content-no-positions">구매 내역이 없습니다.</div>
@@ -211,21 +222,28 @@
             let url = '';
             switch (tabIndex) {
                 case 1:
-                    url = '/mypage/api/inquirys/${page}'; // Replace with your API endpoint for inquiries
+                    url = `/mypage/api/inquirys/${page}`; // Replace with your API endpoint for inquiries
                     break;
                 case 2:
-                    url = '/mypage/api/comments/${page}'; // Replace with your API endpoint for comments
+                    url = `/mypage/api/comments/${page}`; // Replace with your API endpoint for comments
                     break;
                 case 3:
-                    url = '/mypage/api/purchase-history/${page}'; // Replace with your API endpoint for purchases
+                    url = `/mypage/api/purchase-history/${page}`; // Replace with your API endpoint for purchases
                     break;
                 default:
                     return;
             }
-    //TODO: 활성화
-            fetch(url)
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+                ,
+                credentials: 'include' // 세션 쿠키를 포함하도록 설정
+            })
                 .then(response => response.json())
                 .then(data => {
+                    console.log(data)
                     updatePanelContent(tabIndex, data);
                     updatePagination(tabIndex, data.totalPages, page);
                 })
@@ -246,7 +264,7 @@
             }
 
             for (let i = startPage; i <= endPage; i++) {
-                const button = document.createElement('button');
+                const button = document.createElement('md-text-button');
                 button.textContent = i;
                 if (i === currentPage) {
                     button.disabled = true;
@@ -257,15 +275,15 @@
 
             // Add previous and next buttons
             if (currentPage > 1) {
-                const prevButton = document.createElement('button');
-                prevButton.textContent = 'Prev';
+                const prevButton = document.createElement('md-text-button');
+                prevButton.textContent = '<';
                 prevButton.addEventListener('click', () => fetchDataForTab(tabIndex, currentPage - 1));
                 pagination.insertBefore(prevButton, pagination.firstChild);
             }
 
             if (currentPage < totalPages) {
-                const nextButton = document.createElement('button');
-                nextButton.textContent = 'Next';
+                const nextButton = document.createElement('md-text-button');
+                nextButton.textContent = '>';
                 nextButton.addEventListener('click', () => fetchDataForTab(tabIndex, currentPage + 1));
                 pagination.appendChild(nextButton);
             }
@@ -273,52 +291,58 @@
 
         function updatePanelContent(tabIndex, data) {
             const panel = document.getElementById(`panel${tabIndex}-content`);
-            const contentContainer = panel.querySelector('.positions-content-no-positions');
+            const contentContainer = document.querySelector('.positions-content-no-positions');
 
-            if (data.length === 0) {
+            if (data.items.length === 0) {
                 contentContainer.textContent = `${tabIndex === 1 ? '문의' : tabIndex === 2 ? '댓글' : '구매'} 내역이 없습니다.`;
                 return;
             }
-
             contentContainer.innerHTML = ''; // Clear existing content
+            panel.innerHTML = ''; // Clear existing content
             if(tabIndex === 1)
             {
 
-            data.forEach(item => {
-                const itemElement = document.createElement('div');
+            data.items.forEach(item => {
+                const statusText = item.inquiryReplyStatus === 1 ? '완료' : '대기';
+                const itemElement = document.createElement('a');
                 itemElement.classList.add('item');
-                itemElement.innerHTML = `
-                    <span>${item.title}</span>
-                    <div class="flex">
-                        <span>${item.status}</span>
-                    </div>
-                `;
-                contentContainer.appendChild(itemElement);
+                itemElement.classList.add('item');
+                itemElement.href = `/mypage/inquiry/detail/${item.inquiryNo}?replyStatus=${item.inquiryReplyStatus}`;
+                itemElement.innerHTML=`
+                <span>${item.inquiryTitle}</span>
+                <div class="flex">
+                    <span>${statusText}</span>
+                </div>
+            `;
+                panel.appendChild(itemElement);
             });
             }else if(tabIndex === 2)
             {
-                data.forEach(item => {
-                    const itemElement = document.createElement('div');
+                data.items.forEach(item => {
+                    const itemElement = document.createElement('a');
                     itemElement.classList.add('item');
-                    itemElement.innerHTML = `
-                    <span>${item.title}</span>
-                    <div class="flex">
-                        <span>${item.status}</span>
-                    </div>
-                `;
+                    itemElement.href = ``;
+                    itemElement.innerHTML=`
+                <span>${item.subjectTitle}</span>
+                <div class="flex">
+                    <span>${item.commentContent}</span>
+                </div>
+            `;
                     contentContainer.appendChild(itemElement);
                 });
             }else if(tabIndex === 3)
             {
-                data.forEach(item => {
+                data.items.forEach(item => {
                     const itemElement = document.createElement('div');
                     itemElement.classList.add('item');
-                    itemElement.innerHTML = `
-                    <span>${item.title}</span>
-                    <div class="flex">
-                        <span>${item.status}</span>
-                    </div>
-                `;
+                    itemElement.innerHTML=`
+                <span>${item.subjectTitle}</span>
+                <div class="flex">
+                    <span>${item.orderChoice}</span>
+                    <span>${item.subjectStatus}</span>
+                    <span>${item.subjectFinishResult}</span>
+                </div>
+            `;
                     contentContainer.appendChild(itemElement);
                 });
             }

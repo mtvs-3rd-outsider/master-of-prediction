@@ -3,7 +3,6 @@ package com.outsider.masterofprediction.service;
 
 import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.mapper.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,4 +30,24 @@ public class BettingOrderService {
     public List<RankingDTO> getRankingBySubjectNo(Long subjectNo) {
         return bettingOrderMapper.getRankingBySubjectNo(subjectNo);
     }
+
+    public Long getMonthTotalPointsByUser(Long userId) {
+        return bettingOrderMapper.getMonthTotalPointsByUser(userId);
+    }
+
+    public Long getMonthTotalProfitsByUser(Long userId) {
+        return bettingOrderMapper.getMonthTotalProfitsByUserId(userId);
+    }
+    public Long getTotalPositionValueByUserId(Long userId) {
+        return bettingOrderMapper.getTotalPositionValueByUserId(userId);
+    }
+    public List<BettingInfoDTO> getPositionValueByUserId(Long userId) {
+        return bettingOrderMapper.getPositionValueByUserId(userId);
+    }
+
+    public List<BettingInfoDTO> getMonthProfitsByUserId(Long userId) {
+        return bettingOrderMapper.getMonthProfitsByUserId(userId);
+    }
+
+
 }
