@@ -15,7 +15,7 @@ public class BettingInfoDTO {
     private String orderChoice;
     private double subjectTotalYesPoint;
     private double subjectTotalNoPoint;
-    private String subjectFinalResult;
+    private String subjectFinishResult;
     private Date orderDate;
     private String subjectTitle;
     private long subjectNo;
