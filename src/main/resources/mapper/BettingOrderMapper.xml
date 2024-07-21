@@ -99,4 +99,17 @@
         ORDER BY
             choice, sum
     </select>
+    <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        INSERT INTO tbl_betting_order (
+            order_amount,
+            order_choice,
+            order_subject_no,
+            order_user_no
+        ) VALUES (
+                     #{orderAmount},
+                     #{orderChoice},
+                     #{orderSubjectNo},
+                     #{orderUserNo}
+                 )
+    </insert>
 </mapper>

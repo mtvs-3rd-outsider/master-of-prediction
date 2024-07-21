@@ -4,13 +4,17 @@ import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.service.annotation.PostExchange;
 
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
-import java.util.ServiceLoader;
+import java.util.Map;
 
 @Controller
 public class BettingController {
@@ -19,14 +23,16 @@ public class BettingController {
     private final UserManagementService userManagementService;
     private final CommentService commentService;
     private final ReplyService replyService;
+    private final BuyItemService buyItemService;
 
     @Autowired
-    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService) {
+    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService) {
         this.bettingOrderService = bettingOrderService;
         this.subjectService = subjectService;
         this.userManagementService = userManagementService;
         this.commentService = commentService;
         this.replyService = replyService;
+        this.buyItemService = buyItemService;
     }
 
 
@@ -77,6 +83,7 @@ public class BettingController {
     @PostMapping(value = "/comment", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addComment(@RequestBody TblCommentDTO commentDTO) {
+        commentDTO.setCommentUserNo(UserSession.getUserId());
         commentService.insertComment(commentDTO);
     }
 
@@ -87,4 +94,27 @@ public class BettingController {
         replyService.insertReply(replyDTO);
     }
 
+
+    @PostMapping(value = "/buyItem", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> buyItem(@RequestBody TblBettingOrderDTO bettingOrderDTO) {
+        try {
+            //임시로 id를 90으로 설정
+            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
+            bettingOrderDTO.setOrderSubjectNo(1L);
+            buyItemService.buyItemByDTO(bettingOrderDTO);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "구매 성공");
+            response.put("redirectUrl", "/betting");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", errorMessage);
+            responseBody.put("redirectUrl", "/betting");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(responseBody);
+        }
+    }
 }

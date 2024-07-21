@@ -1,6 +1,7 @@
 package com.outsider.masterofprediction.mapper;
 
 
+import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
 import org.apache.ibatis.annotations.*;
@@ -64,7 +65,10 @@ public interface UserMapper {
 
     // 회원 탈퇴 여부 수정
     void updateWithdrawalStatusByUser(User user);
+
     Double getUserProfitLossRate(Long userNo);
 
     String getAuthorityBySubjectUserNo(long subjectUserNo);
+
+    int updateUserPointByDTO(TblBettingOrderDTO bettingOrderDTO);
 }

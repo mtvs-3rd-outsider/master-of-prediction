@@ -1,10 +1,18 @@
 var login = true;
 var sideSelect = true;
 var activeSelect = 0;
+let selectedChoice = null;
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
     graphChart();
+    // batting_modal-container 숨기기
+    const bettingModalContainer = document.querySelector('.batting_modal-container');
+    bettingModalContainer.style.display = 'none';
+
+    // popup_setting-content 숨기기
+    const popupSettingContent = document.querySelector('.popup_setting-content');
+    popupSettingContent.style.display = 'none';
 }
 
 function sideSelectBuy() {
@@ -16,7 +24,6 @@ function sideSelectBuy() {
     sellButton.style.borderBottom='none';
     sellButton.style.color='gray';
     createSideMain();
-
 }
 
 function sideSelectSell() {
@@ -58,60 +65,59 @@ function popupCancle() {
 }
 
 function createSideMain() {
-            // 부모 요소 선택
-            const sideMainContent = document.querySelector('.side_main-container');
-
-            let battingModalStr;
-            if(login===true){
-                if(sideSelect===true){
-            battingModalStr=` <button class="batting-buy-modal" onclick="buyModal()">구매</button>`;
-        }else{
-            battingModalStr=` <button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
+    const sideMainContent = document.querySelector('.side_main-container');
+    let battingModalStr;
+    if (login === true) {
+        if (sideSelect === true) {
+            battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" disabled>구매</button>`;
+        } else {
+            battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
         }
-    }else{
-        battingModalStr=` <button class="batting-login-modal" onclick="loginModal()">로그인</button>`;
+    } else {
+        battingModalStr = `<button class="batting-login-modal" onclick="loginModal()">로그인</button>`;
     }
-    // 새로운 HTML 문자열 생성
     const sideHtml = `
     <div class="${sideSelect ? 'side_buy-content' : 'side_sell-content'}">
-     <ul>
-                    <li>예측</li>
-                    <li>
-                        <div class="side_buy-yesno-li">
-                            <button class="yesno-button" onclick="yesButton()">YES</button>
-                            <button class="yesno-button" onclick="noButton()">NO</button>
-                        </div>
-                    </li>
-                    <li>구매포인트</li>
-                    <li>
-                        <div class="side-point-input">
-                            <button>+</button>
-                            <input type="number" id="inputPoint" onchange="calculateTotal()" step="10">
-                            <button>-</button>
-                        </div>
-                    </li>
-                    <li>
-                        `+battingModalStr+`
-                    </li>
-                    <li>
-                        <div class="side-sum-content">
-                            합계 <span id="totalPoint">0<span>Point</span></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="side-return-content">
-                            잠재수익률 <span id="returnPoint">0<span>%</span></span>
-                        </div>
-                    </li>
-                </ul>
+        <ul>
+            <li>예측</li>
+            <li>
+                <div class="side_buy-yesno-li">
+                    <button class="yesno-button" onclick="yesButton()">YES</button>
+                    <button class="yesno-button" onclick="noButton()">NO</button>
+                </div>
+            </li>
+            <li>구매포인트</li>
+            <li>
+                <div class="side-point-input">
+                    <button onclick="increasePoint()">+</button>
+                    <input type="number" id="inputPoint" onchange="calculateTotal()" step="10" min="0" disabled>
+                    <button onclick="decreasePoint()">-</button>
+                </div>
+            </li>
+            <li>
+                ${battingModalStr}
+            </li>
+            <li>
+                <div class="side-sum-content">
+                    합계 <span id="totalPoint">0<span>Point</span></span>
+                </div>
+            </li>
+            <li>
+                <div class="side-return-content">
+                    잠재수익률 <span id="returnPoint">0<span>%</span></span>
+                </div>
+            </li>
+        </ul>
     </div>
-  `;
-
-    // HTML 문자열을 innerHTML로 설정
+    `;
     sideMainContent.innerHTML = sideHtml;
+    document.getElementById('inputPoint').disabled = true;
+    document.querySelector('.batting-buy-modal').disabled = true;
 }
 
 function yesButton(){
+    selectedChoice = 'YES';
+    enableInput();
     const Btns=document.querySelectorAll('.yesno-button');
     Btns[0].style.backgroundColor='green';
     Btns[0].style.color='white';
@@ -120,6 +126,8 @@ function yesButton(){
 }
 
 function noButton(){
+    selectedChoice = 'NO';
+    enableInput();
     const Btns=document.querySelectorAll('.yesno-button');
     Btns[1].style.backgroundColor='red';
     Btns[1].style.color='white';
@@ -127,12 +135,51 @@ function noButton(){
     Btns[0].style.color='black';
 }
 
+function enableInput() {
+    document.getElementById('inputPoint').disabled = false;
+    document.querySelector('.batting-buy-modal').disabled = false;
+    validatePurchaseButton();
+}
 
+function increasePoint() {
+    const inputPoint = document.getElementById('inputPoint');
+    let value = parseInt(inputPoint.value || 0, 10);
+    value += 10;
+    inputPoint.value = value;
+    calculateTotal();
+}
+
+function decreasePoint() {
+    const inputPoint = document.getElementById('inputPoint');
+    let value = parseInt(inputPoint.value || 0, 10);
+    if (value > 0) {
+        value -= 10;
+        inputPoint.value = value;
+    }
+    calculateTotal();
+}
 
 function calculateTotal() {
+    const inputPoint = document.getElementById('inputPoint');
+    const totalPoint = document.getElementById('totalPoint');
     const sellInputPoint = document.getElementById('sellInputPoint');
     const selTotalPoint = document.getElementById('selTotalPoint');
+    totalPoint.textContent = `${inputPoint.value} Point`;
+    validatePurchaseButton();
 }
+
+function validatePurchaseButton() {
+    const inputPoint = document.getElementById('inputPoint');
+    const purchaseButton = document.querySelector('.batting-buy-modal');
+    if (selectedChoice && inputPoint.value > 0) {
+        purchaseButton.disabled = false;
+    } else {
+        purchaseButton.disabled = true;
+    }
+}
+
+
+
 
 function addComment(value) {
     const newCommentInput = document.getElementById('new-comment');
@@ -330,7 +377,7 @@ function addReply(commentNo) {
 
 
 
-function userActivityRanking(value){
+function userActivityRanking(value) {
     const userActivityContent = document.querySelector('.user_active-content');
     const buttons = document.querySelectorAll('.user-activity-button');
     buttons.forEach((button, index) => {
@@ -351,8 +398,10 @@ function userActivityRanking(value){
           </ul>
         `;
 
-                data.forEach(ranking => {
-                    if (ranking.choice === choice.toLowerCase()) {
+                // 데이터를 sum 값 내림차순으로 정렬
+                data.filter(ranking => ranking.choice === choice.toLowerCase())
+                    .sort((a, b) => b.sum - a.sum)
+                    .forEach(ranking => {
                         html += `
               <ul>
                 <li>
@@ -362,8 +411,7 @@ function userActivityRanking(value){
                 <li class="${className}-amount">${ranking.sum}</li>
               </ul>
             `;
-                    }
-                });
+                    });
 
                 return html;
             };
@@ -378,6 +426,7 @@ function userActivityRanking(value){
         }
     });
 }
+
 
 function userActivityActive(value){
     const userActivityContent = document.querySelector('.user_active-content');
@@ -426,19 +475,55 @@ function userActivityActive(value){
     });
 }
 
-function buyModal(){
+function buyModal() {
+    const inputPoint = document.getElementById('inputPoint').value;
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display='block';
-    battingModalContainer.innerHTML=`  <div class="buy_modal-content">
+    battingModalContainer.style.display = 'block';
+    battingModalContainer.innerHTML = `
+    <div class="buy_modal-content">
         <p class="modal-title">제목</p>
-        <p><span>yes</span>를 선택하셨습니다.</p>
-        <p><span>310p</span>를 소모해여 <span>구매</span>하시겠습니까?</p>
+        <p><span>${selectedChoice.toLowerCase()}</span>를 선택하셨습니다.</p>
+        <p><span>${inputPoint}p</span>를 소모해여 <span>구매</span>하시겠습니까?</p>
         <div class="modal-btns">
-            <button class="modal-btns-buy">구매</button>
-            <button class="modal-btns-cancel" onclick="battingModalCancle()">취소</button>
+            <button class="modal-btns-buy" onclick="confirmPurchase()">구매</button>
+            <button class="modal-btns-cancel" onclick="battingModalCancel()">취소</button>
         </div>
     </div>`;
 }
+
+function battingModalCancel() {
+    const battingModalContainer = document.querySelector('.batting_modal-container');
+    battingModalContainer.style.display = 'none';
+}
+
+
+
+function confirmPurchase() {
+    const orderAmount = parseInt(document.getElementById('inputPoint').value, 10);
+    const orderChoice = selectedChoice;
+
+    const orderData = {
+        orderAmount: orderAmount,
+        orderChoice: orderChoice
+    };
+
+    fetch('/buyItem', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            alert(data.message);
+            if (data.redirectUrl) {
+                window.location.href = data.redirectUrl;
+            }
+        })
+        .catch(error => console.error('Error:', error));
+}
+
 function sellModal(){
     const battingModalContainer = document.querySelector('.batting_modal-container');
     battingModalContainer.style.display='block';

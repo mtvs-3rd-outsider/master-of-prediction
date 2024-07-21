@@ -20,4 +20,6 @@ public interface BettingOrderMapper {
     List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo);
 
     List<RankingDTO> getRankingBySubjectNo(Long subjectNo);
+
+    void insertBettingOrderByDTO(TblBettingOrderDTO bettingOrderDTO);
 }
