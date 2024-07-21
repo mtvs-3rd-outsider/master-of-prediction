@@ -90,7 +90,7 @@
 .main-surface-title{
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: flex-start;
     width: 100%;
     padding: 20px;
 }
@@ -470,3 +470,7 @@
     color: whitesmoke;
 }
 
+.main-surface-title-text{
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
