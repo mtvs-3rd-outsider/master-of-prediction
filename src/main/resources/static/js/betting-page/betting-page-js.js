@@ -23,6 +23,8 @@ function sideSelectBuy() {
     buyButton.style.borderBottom='3px solid #8D7CBB';
     sellButton.style.borderBottom='none';
     sellButton.style.color='gray';
+    // 123
+    sideSelect = true;
     createSideMain();
 }
 
@@ -36,7 +38,6 @@ function sideSelectSell() {
     buyButton.style.borderBottom='none';
     sideSelect = false;
     createSideMain();
-
 }
 
 function graphSettingButton(value){
@@ -86,12 +87,12 @@ function createSideMain() {
                     <button class="yesno-button" onclick="noButton()">NO</button>
                 </div>
             </li>
-            <li>구매포인트</li>
+            <li>${sideSelect ? '구매포인트' : '판매포인트'}</li>
             <li>
                 <div class="side-point-input">
-                    <button onclick="increasePoint()">+</button>
-                    <input type="number" id="inputPoint" onchange="calculateTotal()" step="10" min="0" disabled>
-                    <button onclick="decreasePoint()">-</button>
+                    <button onclick="changePoint(10)">+</button>
+                    <input type="number" id="inputPoint" onchange="calculateTotal()" step="10" min="0">
+                    <button onclick="changePoint(-10)">-</button>
                 </div>
             </li>
             <li>
@@ -112,7 +113,9 @@ function createSideMain() {
     `;
     sideMainContent.innerHTML = sideHtml;
     document.getElementById('inputPoint').disabled = true;
-    document.querySelector('.batting-buy-modal').disabled = true;
+    document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = true;
+
+
 }
 
 function yesButton(){
@@ -137,48 +140,34 @@ function noButton(){
 
 function enableInput() {
     document.getElementById('inputPoint').disabled = false;
-    document.querySelector('.batting-buy-modal').disabled = false;
+    document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = false;
     validatePurchaseButton();
 }
 
-function increasePoint() {
-    const inputPoint = document.getElementById('inputPoint');
-    let value = parseInt(inputPoint.value || 0, 10);
-    value += 10;
-    inputPoint.value = value;
-    calculateTotal();
-}
-
-function decreasePoint() {
-    const inputPoint = document.getElementById('inputPoint');
-    let value = parseInt(inputPoint.value || 0, 10);
-    if (value > 0) {
-        value -= 10;
-        inputPoint.value = value;
-    }
+function changePoint(amount) {
+    const input = document.getElementById('inputPoint');
+    let value = parseInt(input.value || '0') + amount;
+    if (value < 0) value = 0;
+    input.value = value;
     calculateTotal();
 }
 
 function calculateTotal() {
     const inputPoint = document.getElementById('inputPoint');
     const totalPoint = document.getElementById('totalPoint');
-    const sellInputPoint = document.getElementById('sellInputPoint');
-    const selTotalPoint = document.getElementById('selTotalPoint');
     totalPoint.textContent = `${inputPoint.value} Point`;
     validatePurchaseButton();
 }
 
 function validatePurchaseButton() {
     const inputPoint = document.getElementById('inputPoint');
-    const purchaseButton = document.querySelector('.batting-buy-modal');
+    const purchaseButton = document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal');
     if (selectedChoice && inputPoint.value > 0) {
         purchaseButton.disabled = false;
     } else {
         purchaseButton.disabled = true;
     }
 }
-
-
 
 
 function addComment(value) {
@@ -476,28 +465,71 @@ function userActivityActive(value){
 }
 
 function buyModal() {
-    const inputPoint = document.getElementById('inputPoint').value;
+    const totalPoints = document.getElementById('totalPoint').innerText;
     const battingModalContainer = document.querySelector('.batting_modal-container');
     battingModalContainer.style.display = 'block';
     battingModalContainer.innerHTML = `
-    <div class="buy_modal-content">
-        <p class="modal-title">제목</p>
-        <p><span>${selectedChoice.toLowerCase()}</span>를 선택하셨습니다.</p>
-        <p><span>${inputPoint}p</span>를 소모해여 <span>구매</span>하시겠습니까?</p>
-        <div class="modal-btns">
-            <button class="modal-btns-buy" onclick="confirmPurchase()">구매</button>
-            <button class="modal-btns-cancel" onclick="battingModalCancel()">취소</button>
-        </div>
-    </div>`;
+        <div class="buy_modal-content">
+            <p class="modal-title">제목</p>
+            <p><span>${selectedChoice}</span>를 선택하셨습니다.</p>
+            <p><span>${totalPoints}</span>를 소모하여 <span>구매</span>하시겠습니까?</p>
+            <div class="modal-btns">
+                <button class="modal-btns-buy" onclick="submitPurchase()">구매</button>
+                <button class="modal-btns-cancel" onclick="battingModalCancel()">취소</button>
+            </div>
+        </div>`;
 }
+
 
 function battingModalCancel() {
     const battingModalContainer = document.querySelector('.batting_modal-container');
     battingModalContainer.style.display = 'none';
 }
 
+function submitPurchase() {
+    const orderAmount = parseInt(document.getElementById('inputPoint').value);
+    const orderChoice = selectedChoice;
 
+    $.ajax({
+        url: '/buyItem',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ orderAmount, orderChoice }),
+        success: function(response) {
+            alert(response.message);
+            window.location.href = '/betting';
+        },
+        error: function(xhr) {
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message);
+            if (response.redirectUrl) {
+                window.location.href = response.redirectUrl;
+            }
+        }
+    });
+}
+function submitSale() {
+    const orderAmount = parseInt(document.getElementById('inputPoint').value);
+    const orderChoice = selectedChoice;
 
+    $.ajax({
+        url: '/sellItem',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ orderAmount, orderChoice }),
+        success: function(response) {
+            alert(response.message);
+            window.location.href = '/betting';
+        },
+        error: function(xhr) {
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message);
+            if (response.redirectUrl) {
+                window.location.href = response.redirectUrl;
+            }
+        }
+    });
+}
 function confirmPurchase() {
     const orderAmount = parseInt(document.getElementById('inputPoint').value, 10);
     const orderChoice = selectedChoice;
@@ -524,17 +556,19 @@ function confirmPurchase() {
         .catch(error => console.error('Error:', error));
 }
 
-function sellModal(){
+function sellModal() {
+    const totalPoints = document.getElementById('totalPoint').innerText;
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display='block';
-    battingModalContainer.innerHTML=`<div class="sell_modal-content">
-             <p class="modal-title">제목</p>
-        <p><span>no</span>를 선택하셨습니다.</p>
-        <p>310p를 <span>판매</span>하시겠습니까?</p>
-        <div class="modal-btns">
-            <button class="modal-btns-sell">판매</button>
-            <button class="modal-btns-cancel" onclick="battingModalCancle()">취소</button>
-        </div>
+    battingModalContainer.style.display = 'block';
+    battingModalContainer.innerHTML = `
+        <div class="sell_modal-content">
+            <p class="modal-title">제목</p>
+            <p><span>${selectedChoice}</span>를 선택하셨습니다.</p>
+            <p><span>${totalPoints}</span>를 <span>판매</span>하시겠습니까?</p>
+            <div class="modal-btns">
+                <button class="modal-btns-sell" onclick="submitSale()">판매</button>
+                <button class="modal-btns-cancel" onclick="battingModalCancel()">취소</button>
+            </div>
         </div>`;
 }
 function loginModal(){
@@ -550,7 +584,7 @@ function graphChart() {
     new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-            labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050,2100],
+            labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
             datasets: [
                 {
                     data: [168,170,178,190,203,276,408,547,675,734],
@@ -567,6 +601,8 @@ function graphChart() {
             ]
         },
         options: {
+            responsive: false,
+            maintainAspectRatio:true,
             title: {
                 display: true,
                 text: 'World population per region (in millions)'
@@ -575,7 +611,7 @@ function graphChart() {
                 x: {
                     grid: {
                         display: false,
-                        
+
                     }
                 }
             },

@@ -22,4 +22,8 @@ public interface BettingOrderMapper {
     List<RankingDTO> getRankingBySubjectNo(Long subjectNo);
 
     void insertBettingOrderByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    int getYesSumPointByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    int getNoSumPointByDTO(TblBettingOrderDTO bettingOrderDTO);
 }

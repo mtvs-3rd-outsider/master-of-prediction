@@ -5,8 +5,8 @@
 <mapper namespace="com.outsider.masterofprediction.mapper.SubjectMapper">
     <update id="updateTotalPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         UPDATE tbl_subject
-        SET subject_total_yes_point = subject_total_yes_point + #{orderAmount},
-            subject_total_no_point = subject_total_no_point + (CASE WHEN #{orderChoice} = 'NO' THEN #{orderAmount} ELSE 0 END)
+        SET subject_total_yes_point = subject_total_yes_point + (CASE WHEN #{orderChoice} = 'Yes' THEN #{orderAmount} ELSE 0 END),
+            subject_total_no_point = subject_total_no_point + (CASE WHEN #{orderChoice} = 'No' THEN #{orderAmount} ELSE 0 END)
         WHERE subject_no = #{orderSubjectNo}
     </update>
 </mapper>

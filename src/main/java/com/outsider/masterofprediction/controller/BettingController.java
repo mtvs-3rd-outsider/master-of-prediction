@@ -24,26 +24,28 @@ public class BettingController {
     private final CommentService commentService;
     private final ReplyService replyService;
     private final BuyItemService buyItemService;
-
+    private final SellItemService sellItemService;
+    private long subjectNo;
     @Autowired
-    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService) {
+    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService, SellItemService sellItemService) {
         this.bettingOrderService = bettingOrderService;
         this.subjectService = subjectService;
         this.userManagementService = userManagementService;
         this.commentService = commentService;
         this.replyService = replyService;
         this.buyItemService = buyItemService;
+        this.sellItemService = sellItemService;
     }
 
 
     @GetMapping("/betting")
-    public String getBettingPage(Model model) {
-        long subjectNo = 1l;
-        TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
+    public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
+        this.subjectNo = subjectNo;
+        TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(1);
         String userAuthority = userManagementService.getAuthorityBySubjectUserNo(91);
 
-        String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"%";
-        String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"%";
+        String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
+        String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
 
         model.addAttribute("loggedInUserId", UserSession.getUserId());
@@ -62,27 +64,25 @@ public class BettingController {
     @GetMapping(value = "/active",produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<ActiveDTO> getActives() {
-        Long subjectNo =1l;
         return bettingOrderService.getBettingOrdersBySubjectNo(subjectNo);
     }
 
     @GetMapping(value = "/ranking",produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<RankingDTO> getRankings() {
-        Long subjectNo =1l;
         return bettingOrderService.getRankingBySubjectNo(subjectNo);
     }
 
     @GetMapping(value = "/comment",produces = "application/json; cahrset=UTF-8")
     @ResponseBody
     public List<CommentReDTO> getComments(){
-        Long subjectNo=1l;
         return commentService.getCommentBySubjectNo(subjectNo);
     }
 
     @PostMapping(value = "/comment", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addComment(@RequestBody TblCommentDTO commentDTO) {
+        commentDTO.setCommentSubjectNo(subjectNo);
         commentDTO.setCommentUserNo(UserSession.getUserId());
         commentService.insertComment(commentDTO);
     }
@@ -94,14 +94,40 @@ public class BettingController {
         replyService.insertReply(replyDTO);
     }
 
+    @PostMapping(value = "/sellItem", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public ResponseEntity<Map<String, String>> sellItem(@RequestBody TblBettingOrderDTO bettingOrderDTO) {
+        try {
+            // 임시로 id를 90으로 설정
+            bettingOrderDTO.setOrderUserNo(90);
+            bettingOrderDTO.setOrderSubjectNo(subjectNo);
+            sellItemService.sellItemByDTO(bettingOrderDTO);
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "판매 성공");
+            response.put("redirectUrl", "/betting");
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            String errorMessage = e.getMessage();
+            Map<String, String> responseBody = new HashMap<>();
+            responseBody.put("message", errorMessage);
+            responseBody.put("redirectUrl", "/betting");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .body(responseBody);
+        }
+    }
+
+
+
 
     @PostMapping(value = "/buyItem", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public ResponseEntity<Map<String, String>> buyItem(@RequestBody TblBettingOrderDTO bettingOrderDTO) {
         try {
             //임시로 id를 90으로 설정
-            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
-            bettingOrderDTO.setOrderSubjectNo(1L);
+//            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
+            bettingOrderDTO.setOrderUserNo(90);
+            bettingOrderDTO.setOrderSubjectNo(subjectNo);
             buyItemService.buyItemByDTO(bettingOrderDTO);
             Map<String, String> response = new HashMap<>();
             response.put("message", "구매 성공");

@@ -56,12 +56,6 @@ public interface UserMapper {
 
     @Delete("DELETE FROM tbl_user WHERE user_email = #{email}")
     void deleteUser(String email);
-        //id로 유저 포인트 업데이트
-    @Update("UPDATE tbl_user SET " +
-            "user_point=#{point} " +
-            "WHERE user_no=#{id}"
-    )
-    void updateUserPointById(Long id, double point);
 
     // 회원 탈퇴 여부 수정
     void updateWithdrawalStatusByUser(User user);
@@ -71,4 +65,6 @@ public interface UserMapper {
     String getAuthorityBySubjectUserNo(long subjectUserNo);
 
     int updateUserPointByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    void updateUserPointBySum(TblBettingOrderDTO bettingOrderDTO);
 }

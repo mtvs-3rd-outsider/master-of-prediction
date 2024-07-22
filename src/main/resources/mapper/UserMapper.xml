@@ -5,7 +5,7 @@
 
 <mapper namespace="com.outsider.masterofprediction.mapper.UserMapper">
     <!-- 회원탈퇴 -->
-    <update id="updateWithdrawalStatusByUser" >
+    <update id="updateWithdrawalStatusByUser" parameterType="com.outsider.masterofprediction.dto.User">
         UPDATE TBL_USER
         SET user_withdrawal_status = #{withdrawalStatus}
         WHERE user_no = #{id}
@@ -41,6 +41,13 @@
         SET u.user_point = u.user_point - #{orderAmount}
         WHERE u.user_no = #{orderUserNo} AND u.user_point >= #{orderAmount};
 
+    </update>
+
+
+    <update id="updateUserPointBySum" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        UPDATE  tbl_user
+        SET user_point=user_point+#{orderAmount}
+        WHERE user_no=#{orderUserNo}
     </update>
 
 </mapper>
