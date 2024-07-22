@@ -192,8 +192,10 @@ function addComment(value) {
     fetch('/comment', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+
         },
+        credentials: 'include',
         body: JSON.stringify(TblCommentDTO)
     })
         .then(response => {
@@ -499,7 +501,9 @@ function submitPurchase() {
         data: JSON.stringify({ orderAmount, orderChoice }),
         success: function(response) {
             alert(response.message);
-            window.location.href = '/betting';
+            // window.location.href = '/betting?subjectNo=' + urlParams.get('subjectNo');
+            location.reload(true);
+
         },
         error: function(xhr) {
             const response = JSON.parse(xhr.responseText);
@@ -531,31 +535,6 @@ function submitSale() {
             }
         }
     });
-}
-function confirmPurchase() {
-    const orderAmount = parseInt(document.getElementById('inputPoint').value, 10);
-    const orderChoice = selectedChoice;
-
-    const orderData = {
-        orderAmount: orderAmount,
-        orderChoice: orderChoice
-    };
-
-    fetch('/buyItem', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderData)
-    })
-        .then(response => response.json())
-        .then(data => {
-            alert(data.message);
-            if (data.redirectUrl) {
-                window.location.href = data.redirectUrl;
-            }
-        })
-        .catch(error => console.error('Error:', error));
 }
 
 function sellModal() {

@@ -8,7 +8,7 @@
     <div style="box-shadow: 0 2px 2px -2px gray;">
         <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
-                <a href="header.html">
+                <a href="/">
                     <img height="90px" src="../images/logo2.png" width="90px">
                 </a>
                 <div style="width: 100%;display: flex;align-items: center;">
@@ -32,7 +32,7 @@
                     </md-icon>
                     <span class="child">Activity</span>
                 </a>
-                <a class="header-menu-hover" href=""
+                <a class="header-menu-hover" href="/rankpage"
                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
                     <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
     padding-right: 12px;">Trophy
@@ -68,12 +68,16 @@
         <div class="category">
             <ul id="header-ul">
                 <li><a href="">전체</a></li>
-                    <li><a href="">인기</a></li>
-                    <li><a href="">사회</a></li>
-                    <li><a href="">스포츠</a></li>
-                    <li><a href="">일상</a></li>
-                    <li><a href="">연예</a></li>
-                    <li><a href="">세계</a></li>
+                <li th:each="category : ${categories}">
+                    <a th:href="'/?categoryNo=' + ${category.categoryNo}"
+                        th:text="${category.categoryName}"></a>
+                </li>
+<!--                    <li><a href="">인기</a></li>-->
+<!--                    <li><a href="">사회</a></li>-->
+<!--                    <li><a href="">스포츠</a></li>-->
+<!--                    <li><a href="">일상</a></li>-->
+<!--                    <li><a href="">연예</a></li>-->
+<!--                    <li><a href="">세계</a></li>-->
             </ul>
         </div>
     </div>

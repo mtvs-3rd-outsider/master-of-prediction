@@ -1,6 +1,7 @@
 package com.outsider.masterofprediction.config;
 
 import com.outsider.masterofprediction.dto.TblAttachmentDTO;
+import com.outsider.masterofprediction.dto.User;
 import com.outsider.masterofprediction.dto.constatnt.StringConstants;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
@@ -17,6 +18,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+
 import static com.outsider.masterofprediction.dto.constatnt.StringConstants.DEFAULT_USER_EMAIL;
 
 
@@ -28,6 +31,7 @@ public class    DevSecurityConfig{
     private final String password="1";
     private final String role="ROLE_ADMIN";
     private final String name="admin";
+    private final double point = 30000L;
 
     @Autowired
     private UserMapper userMapper;
@@ -52,6 +56,7 @@ public class    DevSecurityConfig{
             if (userMapper.findByEmail(email) == null) {
                 userMapper.createUser(name, email, passwordEncoder().encode(password), role);
                 Long id = userMapper.findByEmail(email).getId();
+                userMapper.updateUserPointById(id, point);
                 TblAttachmentDTO tblAttachmentDTO = new TblAttachmentDTO();
                 tblAttachmentDTO.setAttachmentUserNo(id);
                 tblAttachmentDTO.setAttachmentRegistUserNo(id);

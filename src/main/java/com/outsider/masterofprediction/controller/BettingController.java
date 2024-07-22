@@ -1,6 +1,7 @@
 package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.dto.*;
+import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,9 +27,13 @@ public class BettingController {
     private final ReplyService replyService;
     private final BuyItemService buyItemService;
     private final SellItemService sellItemService;
+    private final AttachmentMapper attachmentMapper;
+
     private long subjectNo;
+
+
     @Autowired
-    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService, SellItemService sellItemService) {
+    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService, SellItemService sellItemService, AttachmentMapper attachmentMapper) {
         this.bettingOrderService = bettingOrderService;
         this.subjectService = subjectService;
         this.userManagementService = userManagementService;
@@ -36,19 +41,22 @@ public class BettingController {
         this.replyService = replyService;
         this.buyItemService = buyItemService;
         this.sellItemService = sellItemService;
+        this.attachmentMapper = attachmentMapper;
     }
 
 
     @GetMapping("/betting")
     public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
         this.subjectNo = subjectNo;
-        TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(1);
-        String userAuthority = userManagementService.getAuthorityBySubjectUserNo(91);
+        TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
+        String userAuthority = userManagementService.getAuthorityBySubjectUserNo(UserSession.getUserId());
 
         String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
         String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
+        String attachment_file_address = attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress();
 
+        model.addAttribute("subjectImage", attachment_file_address);
         model.addAttribute("loggedInUserId", UserSession.getUserId());
         model.addAttribute("returnYRate", returnYRate);
         model.addAttribute("returnNRate", returnNRate);
@@ -83,6 +91,8 @@ public class BettingController {
     @PostMapping(value = "/comment", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addComment(@RequestBody TblCommentDTO commentDTO) {
+        System.out.println(subjectNo);
+
         commentDTO.setCommentSubjectNo(subjectNo);
         commentDTO.setCommentUserNo(UserSession.getUserId());
         commentService.insertComment(commentDTO);
@@ -100,7 +110,7 @@ public class BettingController {
     public ResponseEntity<Map<String, String>> sellItem(@RequestBody TblBettingOrderDTO bettingOrderDTO) {
         try {
             // 임시로 id를 90으로 설정
-            bettingOrderDTO.setOrderUserNo(90);
+            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
             bettingOrderDTO.setOrderSubjectNo(subjectNo);
             sellItemService.sellItemByDTO(bettingOrderDTO);
             Map<String, String> response = new HashMap<>();
@@ -127,14 +137,16 @@ public class BettingController {
         try {
             //임시로 id를 90으로 설정
 //            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
-            bettingOrderDTO.setOrderUserNo(90);
+            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
             bettingOrderDTO.setOrderSubjectNo(subjectNo);
             buyItemService.buyItemByDTO(bettingOrderDTO);
             Map<String, String> response = new HashMap<>();
             response.put("message", "구매 성공");
             response.put("redirectUrl", "/betting");
+            System.out.println("구매 성공");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            System.out.println("구매 실패");
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", errorMessage);
