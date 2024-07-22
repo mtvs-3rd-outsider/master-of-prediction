@@ -39,6 +39,12 @@ public interface BettingOrderMapper {
      */
     List<RankingDTO> getRankingBySubjectNo(Long subjectNo);
 
+    void insertBettingOrderByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    int getYesSumPointByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    int getNoSumPointByDTO(TblBettingOrderDTO bettingOrderDTO);
+
     /**
      * 특정 사용자의 이번 달 총 포인트를 조회합니다.
      *

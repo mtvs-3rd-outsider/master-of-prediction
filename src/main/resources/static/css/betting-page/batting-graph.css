@@ -83,7 +83,5 @@
 
 .graph_setting-content {
     display: flex;
-    margin: auto;
-    margin-right: 10px;
     gap: 10px; /* 버튼들 사이에 간격을 주기 */
 }
