@@ -82,5 +82,4 @@ public interface AttachmentMapper {
     void deleteAttachmentsByNoticeNo(long noticeNo);
 
 
-    List<TblAttachmentDTO> findRank();
 }

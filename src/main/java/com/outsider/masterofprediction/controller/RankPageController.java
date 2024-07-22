@@ -3,6 +3,7 @@ package com.outsider.masterofprediction.controller;
 import com.outsider.masterofprediction.dto.TblAttachmentDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
+import com.outsider.masterofprediction.dto.UserAttachmentDTO;
 import com.outsider.masterofprediction.service.RankFindService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,10 +32,13 @@ public class RankPageController {
         mv.addObject("title", "User Ranking");
         mv.addObject("view", "content/rank-page/rank-page");
 
-        List<TblAttachmentDTO> userList = rankFindService.findRank();
-        mv.addObject("userList", userList);
+//        List<TblAttachmentDTO> userList = rankFindService.findRank();
+//        mv.addObject("userList", userList);
 
-        System.out.println(userList);
+        List<UserAttachmentDTO> userRank = rankFindService.findAllRank();
+        mv.addObject("userRank", userRank);
+
+        System.out.println(userRank);
 
         return mv;
     }

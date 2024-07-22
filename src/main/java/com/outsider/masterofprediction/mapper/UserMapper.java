@@ -4,6 +4,7 @@ package com.outsider.masterofprediction.mapper;
 import com.outsider.masterofprediction.dto.TblAttachmentDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
+import com.outsider.masterofprediction.dto.UserAttachmentDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -69,4 +70,5 @@ public interface UserMapper {
 
     String getAuthorityBySubjectUserNo(long subjectUserNo);
 
+    List<UserAttachmentDTO> findAllRank();
 }
