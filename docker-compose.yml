@@ -1,4 +1,3 @@
-version: '3.8'
 services:
 #  devcontainer:
 #    restart: always
@@ -28,3 +27,4 @@ services:
     volumes:
       - ./mysql_data:/var/lib/mysql
       - ./my.cnf:/etc/mysql/my.cnf
+#      - ./DDL.sql:/docker-entrypoint-initdb.d/init.sql
