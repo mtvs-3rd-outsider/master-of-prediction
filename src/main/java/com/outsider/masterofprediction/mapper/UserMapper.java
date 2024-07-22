@@ -1,9 +1,11 @@
 package com.outsider.masterofprediction.mapper;
 
 
+import com.outsider.masterofprediction.dto.TblAttachmentDTO;
 import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
+import com.outsider.masterofprediction.dto.UserAttachmentDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -56,6 +58,12 @@ public interface UserMapper {
 
     @Delete("DELETE FROM tbl_user WHERE user_email = #{email}")
     void deleteUser(String email);
+        //id로 유저 포인트 업데이트
+    @Update("UPDATE tbl_user SET " +
+            "user_point=#{point} " +
+            "WHERE user_no=#{id}"
+    )
+    void updateUserPointById(Long id, double point);
 
     // 회원 탈퇴 여부 수정
     void updateWithdrawalStatusByUser(User user);
@@ -67,4 +75,6 @@ public interface UserMapper {
     int updateUserPointByDTO(TblBettingOrderDTO bettingOrderDTO);
 
     void updateUserPointBySum(TblBettingOrderDTO bettingOrderDTO);
+
+    List<UserAttachmentDTO> findAllRank();
 }

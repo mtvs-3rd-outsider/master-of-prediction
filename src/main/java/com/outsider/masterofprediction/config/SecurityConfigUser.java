@@ -61,7 +61,7 @@ public class SecurityConfigUser {
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/css/**").permitAll()
+                        .requestMatchers("/css/**","/images/**").permitAll()
                         .requestMatchers("/","/login", "/register", "/loginProc").permitAll()
                         .requestMatchers("/").hasRole("USER")
                         .anyRequest().authenticated()

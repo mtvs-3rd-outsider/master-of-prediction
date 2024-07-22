@@ -6,18 +6,21 @@ import com.outsider.masterofprediction.service.BettingOrderService;
 import com.outsider.masterofprediction.service.ProcessFileService;
 import com.outsider.masterofprediction.service.UserInquiryService;
 import com.outsider.masterofprediction.service.UserManagementService;
+import com.outsider.masterofprediction.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.outsider.masterofprediction.dto.constatnt.IntConstants.ITEMS_PER_PAGE;
 
@@ -26,60 +29,72 @@ import static com.outsider.masterofprediction.dto.constatnt.IntConstants.ITEMS_P
 @RequestMapping("/mypage")
 public class MyPageController {
 
-    private final UserInquiryService userInquiryService;
     private final UserManagementService userManagementService;
     private final BettingOrderService bettingOrderService;
 //    REST API
     private final ProcessFileService processFileService;
+    private final UserInquiryService userInquiryService;
 
-    public MyPageController(UserInquiryService userInquiryService, UserManagementService userManagementService, BettingOrderService bettingOrderService, ProcessFileService processFileService) {
-        this.userInquiryService = userInquiryService;
+    public MyPageController(UserManagementService userManagementService, BettingOrderService bettingOrderService, ProcessFileService processFileService, UserInquiryService userInquiryService) {
         this.userManagementService = userManagementService;
         this.bettingOrderService = bettingOrderService;
         this.processFileService = processFileService;
+        this.userInquiryService = userInquiryService;
     }
 
     @Value("${file.imgUrl}")
     private String imgUrl;
-    @GetMapping("/api/purchase-history/{page}")
-    public ModelAndView getPurchaseHistory(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user , ModelAndView mv) {
-        Long userId =user.getId();
-
-        mv.setViewName("layout/my-page/layout");
-        mv.addObject("view", "content/my-page/purchase-history");
+    @GetMapping("api/purchase-history/{page}")
+    public ResponseEntity<Map<String, Object>> getPurchaseHistory(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user) {
         int itemsPerPage = ITEMS_PER_PAGE;
-        List<BettingOrderDTO> items = bettingOrderService.getBettingOrdersByUserId(new UserPaginationDTO(user.getId(),page,itemsPerPage));
-        int totalPages = (int) Math.ceil((double) bettingOrderService.getOrderCountByUserId(user.getId()) / itemsPerPage);
-        mv.addObject("items", items);
-        mv.addObject("totalPages", totalPages);
-        return mv;
+        List<BettingOrderDTO> items = bettingOrderService.getBettingOrdersByUserId(new UserPaginationDTO(user.getId(), page, itemsPerPage));
+        int totalItems = bettingOrderService.getOrderCountByUserId(user.getId());
+        int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", items);
+        response.put("totalPages", totalPages);
+        response.put("currentPage", page);
+        response.put("itemsPerPage", itemsPerPage);
+        response.put("totalItems", totalItems);
+
+        return ResponseEntity.ok(response);
     }
-    @GetMapping("/api/comments/{page}")
-    public ModelAndView getComment(@PathVariable int page,@AuthenticationPrincipal CustomUserDetail user, ModelAndView mv) {
+
+    @GetMapping("api/comments/{page}")
+    public ResponseEntity<Map<String, Object>> getComments(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user) {
         int itemsPerPage = ITEMS_PER_PAGE;
         int start = (page - 1) * itemsPerPage;
         Long userId = user.getId();
-        List<CommentDTO> items = userManagementService.getCommentsByUserId(new UserPaginationDTO(user.getId(),start,itemsPerPage));
-        int totalInquiries = userManagementService.getCommentCountByUserId(user.getId());
-        int totalPages = (int) Math.ceil((double) totalInquiries / itemsPerPage);
-        mv.setViewName("layout/my-page/layout");
-        mv.addObject("view", "content/my-page/comments");
-        mv.addObject("items", items);
-        mv.addObject("totalPages", totalPages);
-        return mv;
+        List<CommentDTO> items = userManagementService.getCommentsByUserId(new UserPaginationDTO(userId, start, itemsPerPage));
+        int totalComments = userManagementService.getCommentCountByUserId(userId);
+        int totalPages = (int) Math.ceil((double) totalComments / itemsPerPage);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", items);
+        response.put("totalPages", totalPages);
+        response.put("currentPage", page);
+        response.put("itemsPerPage", itemsPerPage);
+        response.put("totalItems", totalComments);
+
+        return ResponseEntity.ok(response);
     }
-    @GetMapping("/api/inquirys/{page}")
-    public ModelAndView getInquirys(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user, ModelAndView mv) {
+
+    @GetMapping("api/inquirys/{page}")
+    public ResponseEntity<Map<String, Object>> getInquirys(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user) {
         int itemsPerPage = ITEMS_PER_PAGE;
         int start = (page - 1) * itemsPerPage;
-        List<CommentDTO> items = userManagementService.getCommentsByUserId(new UserPaginationDTO(user.getId(),start,itemsPerPage));
-        int totalInquiries = userManagementService.getCommentCountByUserId(user.getId());
+        List<TblInquiryDTO> items = userInquiryService.getInquiriesByUserId(new UserPaginationDTO(user.getId(), start, itemsPerPage));
+        int totalInquiries = userInquiryService.getTotalInquiries(user.getId());
         int totalPages = (int) Math.ceil((double) totalInquiries / itemsPerPage);
-        mv.setViewName("layout/my-page/layout");
-        mv.addObject("view", "content/my-page/comments");
-        mv.addObject("items", items);
-        mv.addObject("totalPages", totalPages);
-        return mv;
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("items", items);
+        response.put("totalPages", totalPages);
+        response.put("currentPage", page);
+        response.put("itemsPerPage", itemsPerPage);
+        response.put("totalItems", totalInquiries);
+        return ResponseEntity.ok(response);
     }
 //페이지
     @GetMapping()
@@ -90,14 +105,15 @@ public class MyPageController {
         mv.addObject("view", "content/my-page/my-page");
         mv.addObject("name", "Dummy User"); // Dummy username
         mv.addObject("name",user.getUsername() );
-        Path file = Paths.get(imgUrl).resolve(attachmentDTO.getAttachmentFileAddress());
-        mv.addObject("attachmentAddress", file.toString());
-//      현재 베팅 포인트
-//        mv.addObject("positionValue",);
-//      총 손익률
-//        mv.addObject("profitLoss",userManagementService. );
-//      총 거래 포인트
-//        mv.addObject("volumeTraded",userManagementService. );
+        String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
+        attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
+        mv.addObject("attachmentAddress", attachmentAddress);
+//      현재 포지션 가치
+        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()));
+//      한달 손익률
+        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user.getId()));
+//      한달 거래 포인트
+        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()));
 //      거래수
         mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
         return mv;
@@ -118,10 +134,11 @@ public class MyPageController {
     @GetMapping("/change-personal-information")
     public ModelAndView getChangePersonalInformation(ModelAndView mv ,@AuthenticationPrincipal CustomUserDetail user) {
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
-        mv.setViewName("layout/my-page/layout");
-        mv.addObject("title", "Home Page");
-        Path file = Paths.get(imgUrl).resolve(attachmentDTO.getAttachmentFileAddress());
-        mv.addObject("attachmentAddress", file.toString());
+        mv.setViewName("layout/my-page/nofab");
+        String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
+
+        attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
+        mv.addObject("attachmentAddress", attachmentAddress);
         mv.addObject("name", user.getUsername());
         mv.addObject("password", user.getPassword());
         mv.addObject("view", "content/my-page/change-personal-information");
@@ -129,7 +146,7 @@ public class MyPageController {
     }
 
     @PostMapping("/change-personal-information")
-    public String submitChangePersonalInformationForm( @ModelAttribute User requestUserDto,@RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes,@AuthenticationPrincipal CustomUserDetail user) {
+    public RedirectView  submitChangePersonalInformationForm( @ModelAttribute User requestUserDto,@RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes,@AuthenticationPrincipal CustomUserDetail user) {
         User userDTO = user.getUser();
         userDTO.setName(requestUserDto.getName());
         if (!requestUserDto.getPassword().equals(userDTO.getPassword())) {
@@ -152,13 +169,12 @@ public class MyPageController {
                 } catch (IOException e) {
                     e.printStackTrace();
                     redirectAttributes.addFlashAttribute("flashMessage1", "파일 업로드 중 오류가 발생했습니다.");
-                    return "redirect:/mypage/change-personal-information";
+                   return new RedirectView("/mypage/change-personal-information");
                 }
             }
         }
 
-        redirectAttributes.addFlashAttribute("flashMessage1", "변경 사항이 성공적으로 저장되었습니다.");
-        return "redirect:/mypage";
+        return new RedirectView("/mypage");
     }
 
 

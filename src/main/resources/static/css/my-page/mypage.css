@@ -211,7 +211,12 @@ body {
   white-space: nowrap;
   margin: auto;
 }
-.cards .card .value {
+.cards .card .left-flex {
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+}
+.cards .card .left-flex .value {
   margin-top: 0.25rem;
   font-size: 1.5rem;
   font-weight: bold;
@@ -232,7 +237,7 @@ body {
   --md-primary-tab-container-color: $card-background;
   --md-primary-tab-container-shape: 1rem;
   --md-secondary-tab-icon-color: $tab-font-color;
-  --md-sys-color-surface:$card-background;
+  --md-sys-color-surface: $card-background;
   --md-sys-color-primary: #3a79c8;
 }
 .tabs .tablist-line .border-line {
@@ -256,16 +261,25 @@ body {
 .tabs .tabpanel:focus-visible {
   box-shadow: 0 0 0 2px #5c636a;
 }
-.tabs .tabpanel .positions-header,
-.tabs .tabpanel .positions-content {
+.tabs .tabpanel .positions-header {
   display: flex;
   justify-content: space-between;
   margin-top: 1rem;
   color: #4c4c4c;
 }
-.tabs .tabpanel .positions-header .positions-header,
-.tabs .tabpanel .positions-content .positions-header {
+.tabs .tabpanel .positions-header .positions-header {
   margin-bottom: 1rem;
+}
+.tabs .tabpanel .positions-content {
+  margin-top: 1rem;
+  color: #4c4c4c;
+}
+.tabs .tabpanel .positions-content .item {
+  display: flex;
+  justify-content: space-between;
+  margin: 1rem 0;
+  cursor: pointer;
+  text-decoration: none;
 }
 .tabs .tabpanel .positions-content-no-positions {
   display: flex;

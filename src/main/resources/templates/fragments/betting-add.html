@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<section class="section" th:fragment="betting-add">
+<link th:href="@{css/betting-add-page/betting-add-page.css}" rel="stylesheet">
+    <div class="container">
+        <h2 class="form-title">게임을 등록하세요.</h2>
+        <form class="form" th:action="@{/bettingaddpage/create}"  method="post" enctype="multipart/form-data">
+            <div class="image-preview-container">
+                <img id="image-preview" class="image-preview" />
+            </div>
+            <div class="form-group">
+                <label for="image" class="form-label">Select image</label>
+                <input
+                        type="file"
+                        id="image"
+                        name="attachmentFileAddress"
+                        accept="image/*"
+                        class="form-input"
+                        required
+                />
+            </div>
+            <div class="form-group">
+                <label for="subjectTitle" class="form-label">Title</label>
+                <input type="text" id="subjectTitle" name="subjectTitle" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label for="category" class="form-label">Category</label>
+                <select id="category" name="subjectCategoryNo" class="form-select">
+                    <option value="" selected disabled>Select a category</option>
+                    <option th:each="category : ${categoryList}" th:value="${category.categoryNo}" th:text="${category.categoryName}"></option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="date" class="form-label">Date</label>
+                <input type="date" id="date" name="date" class="form-input" />
+            </div>
+            <div class="form-group">
+                <label for="time" class="form-label">Select End Time</label>
+                <input type="time" id="time" name="time" class="form-input" />
+            </div>
+            <button type="submit" class="submit-button">Submit</button>
+        </form>
+    </div>
+    <script>
+        const imageInputElement = document.querySelector("#image");
+        const imagePreviewImgElement = document.querySelector("#image-preview");
+        imageInputElement.addEventListener("change", (event) => {
+            let imageFile = event.target.files[0];
+            console.log(imageFile.size)
+            if(imageFile.size > 1000000) {
+                alert("Too big!")
+                imageInputElement.value = null;
+                imagePreviewImgElement.src = ""; // 빈값 넣어주기.
+            } else {
+                imagePreviewImgElement.src = URL.createObjectURL(imageFile);
+            }
+        });
+
+
+
+    </script>
+</section>

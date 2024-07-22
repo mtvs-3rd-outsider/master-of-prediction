@@ -26,6 +26,7 @@ function sideSelectBuy() {
     // 123
     sideSelect = true;
     createSideMain();
+
 }
 
 function sideSelectSell() {
@@ -38,6 +39,7 @@ function sideSelectSell() {
     buyButton.style.borderBottom='none';
     sideSelect = false;
     createSideMain();
+
 }
 
 function graphSettingButton(value){

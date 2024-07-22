@@ -81,4 +81,5 @@ public interface AttachmentMapper {
     @Delete("DELETE FROM tbl_attachment WHERE notice_no = #{noticeNo}")
     void deleteAttachmentsByNoticeNo(long noticeNo);
 
+
 }

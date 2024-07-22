@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<body>
+<header id="DeskHeader" class="header" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
+    <link rel="stylesheet" th:href="@{css/login-page/common.css}"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <div >
+        <div style="display: flex;align-items: center;">
+            <div class="logo" style="display: flex;">
+                <a href="header.html">
+                    <img height="90px" src="../images/logo2.png" width="90px">
+                </a>
+                <div style="width: 100%;display: flex;align-items: center;">
+
+                    <span style="font-size: 30px; color:black; white-space: nowrap;">예측의 달인</span>
+                </div>
+            </div>
+            <div class="search" style="margin :10px; width : 100%; ">
+<!--                <form style="display: flex;">-->
+<!--                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">-->
+<!--                        <md-icon class="child" slot="leading-icon">search</md-icon>-->
+<!--                    </md-outlined-text-field>-->
+
+<!--                </form>-->
+            </div>
+            <div class="menu" style="display: flex;">
+                <a class="header-menu-hover" href=""
+                   style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
+                    <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
+    padding-right: 12px;">vital_signs
+                    </md-icon>
+                    <span class="child">Activity</span>
+                </a>
+                <a class="header-menu-hover" href=""
+                   style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
+                    <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
+    padding-right: 12px;">Trophy
+                    </md-icon>
+                    <span class="child">Rank</span>
+                </a>
+            </div>
+<!--            <div>-->
+<!--                <th:block th:if="${userId == 0}">-->
+<!--                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>-->
+<!--                </th:block>-->
+<!--                <th:block  th:unless="${userId == 0 }">-->
+                    <th:block th:replace="~{fragments/login-mypage-header-profile :: content}"/>
+<!--                </th:block>-->
+<!--            </div>-->
+            <div style="position: relative">
+                <md-text-button id="usage-submenu-anchor">
+                    <md-icon-button id="header-icon-name-menu" toggle>
+                        <md-icon>Menu</md-icon>
+                    </md-icon-button>
+                </md-text-button>
+                <md-menu anchor="usage-submenu-anchor" has-overflow id="usage-submenu">
+<!--                    <md-menu-item>-->
+<!--                        <div>Sign Up</div>-->
+<!--                    </md-menu-item>-->
+                    <md-menu-item>
+                        <div>Log in</div>
+                    </md-menu-item>
+                </md-menu>
+            </div>
+        </div>
+        <div class="category">
+            <ul id="header-ul">
+                <li><a href="/mypage">마이 페이지 홈</a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="module">
+        const anchorEl = document.body.querySelector('#usage-submenu-anchor');
+        const menuEl = document.body.querySelector('#usage-submenu');
+
+        anchorEl.addEventListener('click', () => {
+            menuEl.open = true;
+            // menuEl.open = !menuEl.open;
+        });
+    </script>
+    <md-dialog type="alert" id='sign-up-dialog'>
+        <div slot="headline">회원가입</div>
+        <form slot="content" id="form-id2" method="dialog">
+            <div th:replace="~{content/login-page/register :: content}">Right Content</div>
+        </form>
+        <div slot="actions">
+            <div class="register-btn-group">
+                <md-filled-button form="form-id2" value="change">등록</md-filled-button>
+                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
+            </div>
+        </div>
+    </md-dialog>
+    <md-dialog type="alert" id='login-dialog'>
+        <div slot="headline"><div class="headline" >로그인</div></div>
+        <form slot="content" id="form-id3" method="dialog">
+            <div th:replace="~{content/login-page/login :: content}">Right Content</div>
+        </form>
+        <div slot="actions">
+            <div class="register-btn-group">
+                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
+            </div>
+        </div>
+    </md-dialog>
+    <script>
+        const signUpDialog = document.getElementById('sign-up-dialog');
+        const openSignUpDialogBtn = document.getElementById('open-sign-up-dialog-btn');
+        const signUpForm = signUpDialog.querySelector('form');
+        openSignUpDialogBtn.addEventListener('click', () => {
+            console.log("등록 됨")
+            signUpDialog.show(); // 다이얼로그를 엽니다.
+        });
+        const siginUpCloseButton = signUpDialog.querySelector('#inquiry-register-close-button');
+
+        siginUpCloseButton.addEventListener('click', () => {
+            signUpForm.reportValidity()
+            signUpDialog.close();
+
+        });
+    const loginDialog = document.getElementById('login-dialog');
+    const openLoginDialogBtn = document.getElementById('open-login-dialog-btn');
+    const loginForm = loginDialog.querySelector('form');
+    openLoginDialogBtn.addEventListener('click', () => {
+        console.log("등록 됨")
+        loginDialog.show(); // 다이얼로그를 엽니다.
+    });
+    const closeButton = loginDialog.querySelector('#inquiry-register-close-button');
+
+    closeButton.addEventListener('click', () => {
+        loginForm.reportValidity()
+        loginDialog.close();
+
+    });
+
+</script>
+</header>
+</body>
+</html>
