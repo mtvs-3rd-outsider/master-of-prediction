@@ -1,5 +1,13 @@
 <section th:fragment="sidebar" id="sidebar">
       <nav>
+        <div style="display: flex;
+        align-items: center; padding-top: 1vw;">
+          <div style="width: 100px; height: 100px">
+          <img src="/images/logo2.png" alt="logo"
+               style="width: 100%;"/>
+          </div>
+          <p style=" font-size: 1.3em;">예측의 달인</p>
+        </div>
         <ul>
           <li>
             <a href="/admin-page/notification">
@@ -33,4 +41,20 @@
         </li>
         </ul>
       </nav>
+  <script>
+    window.onload = () => {
+      const path = window.location.pathname;
+      const nav = document.querySelector('nav');
+      const links = nav.querySelectorAll('a');
+      links.forEach(link => {
+        if (link.getAttribute('href') === path) {
+          link.querySelector('md-icon').style.color='#7f8dff  ';
+          link.querySelector('span').style.color='#7f8dff ';
+          // link.querySelector('*').forEach(child => {
+          //   child.classList.add('active');
+          // });
+        }
+      });
+    };
+  </script>
 </section>
