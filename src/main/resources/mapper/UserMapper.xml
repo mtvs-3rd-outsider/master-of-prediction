@@ -4,8 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.outsider.masterofprediction.mapper.UserMapper">
+
+    <resultMap id="userAttachmentResultMap" type="com.outsider.masterofprediction.dto.UserAttachmentDTO">
+        <id property="userNo" column="USER_NO"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="userPoint" column="USER_POINT"/>
+        <association property="attachment" javaType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
+            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
+            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
+
+        </association>
+    </resultMap>
+
     <!-- 회원탈퇴 -->
-    <update id="updateWithdrawalStatusByUser" >
+    <update id="updateWithdrawalStatusByUser" parameterType="com.outsider.masterofprediction.dto.User">
         UPDATE TBL_USER
         SET user_withdrawal_status = #{withdrawalStatus}
         WHERE user_no = #{id}
@@ -32,8 +44,38 @@
     <select id="getAuthorityBySubjectUserNo" parameterType="long" resultType="String">
         SELECT user_authority
         FROM tbl_subject
-        JOIN tbl_user
-        ON subject_register_user_no=user_no
-        and subject_register_user_no=#{subjectUserNo}
+                 JOIN tbl_user
+                      ON subject_register_user_no=user_no
+                          AND subject_register_user_no=#{subjectUserNo}
+    </select>
+    <update id="updateUserPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        UPDATE tbl_user u
+        SET u.user_point = u.user_point - #{orderAmount}
+        WHERE u.user_no = #{orderUserNo} AND u.user_point >= #{orderAmount};
+
+    </update>
+
+
+    <update id="updateUserPointBySum" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        UPDATE  tbl_user
+        SET user_point=user_point+#{orderAmount}
+        WHERE user_no=#{orderUserNo}
+    </update>
+
+
+    <select id="findAllRank" resultMap="userAttachmentResultMap">
+        SELECT
+                A.USER_NO
+                , A.USER_NAME
+                , A.USER_POINT
+                , B.ATTACHMENT_FILE_NO
+                , B.ATTACHMENT_FILE_ADDRESS
+        FROM
+                TBL_USER A
+                LEFT JOIN TBL_ATTACHMENT B ON (A.USER_NO = B.ATTACHMENT_USER_NO)
+        WHERE
+                A.USER_AUTHORITY = '회원'
+        ORDER BY
+            A.USER_POINT
     </select>
 </mapper>

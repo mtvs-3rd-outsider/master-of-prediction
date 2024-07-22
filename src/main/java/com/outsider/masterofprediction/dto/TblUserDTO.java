@@ -1,6 +1,8 @@
 package com.outsider.masterofprediction.dto;
 
 
+import java.sql.Timestamp;
+
 public class TblUserDTO {
 
   private long userNo;
@@ -15,7 +17,7 @@ public class TblUserDTO {
   public TblUserDTO() {
   }
 
-  public TblUserDTO(long userNo, String userName, String userEmail, String userPassword, java.sql.Timestamp userJoinDate, String userAuthority, long userWithdrawalStatus, double userPoint) {
+  public TblUserDTO(long userNo, String userName, String userEmail, String userPassword, Timestamp userJoinDate, String userAuthority, long userWithdrawalStatus, double userPoint) {
     this.userNo = userNo;
     this.userName = userName;
     this.userEmail = userEmail;

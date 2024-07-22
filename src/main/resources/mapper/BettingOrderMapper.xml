@@ -247,4 +247,39 @@ WHERE
         WHERE
             c.subject_status = '진행중';
     </select>
+    <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        INSERT INTO tbl_betting_order (
+            order_amount,
+            order_choice,
+            order_subject_no,
+            order_user_no
+        ) VALUES (
+                     #{orderAmount},
+                     #{orderChoice},
+                     #{orderSubjectNo},
+                     #{orderUserNo}
+                 )
+    </insert>
+    <select id="getYesSumPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" resultType="int">
+        SELECT
+            SUM(CASE WHEN a.order_choice = 'Yes' THEN a.order_amount ELSE 0 END) AS Yes
+        FROM (
+                 SELECT *
+                 FROM tbl_betting_order
+                 WHERE order_user_no = #{orderUserNo}
+                   AND order_subject_no = #{orderSubjectNo}
+             ) a
+        GROUP BY a.order_user_no
+    </select>
+    <select id="getNoSumPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" resultType="int">
+        SELECT
+            SUM(CASE WHEN a.order_choice = 'No' THEN a.order_amount ELSE 0 END) AS No
+        FROM (
+                 SELECT *
+                 FROM tbl_betting_order
+                 WHERE order_user_no = #{orderUserNo}
+                   AND order_subject_no = #{orderSubjectNo}
+             ) a
+        GROUP BY a.order_user_no
+    </select>
 </mapper>

@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.outsider.masterofprediction.mapper.BettingOrderMapper">
+    <resultMap id="bettingOrderResultMap" type="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        <id property="orderNo" column="order"/>
+        <result property="orderAmount" column="ORDER_AMOUNT"/>
+        <result property="orderChoice" column="ORDER_CHOICE"/>
+        <result property="orderTimestamp" column="ORDER_TIMESTAMP"/>
+        <result property="orderSubjectNo" column="ORDER_SUBJECT_NO"/>
+        <result property="orderUserNo" column="ORDER_USER_NO"/>
+
+        <association property="user" javaType="com.outsider.masterofprediction.dto.TblUserDTO">
+            <id property="userNo" column="USER_NAME"/>
+            <result property="userName" column="USER_NAME"/>
+            <result property="userEmail" column="USER_EMAIL"/>
+            <result property="userPassword" column="USER_PASSWORD"/>
+            <result property="userJoinDate" column="USER_JOIN_DATE"/>
+            <result property="userAuthority" column="USER_AUTHORITY"/>
+            <result property="userWithdrawalStatus" column="USER_WITHDRAWAL_STATUS"/>
+            <result property="userPoint" column="USER_POINT"/>
+        </association>
+        <association property="subject" javaType="com.outsider.masterofprediction.dto.TblSubjectDTO">
+            <id property="subjectNo" column="SUBJECT_NO"/>
+            <result property="subjectTitle" column="SUBJECT_TITLE"/>
+        </association>
+        <association property="attachment" javaType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
+            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
+            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
+            <result property="attachmentRegistUserNo" column="ATTACHMENT_REGIST_USER_NO"/>
+            <result property="attachmentUserNo" column="ATTACHMENT_USER_NO"/>
+            <result property="subjectNo" column="SUBJECT_NO"/>
+        </association>
+    </resultMap>
+
+    <select id="" resultMap="">
+        SELECT
+                A.ORDER_AMOUNT
+                , A.ORDER_CHOICE
+                , A.ORDER_TIMESTAMP
+                , B.USER_NAME
+        FROM
+                TBL_BETTING_ORDER A
+                JOIN TBL_USER B ON (A.ORDER_USER_NO = B.USER_NO)
+        ORDER BY
+                A.ORDER_TIMESTAMP
+    </select>
+
+    <select id="" resultMap="">
+        SELECT
+                B.ATTACHMENT_FILE_ADDRESS
+        FROM
+                TBL_USER A
+                JOIN TBL_ATTACHMENT B ON (A.USER_NO = B.ATTACHMENT_USER_NO)
+    </select>
+
+    <select id="" resultMap="">
+        SELECT
+                B.ATTACHMENT_FILE_ADDRESS
+        FROM
+                TBL_SUBJECT A
+                JOIN TBL_ATTACHMENT B ON (A.SUBJECT_NO = B.SUBJECT_NO)
+    </select>
+</mapper>
