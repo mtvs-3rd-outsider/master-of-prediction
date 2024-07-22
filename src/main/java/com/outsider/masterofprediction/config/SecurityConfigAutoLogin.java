@@ -118,8 +118,8 @@ public class SecurityConfigAutoLogin {
 //                commentMapper.
             }
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                userMapper.deleteUser(email);
-                attachmentMapper.deleteAttachmentsByAttachmentUserNo(userMapper.findByEmail(email).getId());
+//                userMapper.deleteUser(email);
+//                attachmentMapper.deleteAttachmentsByAttachmentUserNo(userMapper.findByEmail(email).getId());
             }));
         };
     }

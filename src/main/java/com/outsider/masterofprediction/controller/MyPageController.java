@@ -108,6 +108,7 @@ public class MyPageController {
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
+        mv.addObject("userJoinDate",user.getJoinDate(String.class));
 //      현재 포지션 가치
         mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()));
 //      한달 손익률

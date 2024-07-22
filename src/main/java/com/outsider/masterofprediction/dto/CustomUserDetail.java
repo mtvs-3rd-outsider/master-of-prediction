@@ -7,8 +7,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Map;
 
 // security 파일
@@ -79,4 +83,35 @@ public class CustomUserDetail implements UserDetails , OAuth2User {
     public String getName() {
         return null;
     }
+    // 반환 형식을 선택할 수 있는 메서드
+    // 제네릭을 사용하여 반환 형식을 결정
+    // Date 또는 String 형식으로 반환
+    public <T> T getJoinDate(Class<T> type) {
+        LocalDateTime joinDate = this.user.getJoinDate();
+
+        if (type.isAssignableFrom(Date.class)) {
+            Date date = Date.from(joinDate.atZone(ZoneId.systemDefault()).toInstant());
+            return type.cast(date);
+        } else if (type.isAssignableFrom(String.class)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return type.cast(joinDate.format(formatter));
+        } else {
+            throw new IllegalArgumentException("Invalid type: " + type.getName());
+        }
+    }
+
+    // LocalDateTime 또는 String 형식으로 반환
+    public <T> T getJoinDateTime(Class<T> type) {
+        LocalDateTime joinDate = this.user.getJoinDate();
+
+        if (type.isAssignableFrom(LocalDateTime.class)) {
+            return type.cast(joinDate);
+        } else if (type.isAssignableFrom(String.class)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            return type.cast(joinDate.format(formatter));
+        } else {
+            throw new IllegalArgumentException("Invalid type: " + type.getName());
+        }
+    }
+
 }
