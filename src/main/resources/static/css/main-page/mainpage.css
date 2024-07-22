@@ -474,3 +474,39 @@
     text-overflow: ellipsis;
     overflow: hidden;
 }
+
+.bounding-betting-add-page-entry {
+    position:fixed;
+    bottom:0;
+    right:0;
+    margin:25px;
+    width: 75px;
+    height: 75px;
+    border-radius: 100%;
+    background: rgba(252, 58, 21, 0.43);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.1px);
+    -webkit-backdrop-filter: blur(5.1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: pulse 1.5s infinite;
+    cursor:pointer;
+}
+
+.bounding-betting-add-page-entry:hover {
+    animation: none;
+    scale: 1.2;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+    100% {
+        opacity: 1;
+    }
+}
