@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <base th:href="@{/}">
+    <meta charset="UTF-8">
+<!--    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"-->
+<!--          name="viewport">-->
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title th:text="${title}">제목확인</title>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import {styles as typescaleStyles} from "@material/web/typography/md-typescale-styles.js";
+
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+    <link rel="stylesheet" th:href="@{/css/admin-page/index.css}">
+    <link rel="stylesheet" th:href="@{/css/admin-page/font.css}">
+
+</head>
+<body>
+
+<div id="main">
+    <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
+    <div id="wrapper">
+    <section class="section" th:fragment="betting-add">
+        <link rel="stylesheet" th:href="@{css/betting-add-page/betting-add-page.css}">
+        <div class="container">
+            <h2 class="form-title">티어를 등록하세요.</h2>
+            <form class="form" enctype="multipart/form-data" method="post"
+                  th:action="@{/admin-page/tier/create}" onsubmit="">
+                <div class="image-preview-container">
+                    <img class="image-preview" id="image-preview" th:src="${attachmentFileAddress}"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="image">Select image</label>
+                    <input
+                            accept="image/*"
+                            class="form-input"
+                            id="image"
+                            name="attachmentFileAddress"
+                            type="file"
+                    />
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="tierName">Title</label>
+                    <input class="form-input" id="tierName" name="tierName" type="text" th:value="${tier.tierName}"/>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="tierContent">Content</label>
+                    <input class="form-input" id="tierContent" name="tierContent" type="text" th:value="${tier.tierContent}"/>
+                </div>
+                <button class="submit-button" type="submit">Submit</button>
+            </form>
+        </div>
+        <script>
+            const imageInputElement = document.querySelector("#image");
+            const imagePreviewImgElement = document.querySelector("#image-preview");
+            imageInputElement.addEventListener("change", (event) => {
+                let imageFile = event.target.files[0];
+                console.log(imageFile.size)
+                if (imageFile.size > 1000000) {
+                    alert("Too big!")
+                    imageInputElement.value = null;
+                    imagePreviewImgElement.src = ""; // 빈값 넣어주기.
+                } else {
+                    imagePreviewImgElement.src = URL.createObjectURL(imageFile);
+                }
+            });
+        </script>
+    </section>
+    </div>
+</div>
+</body>
+</html>
