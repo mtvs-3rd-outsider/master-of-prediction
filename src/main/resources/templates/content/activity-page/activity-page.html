@@ -12,24 +12,23 @@
 
             </div>
         </div>
-        <div class="activity-content">
+        <div th:each="order : ${userActivity}" class="activity-content">
             <div class="activity-content-box">
                 <div class="activity-content-box-right">
                     <div class="activity-content-img">
-                        <img src="../images/t1.png">
+                        <img th:src="@{order.attachmentSubject.attachmentFileAddress}">
                     </div>
                     <div class="activity-content-mid">
+                        <div th:text="${order.subject.subjectTitle}"></div>
                         <div>
-                            12/25 T1 vs GEN 전. T1 승?
-                        </div>
-                        <div>
-                            <img src="../images/character01.png">
-                            <span>강백호님이 YES를 10,000원 구매하셨습니다.</span>
+                            <img th:src="@{order.attachmentUser.attachmentFileAddress}">
+                            <span th:if="${order.orderAmount >= 0}" th:text="|${order.user.userName}님이 ${order.orderChoice}를 ${order.orderAmount}원에 구매하셨습니다.|"></span>
+                            <span th:if="${order.orderAmount < 0}" th:text="|${order.user.userName}님이 ${order.orderChoice}를 ${order.orderAmount * -1}원에 판매하셨습니다.|"></span>
                         </div>
                     </div>
                 </div>
                 <div class="activity-time">
-                    <span>2024-03-16 00시 00분</span>
+                    <span th:text="${order.orderTimestamp}"></span>
                 </div>
             </div>
         </div>
