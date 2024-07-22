@@ -70,11 +70,14 @@ public interface UserMapper {
 
     Double getUserProfitLossRate(Long userNo);
 
-    String getAuthorityBySubjectUserNo(long subjectUserNo);
+    String getAuthorityBySubjectNo(long subjectUserNo);
 
     int updateUserPointByDTO(TblBettingOrderDTO bettingOrderDTO);
 
     void updateUserPointBySum(TblBettingOrderDTO bettingOrderDTO);
 
     List<UserAttachmentDTO> findAllRank();
+
+    Long getSumYPointByDTO(TblBettingOrderDTO dto);
+    Long getSumNPointByDTO(TblBettingOrderDTO dto);
 }

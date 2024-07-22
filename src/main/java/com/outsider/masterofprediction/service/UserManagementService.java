@@ -87,7 +87,26 @@ public class UserManagementService {
         return commentMapper.getCommentCountByUserId(userId);
     }
 
-    public String getAuthorityBySubjectUserNo(long subjectUserNo) {
-        return userMapper.getAuthorityBySubjectUserNo(subjectUserNo);
+    public String getAuthorityBySubjectNo(long subjectUserNo) {
+        return userMapper.getAuthorityBySubjectNo(subjectUserNo);
+    }
+
+    public long getSumYPointByDTO(TblBettingOrderDTO dto) {
+        Long sumYPoint = userMapper.getSumYPointByDTO(dto);
+        if(sumYPoint==null){
+            return 0;
+        }
+
+        return sumYPoint;
+
+    }
+
+    public long getSumNPointByDTO(TblBettingOrderDTO dto) {
+        Long sumNPoint = userMapper.getSumNPointByDTO(dto);
+        if(sumNPoint==null){
+            return 0;
+        }
+
+        return sumNPoint;
     }
 }

@@ -2,10 +2,14 @@ var login = true;
 var sideSelect = true;
 var activeSelect = 0;
 let selectedChoice = null;
+var sumYPoint;
+var sumNPoint
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
     graphChart();
+    sumYPoint = document.getElementById("sumYPoint").value;
+    sumNPoint=document.getElementById("sumNPoint").value;
     // batting_modal-container 숨기기
     const bettingModalContainer = document.querySelector('.batting_modal-container');
     bettingModalContainer.style.display = 'none';
@@ -14,7 +18,18 @@ window.onload = function () {
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
 }
+document.addEventListener('DOMContentLoaded', function() {
+    const bettingWarningElement = document.querySelector('.betting-warning');
 
+    // Assuming you have the userAuthority value from the controller
+    const userAuthority = '{{ userAuthority }}';
+
+    if (userAuthority === 'ROLE_ADMIN') {
+        bettingWarningElement.classList.remove('hidden');
+    } else {
+        bettingWarningElement.classList.add('hidden');
+    }
+});
 function sideSelectBuy() {
     sideSelect = true;
     const buyButton = document.querySelector('.buy-item button');
@@ -107,7 +122,7 @@ function createSideMain() {
             </li>
             <li>
                 <div class="side-return-content">
-                    잠재수익률 <span id="returnPoint">0<span>%</span></span>
+                    보유포인트 <span id="returnPoint"><span>Point</span></span>
                 </div>
             </li>
         </ul>
@@ -123,6 +138,7 @@ function createSideMain() {
 function yesButton(){
     selectedChoice = 'YES';
     enableInput();
+    updateReturnPoint(sumYPoint);
     const Btns=document.querySelectorAll('.yesno-button');
     Btns[0].style.backgroundColor='green';
     Btns[0].style.color='white';
@@ -133,13 +149,16 @@ function yesButton(){
 function noButton(){
     selectedChoice = 'NO';
     enableInput();
+    updateReturnPoint(sumNPoint);
     const Btns=document.querySelectorAll('.yesno-button');
     Btns[1].style.backgroundColor='red';
     Btns[1].style.color='white';
     Btns[0].style.backgroundColor='#f0f0f0';
     Btns[0].style.color='black';
 }
-
+function updateReturnPoint(point) {
+    document.getElementById("returnPoint").innerText = point + " Point";
+}
 function enableInput() {
     document.getElementById('inputPoint').disabled = false;
     document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = false;

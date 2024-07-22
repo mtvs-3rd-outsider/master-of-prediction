@@ -64,8 +64,8 @@ public class    DevSecurityConfig{
                 attachmentMapper.setAttachmentsByAttachmentUserNo(tblAttachmentDTO);
             }
             Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                userMapper.deleteUser(email);
-                attachmentMapper.deleteAttachmentsByAttachmentUserNo(userMapper.findByEmail(email).getId());
+//                userMapper.deleteUser(email);
+//                attachmentMapper.deleteAttachmentsByAttachmentUserNo(userMapper.findByEmail(email).getId());
             }));
         };
     }
