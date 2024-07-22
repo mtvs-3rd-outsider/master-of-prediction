@@ -60,8 +60,8 @@
 <!--                    <md-menu-item>-->
 <!--                        <div>Sign Up</div>-->
 <!--                    </md-menu-item>-->
-                    <md-menu-item>
-                        <div>Log in</div>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                        <div>Log Out</div>
                     </md-menu-item>
                 </md-menu>
             </div>

@@ -24,6 +24,7 @@ import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -84,7 +85,15 @@ public class SecurityConfigUser {
 //                                .oidcUserService(this.oidcUserService())
                                 .userService(this.oauth2UserService()))
                         .defaultSuccessUrl("/", true)
-                )
+                ).logout(logout ->{
+                    logout.logoutUrl("/logout");
+                    logout.deleteCookies("JSESSIONID"); // 로그아웃 시 사용자의 JSESSIONID 삭제
+                    logout.invalidateHttpSession(true);// 세션을 소멸하도록 허용하는 것
+                    logout.logoutSuccessUrl("/"); // 로그아웃시 이동할 페이지 설정
+                }).sessionManagement(session ->{
+                    session.maximumSessions(1).maxSessionsPreventsLogin(true);// session의 허용 개수를 제한
+                    session.invalidSessionUrl("/");
+                })
                 .csrf(auth -> auth.disable())
                 .sessionManagement(auth -> auth
                         .maximumSessions(1)
