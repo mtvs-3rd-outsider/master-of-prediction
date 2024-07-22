@@ -12,7 +12,27 @@
             </div>
         </div>
         <div class="rank-notice">랭킹은 매일 자정에 초기화됩니다!</div>
-        <div class="rank-content">
+
+        <div th:each="user, userStat : ${userRank}" class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span th:text="${userStat.count}"></span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img th:src="@{user.attachment.attachmentFileAddress}">
+                    </div>
+                    <div class="rank-user-name">
+                        <span th:text="${user.userName}"></span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span th:text="${user.userPoint} + 포인트"></span>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="rank-content">
             <div class="rank-content-box">
                 <div class="rank-user-info">
                     <div class="rank-user-ranking">
@@ -101,7 +121,7 @@
                     <span>10,000 포인트</span>
                 </div>
             </div>
-        </div>
+        </div>-->
     </div>
 </div>
 </html>

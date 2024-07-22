@@ -2,18 +2,15 @@ package com.outsider.masterofprediction.mapper;
 
 import com.outsider.masterofprediction.dto.*;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
 
 @Mapper
 public interface BettingOrderMapper {
 
-    /**
-     * 페이지네이션 세부 정보를 기반으로 사용자의 구매 내역을 조회합니다.
-     *
-     * @param userPaginationDTO 베팅 주문을 조회하기 위한 페이지네이션 세부 정보
-     * @return 사용자의 베팅 주문을 포함하는 BettingOrderDTO 목록
-     */
+    // 구매내역 조회
     List<BettingOrderDTO> getBettingOrdersByUserId(UserPaginationDTO userPaginationDTO);
 
     /**
@@ -24,12 +21,6 @@ public interface BettingOrderMapper {
      */
     int getOrderCountByUserId(Long userId);
 
-    /**
-     * 특정 사용자의 총 포인트를 조회합니다.
-     *
-     * @param userId 사용자의 ID
-     * @return 사용자의 총 포인트
-     */
     Long getUserTotalPointsByUserId(Long userId);
 
     /**
