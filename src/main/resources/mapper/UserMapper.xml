@@ -41,12 +41,12 @@
             u.user_no, u.user_name, u.user_email;
     </select>
 
-    <select id="getAuthorityBySubjectUserNo" parameterType="long" resultType="String">
-        SELECT user_authority
-        FROM tbl_subject
-                 JOIN tbl_user
-                      ON subject_register_user_no=user_no
-                          AND subject_register_user_no=#{subjectUserNo}
+    <select id="getAuthorityBySubjectNo" parameterType="long" resultType="String">
+        select user_authority
+        from tbl_user
+                 join tbl_subject
+                      on subject_register_user_no=user_no
+                          and subject_no=#{subjectNo};
     </select>
     <update id="updateUserPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         UPDATE tbl_user u
@@ -55,6 +55,23 @@
 
     </update>
 
+    <select id="getSumYPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" resultType="long">
+        select sum(order_amount)
+        from tbl_betting_order
+        where order_choice='Yes'
+          and order_user_no=#{orderUserNo}
+          and order_subject_no=#{orderSubjectNo}
+        group by order_user_no
+    </select>
+
+    <select id="getSumNPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" resultType="long">
+        select sum(order_amount)
+        from tbl_betting_order
+        where order_choice='No'
+          and order_user_no=#{orderUserNo}
+          and order_subject_no=#{orderSubjectNo}
+        group by order_user_no;
+    </select>
 
     <update id="updateUserPointBySum" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         UPDATE  tbl_user

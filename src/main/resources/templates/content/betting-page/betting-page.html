@@ -35,6 +35,9 @@
 <div class="html-container">
     <div class="body-container">
         <div class="main-container">
+            <div class="betting-warning-container">
+                <p class="betting-warning hidden">이 게임은 사용자가 만든 게임입니다. 승패에 관해서 운영진은 책임지지 않습니다!</p>
+            </div>
             <div class="title-content">
                 <img th:src="'/images/upload/' + ${subjectImage}" alt="배팅 이미지" onerror="this.onerror=null;this.src='me.jpg';">
                 <div class="title_text-content">
@@ -187,6 +190,8 @@
 </div>
 <input type="hidden" id="loggedSubjectNo" value="1"/>
 <input type="hidden" id="loggedInUserId" th:value="${loggedInUserId}" />
+<input type="hidden" id="sumYPoint" th:value="${sumYPoint}">
+<input type="hidden" id="sumNPoint" th:value="${sumNPoint}">
 </body>
 <script type="text/javascript" th:src="@{/js/betting-page/betting-page-js.js}"></script>
 

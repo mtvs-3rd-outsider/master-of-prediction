@@ -49,20 +49,27 @@ public class BettingController {
     public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
-        String userAuthority = userManagementService.getAuthorityBySubjectUserNo(UserSession.getUserId());
+        String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
+        TblBettingOrderDTO dto = new TblBettingOrderDTO();
+        dto.setOrderSubjectNo(subjectNo);
+        dto.setOrderUserNo(UserSession.getUserId());
 
+        long sumYPoint = userManagementService.getSumYPointByDTO(dto);
+        long sumNPoint = userManagementService.getSumNPointByDTO(dto);
         String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
         String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
         String attachment_file_address = attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress();
 
+
+        model.addAttribute("sumYPoint", sumYPoint);
+        model.addAttribute("sumNPoint", sumNPoint);
         model.addAttribute("subjectImage", attachment_file_address);
         model.addAttribute("loggedInUserId", UserSession.getUserId());
         model.addAttribute("returnYRate", returnYRate);
         model.addAttribute("returnNRate", returnNRate);
         model.addAttribute("subject", subject);
         model.addAttribute("userAuthority", userAuthority);
-
         return "/content/betting-page/betting-page";
     }
 
