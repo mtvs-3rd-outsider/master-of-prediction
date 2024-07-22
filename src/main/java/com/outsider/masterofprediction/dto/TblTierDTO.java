@@ -12,5 +12,7 @@ public class TblTierDTO {
   private long tierNo;
   private String tierName;
   private String tierContent;
+  private int tierBegin;
+  private int tierEnd;
 
 }

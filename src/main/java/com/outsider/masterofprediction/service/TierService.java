@@ -25,7 +25,7 @@ public class TierService {
         this.attachmentMapper = attachmentMapper;
     }
 
-    public List<TblTierDTO> getAll() {
+    public List<TblTierDTO> findAll() {
         return tierMapper.findAll();
     }
 
