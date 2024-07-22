@@ -8,6 +8,7 @@ import com.outsider.masterofprediction.dto.User;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
 import org.apache.ibatis.annotations.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -26,6 +27,9 @@ public interface UserMapper {
     })
     @Select("SELECT * FROM tbl_user")
     List<User> findAll();
+
+    @Select("SELECT user_no, user_point, tier_no FROM tbl_user ORDER BY user_point ")
+    List<TblUserDTO> findAllReturnTblUserDTO();
 
     //id로유저 조회
     @Select("SELECT * FROM tbl_user WHERE user_no=#{id}")
@@ -64,6 +68,27 @@ public interface UserMapper {
             "WHERE user_no=#{id}"
     )
     void updateUserPointById(Long id, double point);
+
+    @Select("SELECT SUM(user_point) FROM tbl_user")
+    BigDecimal findAllUsrPointSUM();
+
+    @Update("UPDATE tbl_user SET tier_no = #{tierNo} WHERE user_point >= #{beginPoint} AND user_point <= #{endPoint}")
+    void updateTier(Long tierNo, BigDecimal beginPoint, BigDecimal endPoint);
+
+    @Update({
+            "<script>",
+            "UPDATE tbl_user SET tier_no = CASE ",
+            "<foreach collection='users' item='user' separator=' '>",
+            "WHEN user_no = #{user.userNo} THEN #{user.tierNo} ",
+            "</foreach>",
+            "END ",
+            "WHERE user_no IN ",
+            "<foreach collection='users' item='user' open='(' separator=',' close=')'>",
+            "#{user.userNo}",
+            "</foreach>",
+            "</script>"
+    })
+    void bulkUpdateUserTiers(@Param("users") List<TblUserDTO> users);
 
     // 회원 탈퇴 여부 수정
     void updateWithdrawalStatusByUser(User user);
