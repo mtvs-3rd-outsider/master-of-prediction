@@ -76,6 +76,6 @@
         WHERE
                 A.USER_AUTHORITY = '회원'
         ORDER BY
-            A.USER_POINT
+            A.USER_POINT DESC
     </select>
 </mapper>

@@ -36,7 +36,7 @@
     <div class="body-container">
         <div class="main-container">
             <div class="title-content">
-                <img th:src="@{/images/me.jpg}" alt="배팅 이미지" onerror="this.onerror=null;this.src='me.jpg';">
+                <img th:src="'/images/upload/' + ${subjectImage}" alt="배팅 이미지" onerror="this.onerror=null;this.src='me.jpg';">
                 <div class="title_text-content">
                     <ul>
                         <li>$&nbsp<span th:text="${subject.getSubjectTotalYesPoint()+subject.getSubjectTotalNoPoint()}"></span>&nbspPoint</li>
