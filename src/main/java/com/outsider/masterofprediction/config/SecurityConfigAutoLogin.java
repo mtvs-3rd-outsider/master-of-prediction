@@ -96,21 +96,21 @@ public class SecurityConfigAutoLogin {
     public ApplicationRunner init() {
         return args -> {
             if (userMapper.findByEmail(email) == null) {
-                userMapper.createUser(name, email, passwordEncoder().encode(password), role);
-                Long id = userMapper.findByEmail(email).getId();
-                TblAttachmentDTO tblAttachmentDTO = new TblAttachmentDTO();
-                tblAttachmentDTO.setAttachmentUserNo(id);
-                tblAttachmentDTO.setAttachmentRegistUserNo(id);
-                tblAttachmentDTO.setAttachmentFileAddress("https://lh3.googleusercontent.com/a/ACg8ocKCH9UgnTgbHfYEi5WGYXXlaMd-uz3gSyTyXUz-w78BUCC38XA=s96-c");
-                attachmentMapper.setAttachmentsByAttachmentUserNo(tblAttachmentDTO);
-                TblInquiryDTO tblInquiryDTO = new TblInquiryDTO();
-                tblInquiryDTO.setInquiryUserNo(id);
-                // 현재 시간을 기반으로 Timestamp 객체 생성
-                tblInquiryDTO.setInquiryTitle("qewjkjkjkj");
-                tblInquiryDTO.setInquiryContent("qewdfsfsfsfsfjkjkjkj");
-                Timestamp inquiryTimestamp = Timestamp.from(Instant.now());
-                tblInquiryDTO.setInquiryTimestamp(inquiryTimestamp);
-                inquiryMapper.insertInquiry(tblInquiryDTO);
+//                userMapper.createUser(name, email, passwordEncoder().encode(password), role);
+//                Long id = userMapper.findByEmail(email).getId();
+//                TblAttachmentDTO tblAttachmentDTO = new TblAttachmentDTO();
+//                tblAttachmentDTO.setAttachmentUserNo(id);
+//                tblAttachmentDTO.setAttachmentRegistUserNo(id);
+//                tblAttachmentDTO.setAttachmentFileAddress("https://lh3.googleusercontent.com/a/ACg8ocKCH9UgnTgbHfYEi5WGYXXlaMd-uz3gSyTyXUz-w78BUCC38XA=s96-c");
+//                attachmentMapper.setAttachmentsByAttachmentUserNo(tblAttachmentDTO);
+//                TblInquiryDTO tblInquiryDTO = new TblInquiryDTO();
+//                tblInquiryDTO.setInquiryUserNo(id);
+//                // 현재 시간을 기반으로 Timestamp 객체 생성
+//                tblInquiryDTO.setInquiryTitle("qewjkjkjkj");
+//                tblInquiryDTO.setInquiryContent("qewdfsfsfsfsfjkjkjkj");
+//                Timestamp inquiryTimestamp = Timestamp.from(Instant.now());
+//                tblInquiryDTO.setInquiryTimestamp(inquiryTimestamp);
+//                inquiryMapper.insertInquiry(tblInquiryDTO);
 //                TblCommentDTO tblCommentDTO = new TblCommentDTO();
 //                tblCommentDTO.setCommentUserNo(id);
 //                tblCommentDTO.setCommentContent("dfsfsf");
