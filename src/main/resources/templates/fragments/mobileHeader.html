@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <style>
         swiper-container {
@@ -49,11 +50,15 @@
                     </md-icon-button>
                 </md-text-button>
                 <md-menu anchor="usage-submenu-anchor-mobile" has-overflow id="usage-submenu-mobile">
-                    <md-menu-item>
-                        <div>Sign Up</div>
-                    </md-menu-item>
-                    <md-menu-item>
+<!--                    <th:block sec:authorize="isAnonymous()" >-->
+<!--                    <md-menu-item >-->
+<!--                        <div>Sign Up</div>-->
+<!--                    </md-menu-item>-->
+                    <md-menu-item sec:authorize="isAnonymous()" class="open-login-dialog-btn" >
                         <div>Log in</div>
+                    </md-menu-item>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/mypage}">
+                        <div>My Page</div>
                     </md-menu-item>  <md-menu-item>
                         <div>Activity</div>
                     </md-menu-item>  <md-menu-item>
@@ -77,6 +82,7 @@
             </swiper-container>
         </div>
     </div>
+
     <script type="module">
         const anchorEl = document.body.querySelector('#usage-submenu-anchor-mobile');
         const menuEl = document.body.querySelector('#usage-submenu-mobile');
