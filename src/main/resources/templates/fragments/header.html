@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <header id="DeskHeader" class="header" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
@@ -40,13 +40,11 @@
                     <span class="child">Rank</span>
                 </a>
             </div>
-            <div>
-                <th:block th:if="${userId == 0}">
-                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>
-                </th:block>
-                <th:block  th:unless="${userId == 0 }">
-                    <th:block th:replace="~{fragments/login-header-profile :: content}"/>
-                </th:block>
+            <div  sec:authorize="isAnonymous()">
+                <th:block   th:replace="~{fragments/logout-header-profile :: content}"/>
+            </div>
+            <div  sec:authorize="isAuthenticated()">
+                <th:block  th:replace="~{fragments/login-header-profile :: content}"/>
             </div>
             <div style="position: relative">
                 <md-text-button id="usage-submenu-anchor">
@@ -58,8 +56,11 @@
 <!--                    <md-menu-item>-->
 <!--                        <div>Sign Up</div>-->
 <!--                    </md-menu-item>-->
-                    <md-menu-item>
+                    <md-menu-item sec:authorize="isAnonymous()" class='open-login-dialog-btn'>
                         <div>Log in</div>
+                    </md-menu-item>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/mypage}">
+                        <div>My Page</div>
                     </md-menu-item>
                 </md-menu>
             </div>
@@ -104,40 +105,50 @@
         </form>
         <div slot="actions">
             <div class="register-btn-group">
-                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
+                <md-text-button id="login-dialog-close-button" form="form-id2" value="cancel">취소</md-text-button>
             </div>
         </div>
     </md-dialog>
     <script>
-        const signUpDialog = document.getElementById('sign-up-dialog');
-        const openSignUpDialogBtn = document.getElementById('open-sign-up-dialog-btn');
-        const signUpForm = signUpDialog.querySelector('form');
-        openSignUpDialogBtn.addEventListener('click', () => {
-            console.log("등록 됨")
-            signUpDialog.show(); // 다이얼로그를 엽니다.
-        });
-        const siginUpCloseButton = signUpDialog.querySelector('#inquiry-register-close-button');
+        //TODO: signup dialog 비활성화
+        // const signUpDialog = document.getElementById('sign-up-dialog');
+        // const openSignUpDialogBtn = document.getElementById('open-sign-up-dialog-btn');
+        // const signUpForm = signUpDialog.querySelector('form');
+        // openSignUpDialogBtn.addEventListener('click', () => {
+        //     console.log("등록 됨")
+        //     signUpDialog.show(); // 다이얼로그를 엽니다.
+        // });
+        // const siginUpCloseButton = signUpDialog.querySelector('#inquiry-register-close-button');
 
-        siginUpCloseButton.addEventListener('click', () => {
-            signUpForm.reportValidity()
-            signUpDialog.close();
-
-        });
+        // siginUpCloseButton.addEventListener('click', () => {
+        //     signUpForm.reportValidity()
+        //     signUpDialog.close();
+        //
+        // });
     const loginDialog = document.getElementById('login-dialog');
-    const openLoginDialogBtn = document.getElementById('open-login-dialog-btn');
+    // const openLoginDialogBtn = document.getElementById('open-login-dialog-btn');
+
     const loginForm = loginDialog.querySelector('form');
-    openLoginDialogBtn.addEventListener('click', () => {
-        console.log("등록 됨")
-        loginDialog.show(); // 다이얼로그를 엽니다.
+    // openLoginDialogBtn.addEventListener('click', () => {
+    //     console.log("등록 됨");
+    //     loginDialog.show(); // 다이얼로그를 엽니다.
+    // });
+    const openLoginDialogBtns = document.querySelectorAll('.open-login-dialog-btn');
+
+        // 여러 개의 버튼에 대해 클릭 이벤트 리스너 추가
+    openLoginDialogBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            console.log("등록 됨");
+            loginDialog.show(); // 다이얼로그를 엽니다.
+        });
     });
-    const closeButton = loginDialog.querySelector('#inquiry-register-close-button');
+    const closeButton = loginDialog.querySelector('#login-dialog-close-button');
 
     closeButton.addEventListener('click', () => {
         loginForm.reportValidity()
         loginDialog.close();
 
     });
-
 </script>
 </header>
 </body>
