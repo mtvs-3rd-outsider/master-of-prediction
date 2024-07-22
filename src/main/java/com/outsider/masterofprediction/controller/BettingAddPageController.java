@@ -46,7 +46,7 @@ public class BettingAddPageController {
                                 @RequestParam("deadlineTime") String time){
         tblSubjectDTO.setSubjectSettlementTimestamp(Timestamp.valueOf(LocalDateTime.of(LocalDate.parse(date.toString()), LocalTime.parse(time))));;
         bettingCreateService.create(tblSubjectDTO, file);
-        return "redirect:/main-page/index";
+        return "redirect:/";
     }
 
 }
