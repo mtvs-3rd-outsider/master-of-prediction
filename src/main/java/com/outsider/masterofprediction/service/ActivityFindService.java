@@ -1,6 +1,7 @@
 package com.outsider.masterofprediction.service;
 
 
+import com.outsider.masterofprediction.dto.ActivityUserSubjectDTO;
 import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.mapper.BettingOrderMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ public class ActivityFindService {
         this.bettingOrderMapper = bettingOrderMapper;
     }
 
-    //public List<TblBettingOrderDTO> findActivity{
-        //return bettingOrderMapper.findActivity();
-    //}
+    public List<ActivityUserSubjectDTO> findActivity() {
+        return bettingOrderMapper.findActivity();
+    }
 }

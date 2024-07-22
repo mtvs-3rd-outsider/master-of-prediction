@@ -97,8 +97,12 @@ public class MyPageController {
         return ResponseEntity.ok(response);
     }
 //페이지
-    @GetMapping()
-    public ModelAndView getMyPage(@AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
+    @GetMapping(value = {"", "{userId}"})
+    public ModelAndView getMyPage( @PathVariable(required = false) Integer  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
+        if (userId == null || userId.intValue() != user.getId()) {
+            return new ModelAndView("redirect:/mypage/" + user.getId());
+        }
+        mv.addObject("isMine",userId.intValue() == user.getId());
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
         mv.setViewName("/layout/my-page/index");
@@ -108,6 +112,7 @@ public class MyPageController {
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
+        mv.addObject("userJoinDate",user.getJoinDate(String.class));
 //      현재 포지션 가치
         mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()));
 //      한달 손익률
