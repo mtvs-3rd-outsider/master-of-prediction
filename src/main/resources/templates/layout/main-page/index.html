@@ -21,7 +21,7 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title th:text="${title}">Default Title</title>
+    <title th:text="${title}">예측의 달인</title>
     <link rel="stylesheet" th:href="@{/css/main-page/mainpage.css}" />
     <link
             href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
@@ -47,7 +47,6 @@
         const width = window.innerWidth;
         const header1 = document.getElementById('DeskHeader');
         const header2 = document.getElementById('MobileHeader');
-        console.log(width)
         if (width > 760) {
         // if (width < 300) {
             header1.style.display = 'block';

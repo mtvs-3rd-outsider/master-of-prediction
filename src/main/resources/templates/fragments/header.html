@@ -4,6 +4,7 @@
 <body>
 <header id="DeskHeader" class="header" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
+    <link rel="stylesheet" th:href="@{css/login-page/common.css}"/>
     <div style="box-shadow: 0 2px 2px -2px gray;">
         <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
@@ -40,16 +41,12 @@
                 </a>
             </div>
             <div>
-                <div style="display: flex">
-                    <md-text-button
-                            style="margin-right: 10px; --md-text-button-container-shape: 0px; --md-sys-color-primary: #1652f0; border-radius: 7px; --md-filled-tonal-button-label-text-font: system-ui;">
-                        Log in
-                    </md-text-button>
-                    <md-text-button
-                            style="--md-text-button-container-shape: 0px; --md-sys-color-primary: white; border-radius: 7px; background-color: #1652f0; --md-filled-tonal-button-label-text-font: system-ui;">
-                        Sign Up
-                    </md-text-button>
-                </div>
+                <th:block th:if="${userId == 0}">
+                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>
+                </th:block>
+                <th:block  th:unless="${userId == 0 }">
+                    <th:block th:replace="~{fragments/login-header-profile :: content}"/>
+                </th:block>
             </div>
             <div style="position: relative">
                 <md-text-button id="usage-submenu-anchor">
@@ -58,9 +55,9 @@
                     </md-icon-button>
                 </md-text-button>
                 <md-menu anchor="usage-submenu-anchor" has-overflow id="usage-submenu">
-                    <md-menu-item>
-                        <div>Sign Up</div>
-                    </md-menu-item>
+<!--                    <md-menu-item>-->
+<!--                        <div>Sign Up</div>-->
+<!--                    </md-menu-item>-->
                     <md-menu-item>
                         <div>Log in</div>
                     </md-menu-item>
@@ -88,6 +85,60 @@
             // menuEl.open = !menuEl.open;
         });
     </script>
+    <md-dialog type="alert" id='sign-up-dialog'>
+        <div slot="headline">회원가입</div>
+        <form slot="content" id="form-id2" method="dialog">
+            <div th:replace="~{content/login-page/register :: content}">Right Content</div>
+        </form>
+        <div slot="actions">
+            <div class="register-btn-group">
+                <md-filled-button form="form-id2" value="change">등록</md-filled-button>
+                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
+            </div>
+        </div>
+    </md-dialog>
+    <md-dialog type="alert" id='login-dialog'>
+        <div slot="headline"><div class="headline" >로그인</div></div>
+        <form slot="content" id="form-id3" method="dialog">
+            <div th:replace="~{content/login-page/login :: content}">Right Content</div>
+        </form>
+        <div slot="actions">
+            <div class="register-btn-group">
+                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
+            </div>
+        </div>
+    </md-dialog>
+    <script>
+        const signUpDialog = document.getElementById('sign-up-dialog');
+        const openSignUpDialogBtn = document.getElementById('open-sign-up-dialog-btn');
+        const signUpForm = signUpDialog.querySelector('form');
+        openSignUpDialogBtn.addEventListener('click', () => {
+            console.log("등록 됨")
+            signUpDialog.show(); // 다이얼로그를 엽니다.
+        });
+        const siginUpCloseButton = signUpDialog.querySelector('#inquiry-register-close-button');
+
+        siginUpCloseButton.addEventListener('click', () => {
+            signUpForm.reportValidity()
+            signUpDialog.close();
+
+        });
+    const loginDialog = document.getElementById('login-dialog');
+    const openLoginDialogBtn = document.getElementById('open-login-dialog-btn');
+    const loginForm = loginDialog.querySelector('form');
+    openLoginDialogBtn.addEventListener('click', () => {
+        console.log("등록 됨")
+        loginDialog.show(); // 다이얼로그를 엽니다.
+    });
+    const closeButton = loginDialog.querySelector('#inquiry-register-close-button');
+
+    closeButton.addEventListener('click', () => {
+        loginForm.reportValidity()
+        loginDialog.close();
+
+    });
+
+</script>
 </header>
 </body>
 </html>

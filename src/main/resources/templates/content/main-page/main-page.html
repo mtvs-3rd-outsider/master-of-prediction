@@ -7,359 +7,52 @@
           rel="stylesheet"/>
     <div class="main">
         <div class="main-body">
-            <div class="main-surface">
+                <div class="main-surface" th:each="subject: ${subjects}" th:value="${subject.subjectNo}" onclick="onClickSubject(event)">
                 <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
+                    <div style="width: 100%">
+                        <div class="main-surface-title" >
                             <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
+<!--                                <img src="../images/logo.png"/>-->
+                                <img th:src="'/images/upload/' + ${subject.attachmentFileAddress}"/>
                             </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
+                            <p class="main-surface-title-text" th:text="${subject.subjectTitle}">8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
                         </div>
                     </div>
                     <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
+                    <md-elevated-button class="main-surface-yes-button" th:text="${subject.yesPercentage} + 'Yes'">50% YES</md-elevated-button>
+                        <md-elevated-button class="main-surface-no-button" th:text="${subject.noPercentage} + 'No'">50% No</md-elevated-button>
                     </div>
                     <div class="main-surface-footer">
                         <div class="main-surface-footer-left">
                             <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
+<!--                            <span>144.5 Points</span>-->
+                            <span th:text="${subject.totalPoints} + 'Points'">144.5 Points</span>
                         </div>
                         <div class="main-surface-footer-right">
                             <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
+                            <span th:text="${subject.totalCommentsReplies}">644</span>
                         </div>
                     </div>
                 </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-            </div><div class="main-surface">
-                <div class="main-surface-content">
-                    <div>
-                        <div class="main-surface-title">
-                            <div class="main-surface-img-box">
-                                <img src="../images/logo.png"/>
-                            </div>
-                            <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                        </div>
-                    </div>
-                    <div class="main-surface-button-box">
-                        <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                        <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                    </div>
-                    <div class="main-surface-footer">
-                        <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
-                            <span>144.5 Points</span>
-                        </div>
-                        <div class="main-surface-footer-right">
-                            <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                            <span>644</span>
-                        </div>
-                    </div>
-                </div>
-                </div><div class="main-surface">
-                    <div class="main-surface-content">
-                        <div>
-                            <div class="main-surface-title">
-                                <div class="main-surface-img-box">
-                                    <img src="../images/logo.png"/>
-                                </div>
-                                <p>8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
-                            </div>
-                        </div>
-                        <div class="main-surface-button-box">
-                            <md-elevated-button class="main-surface-yes-button">50% YES</md-elevated-button>
-                            <md-elevated-button class="main-surface-no-button">50% No</md-elevated-button>
-                        </div>
-                        <div class="main-surface-footer">
-                            <div class="main-surface-footer-left">
-                                <span class="material-symbols-outlined">paid</span>
-                                <span>144.5 Points</span>
-                            </div>
-                            <div class="main-surface-footer-right">
-                                <md-icon class="main-surface-footer-chat">chat_bubble</md-icon>
-                                <span>644</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </div>
+
+        </div>
+        <div class="main-view-all">
+            <md-text-button>View All</md-text-button>
+        </div>
+        <div class="main-body-active-rank">
+            <div class="main-body-active" th:replace="~{fragments/activity :: main-active}">
+            </div>
+            <div class="main-body-rank" th:replace="~{fragments/rank :: main-rank}">
+            </div>
         </div>
     </div>
+<script>
+    function onClickSubject(event) {
+        const subjectNo = event.currentTarget.getAttribute("value");
+        location.href = "/betting/?subjectNo=" + encodeURI(subjectNo);
+    }
+</script>
 </div>
 </html>
 

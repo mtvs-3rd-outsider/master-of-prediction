@@ -169,6 +169,7 @@
     justify-content: space-between;
     list-style-type: none;
     padding: 7px 0;
+    border-bottom: 1px solid rgba(128,128,128,0.25);
 }
 
 .ranking_yes-content li,
@@ -304,4 +305,28 @@
 .comment_input-time{
     font-size: 0.75em;
     color: gray;
+}
+
+.red-text {
+    color: red;
+}
+
+.green-text {
+    color: green;
+}
+
+.red-text {
+    color: red;
+}
+
+.green-text {
+    color: green;
+}
+
+#ranking_yes-holders,#ranking_yes-shares{
+    color: black;
+    font-size: 1.1em;
+}
+#ranking_no-holders,#ranking_no-shares{
+    font-size: 0.9em;
 }

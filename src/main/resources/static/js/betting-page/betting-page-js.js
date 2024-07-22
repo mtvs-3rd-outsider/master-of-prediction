@@ -134,9 +134,45 @@ function calculateTotal() {
     const selTotalPoint = document.getElementById('selTotalPoint');
 }
 
+function addComment(value) {
+    const newCommentInput = document.getElementById('new-comment');
+    const loggedInUserId =document.getElementById('loggedInUserId').value;
+    const newCommentContent = newCommentInput.value;
+    const loggedSubjectNo = document.getElementById('loggedSubjectNo').value;
+
+    if (newCommentContent.trim() === '') {
+        alert('댓글을 입력하세요.');
+        return;
+    }
+
+    const TblCommentDTO = {
+        commentContent: newCommentContent,
+        commentUserNo: loggedInUserId,
+        commentSubjectNo: loggedSubjectNo // 동적으로 주제 ID를 할당합니다.
+    };
+
+    fetch('/comment', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(TblCommentDTO)
+    })
+        .then(response => {
+            if (response.ok) {
+                newCommentInput.value = ''; // 입력 필드 비우기
+                userActivityComment(value); // 댓글 목록 새로고침
+            } else {
+                console.error('댓글 등록 실패');
+            }
+        })
+        .catch(error => {
+            console.error('댓글 등록 중 오류 발생:', error);
+        });
+}
 function userActivityComment(value) {
     const userActivityContent = document.querySelector('.user_active-content');
-    let loginCheck='';
+    let loginCheck = '';
 
     const buttons = document.querySelectorAll('.user-activity-button');
     buttons.forEach((button, index) => {
@@ -145,57 +181,154 @@ function userActivityComment(value) {
 
     buttons[value].classList.add('active');
 
-    if(login===true){
-        loginCheck=`<div class="comment_input-content">
-                    <input type="text" placeholder="  Add a comment">
-                    <button>입력</button>
+    if (login === true) {
+        loginCheck = `<div class="comment_input-content">
+                    <input type="text" id="new-comment" placeholder="  Add a comment">
+                    <button onclick="addComment(${value})">입력</button>
                 </div>`;
     }
-    userActivityContent.innerHTML =
-        loginCheck+ `
-                <div class="comment_safe-content">
-                    <p>외부 링크를 조심하세요, 피싱 공격일 수 있습니다.</p>
-                </div>
-                <div class="comment_sort-content">
-                    <ul>
-                        <li>Sort by Newest</li>
-<!--                        <li> <select id ="comment_sort-select">-->
-<!--                            <option>Newest</option>-->
-<!--                            <option>Likes</option>-->
-<!--                        </select></li>-->
-                    </ul>
-                </div>
-                <div class="comment-container">
-                    <div class="comment-content">
-                        <img src="../images/me.jpg" alt="Profile Image">
-                        <div class="comment-info">
-                            <p class="info-name">Kasc&nbsp<span class="comment_input-time">23m ago</span></p>
-                            <p class="info-content">The leading alternative to polymarkets [https://vanso.exchange?ref=7214] shows $23mil liquidity and much more volume on the same bet, Arbitrage opportunity? seems there are clueless whales abound.</p>
-                            <div class="info-buttons">
-<!--                                <button class='heartImg'><span class="material-symbols-outlined">favorite</span>20</button>-->
-                                <button class="comment-recomment-btn">답글</button>
-                            </div>
-                            <div class="recomment_input-content">
-                                <input type="text" placeholder="  Add a comment">
-                                <button>입력</button>
-                            </div>
-                        </div>
+
+    $.ajax({
+        url: '/comment',
+        type: 'GET',
+        success: function(data) {
+            userActivityContent.innerHTML = loginCheck + `
+                    <div class="comment_safe-content">
+                        <p>외부 링크를 조심하세요, 피싱 공격일 수 있습니다.</p>
                     </div>
-                    <div class="recomment-container">
-                        <div class="recomment-content">
+                    <div class="comment_sort-content">
+                        <ul>
+                            <li>Sort by Newest</li>
+                        </ul>
+                    </div>
+                    <div class="comment-container" id="comment-container">
+                    </div>`;
+
+            const commentContainer = document.getElementById('comment-container');
+            let commentsList = [];
+
+            data.forEach(comment => {
+                const date = new Date(comment.commentTimestamp);
+                const formattedDate = date.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+                let commentObj = commentsList.find(c => c.commentNo === comment.commnetNo);
+
+                if (!commentObj) {
+                    commentObj = {
+                        commentNo: comment.commnetNo,
+                        commentContent: comment.commentContent,
+                        commentTimestamp: formattedDate,
+                        commentUserName: comment.commentUserName,
+                        replies: []
+                    };
+                    commentsList.push(commentObj);
+                }
+
+                if (comment.replyNo) {
+                    const replyDate = new Date(comment.replyTimestamp);
+                    const formattedReplyDate = replyDate.toLocaleString('ko-KR', { timeZone: 'Asia/Seoul' });
+
+                    commentObj.replies.push({
+                        replyContent: comment.replyContent,
+                        replyTimestamp: formattedReplyDate,
+                        replyUserName: comment.replyUserName
+                    });
+                }
+            });
+
+            // 댓글을 commentTimestamp 기준으로 내림차순 정렬
+            commentsList.sort((a, b) => new Date(b.commentTimestamp) - new Date(a.commentTimestamp));
+
+            // 정렬된 댓글을 HTML로 생성
+            commentsList.forEach(comment => {
+                let commentHtml = `
+                        <div class="comment-content">
                             <img src="../images/me.jpg" alt="Profile Image">
                             <div class="comment-info">
-                                <p class="info-name">itsjoever41-17&nbsp<span class="comment_input-time">11m ago</span></p>
-                                <p class="info-content">Huge round of applause for our resident schizo 41-17™askDomerWhatImean hitting -$11.2K in his P/L and trending even worse! We did it Joe!</p>
+                                <p class="info-name">${comment.commentUserName}&nbsp;<span class="comment_input-time">${comment.commentTimestamp}</span></p>
+                                <p class="info-content">${comment.commentContent}</p>
                                 <div class="info-buttons">
-<!--                                    <button class='heartImg'><span class="material-symbols-outlined">favorite</span>45</button>-->
+                                    <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>
+                                </div>
+                                <div class="recomment_input-content" id="reply-input-${comment.commentNo}" style="display:none;">
+                                    <input type="text" placeholder="  Add a comment">
+                                    <button onclick="addReply(${comment.commentNo})">입력</button>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-                </div>
-        `;
+                        </div>`;
+
+                if (comment.replies.length > 0) {
+                    commentHtml += '<div class="recomment-container">';
+                    comment.replies.forEach(reply => {
+                        commentHtml += `
+                                <div class="recomment-content">
+                                    <img src="../images/me.jpg" alt="Profile Image">
+                                    <div class="comment-info">
+                                        <p class="info-name">${reply.replyUserName}&nbsp;<span class="comment_input-time">${reply.replyTimestamp}</span></p>
+                                        <p class="info-content">${reply.replyContent}</p>
+                                        <div class="info-buttons"></div>
+                                    </div>
+                                </div>`;
+                    });
+                    commentHtml += '</div>';
+                }
+
+                commentContainer.innerHTML += commentHtml;
+            });
+        },
+        error: function(xhr, status, error) {
+            console.error(`Error: ${error}`);
+        }
+    });
 }
+
+function showReplyInput(commentNo) {
+    const replyInput = document.getElementById(`reply-input-${commentNo}`);
+    if (replyInput.style.display === 'none') {
+        replyInput.style.display = 'block';
+    } else {
+        replyInput.style.display = 'none';
+    }
+}
+
+
+function addReply(commentNo) {
+    const replyInput = document.getElementById(`reply-input-${commentNo}`).getElementsByTagName('input')[0];
+    const newReply = replyInput.value;
+    const loggedInUserId = document.getElementById('loggedInUserId').value;
+
+    if (newReply.trim() === '') {
+        alert('답글을 입력하세요.');
+        return;
+    }
+
+    const TblReplyDTO = {
+        replyContent: newReply,
+        replyUserNo: loggedInUserId,
+        replyCommentNo: commentNo // 연결된 댓글 ID
+    };
+
+    fetch(`/comment/${commentNo}/reply`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(TblReplyDTO)
+    })
+        .then(response => {
+            if (response.ok) {
+                replyInput.value = ''; // 입력 필드 비우기
+                userActivityComment(0); // 댓글 목록 새로고침
+            } else {
+                console.error('답글 등록 실패');
+            }
+        })
+        .catch(error => {
+            console.error('답글 등록 중 오류 발생:', error);
+        });
+}
+
+
 
 function userActivityRanking(value){
     const userActivityContent = document.querySelector('.user_active-content');
@@ -205,86 +338,45 @@ function userActivityRanking(value){
     });
 
     buttons[value].classList.add('active');
+    $.ajax({
+        url: '/ranking',
+        type: 'GET',
+        success: function (data) {
+            // HTML 생성 함수
+            const generateRankingHtml = (choice, className) => {
+                let html = `
+          <ul>
+            <li id="${className}-holders">${choice} holders</li>
+            <li id="${className}-shares">SHARES</li>
+          </ul>
+        `;
 
+                data.forEach(ranking => {
+                    if (ranking.choice === choice.toLowerCase()) {
+                        html += `
+              <ul>
+                <li>
+                  <img src="../images/me.jpg">
+                  ${ranking.name}
+                </li>
+                <li class="${className}-amount">${ranking.sum}</li>
+              </ul>
+            `;
+                    }
+                });
 
-    userActivityContent.innerHTML=`
-    <div class="user_ranking-content">
-                    <div class ="ranking_yes-content">
-                        <ul>
-                            <li id ="ranking-holders">
-                                Yes holders
-                            </li>
-                            <li id ="ranking-shares">
-                                SHARES
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="ranking_no-content">
-                        <ul>
-                            <li id ="ranking-holders">
-                                No holders
-                            </li>
-                            <li id ="ranking-shares">
-                                SHARES
-                            </li>
-                        </ul>
-                    </div>
+                return html;
+            };
 
-                </div>
-
-
-
-                <div class="user_ranking-content">
-                    <div class ="ranking_yes-content">
-                        <ul>
-                            <li>
-                                <img src= "../images/me.jpg">
-                                Joe-Biden
-                            </li>
-                            <li class="ranking_yes-amount">
-                                355,270
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="ranking_no-content">
-                        <ul>
-                            <li>
-                                <img src= "../images/me.jpg">
-                                Joe-Biden
-                            </li>
-                            <li class="ranking_no-amount">
-                                355,270
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-                <div class="user_ranking-content">
-                    <div class ="ranking_yes-content">
-                        <ul>
-                            <li>
-                                <img src= "../images/me.jpg">
-                                Joe-Biden
-                            </li>
-                            <li class="ranking_yes-amount">
-                                355,270
-                            </li>
-                        </ul>
-                    </div>
-                    <div class="ranking_no-content">
-                        <ul>
-                            <li>
-                                <img src= "../images/me.jpg">
-                                Joe-Biden
-                            </li>
-                            <li class="ranking_no-amount">
-                                355,270
-                            </li>
-                        </ul>
-                    </div>
-
-                </div>
-                `;
+            // HTML 생성 및 삽입
+            userActivityContent.innerHTML = `
+        <div class="user_ranking-content">
+          <div class="ranking_yes-content">${generateRankingHtml('Yes', 'ranking_yes')}</div>
+          <div class="ranking_no-content">${generateRankingHtml('No', 'ranking_no')}</div>
+        </div>
+      `;
+        }
+    });
 }
 
 function userActivityActive(value){
@@ -298,19 +390,40 @@ function userActivityActive(value){
 
     buttons[value].classList.add('active');
 
+    $.ajax({
+        url: '/active',
+        type: 'GET',
+        success: function (data) {
+            userActivityContent.innerHTML = '';
+            data.forEach(activity => {
+                const date = new Date(activity.activeTimestamp);
+                const formattedDate = date.toLocaleString('ko-KR', {timeZone: 'Asia/Seoul'});
+                let activeYesNoClass = 'active-yesno-span';
+                let activeNumClass = 'active-num-span';
+                let purchaseOrSale = '구매';
 
-    userActivityContent.innerHTML=` <div class="user_activity-content">
-                    <ul>
-                        <li><img src="../images/me.jpg"/><span class="active-name-span">jjh</span>님께서 &nbsp<span class="active-yesno-span">YES</span>&nbsp를&nbsp <span class="active-num-span">갯수</span> 만큼 &nbsp<span>구매</span> 하였습니다</li>
-                        <li>21min ago</li>
-                    </ul>
-                </div>
-                <div class="user_activity-content">
-                    <ul>
-                        <li><img src="../images/me.jpg"/><span class="active-name-span">jjh</span>님께서 &nbsp<span class="active-yesno-span">YES</span>&nbsp를&nbsp <span class="active-num-span">갯수</span> 만큼 &nbsp<span>구매</span> 하였습니다</li>
-                        <li>21min ago</li>
-                    </ul>
-                </div>`;
+                if (activity.choice === 'No') {
+                    activeYesNoClass += ' red-text';
+                    activeNumClass += ' red-text';
+                } else {
+                    activeYesNoClass += ' green-text';
+                    activeNumClass += ' green-text';
+                }
+
+                if (activity.amount < 0) {
+                    purchaseOrSale = '판매';
+                }
+
+                userActivityContent.innerHTML += `
+                        <div class="user_activity-content">
+                            <ul>
+                                <li><img src="../images/me.jpg"/><span class="active-name-span">${activity.name}</span>님께서 &nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;를&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> 만큼 &nbsp;<span>${purchaseOrSale}</span> 하였습니다</li>
+                                <li>${formattedDate}</li>
+                            </ul>
+                        </div>`;
+            });
+        }
+    });
 }
 
 function buyModal(){

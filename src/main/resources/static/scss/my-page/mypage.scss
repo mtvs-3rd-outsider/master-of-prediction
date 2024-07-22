@@ -1,5 +1,5 @@
 /* 변수 정의 */
-$font-size-large: clamp(2rem, 3dvh, 4vw);  /* 최소 2rem, 기본 3dvh, 최대 4vw */
+$font-size-large: clamp(2rem, 3dvh, 4vw); /* 최소 2rem, 기본 3dvh, 최대 4vw */
 $gap-large: clamp(1rem, 4dvh, 5vw);
 $gap-small: clamp(0.5rem, 1dvh, 2vw);
 $padding-small: clamp(1rem, 2dvh, 3vw);
@@ -45,7 +45,7 @@ body {
   justify-content: center;
   margin-bottom: 2rem;
 
-  .tier{
+  .tier {
     margin: 0 1rem;
     width: 2rem;
     height: 2rem;
@@ -55,6 +55,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+
     .profile-avatar {
       position: relative;
       display: inline-block;
@@ -95,6 +96,7 @@ body {
         }
       }
     }
+
     .avatar {
       position: relative;
       display: flex;
@@ -212,18 +214,23 @@ body {
     @media (min-width: 1024px) {
       padding: 1.5rem;
     }
-    .point-color{
+
+    .point-color {
       background-color: #c7d9ff;
     }
-    .profit-color{
+
+    .profit-color {
       background-color: #dbd9ff;
     }
-    .volume-color{
+
+    .volume-color {
       background-color: #fbd4ff;
     }
-    .traded-color{
+
+    .traded-color {
       background-color: #ffd8d8;
     }
+
     .icon {
       width: 2.25rem;
       height: 2.25rem;
@@ -244,44 +251,55 @@ body {
       white-space: nowrap;
       margin: auto;
     }
-
+    .left-flex{
+      display: flex;
+      width: 100%;
+      justify-content: flex-end;
     .value {
+
       margin-top: 0.25rem;
       font-size: 1.5rem;
       font-weight: bold;
     }
+    }
+
   }
 }
 
 .tabs {
   margin-top: 2rem;
   width: 100%;
-  .tablist-line{
-    display:flex;
-  .tablist {
-    display: inline-flex;
 
-    .tab {
-      padding: 0 0.75rem;
-      --md-primary-tab-container-color: $card-background;
-      --md-primary-tab-container-shape: 1rem;
-      --md-secondary-tab-icon-color: $tab-font-color;
-      //--_active-indicator-color: $tab-font-color;
-      //--_active-label-text-color: $tab-font-color;
-      --md-sys-color-surface:$card-background;
-      --md-sys-color-primary: #3a79c8;
+  .tablist-line {
+    display: flex;
+
+    .tablist {
+      display: inline-flex;
+
+      .tab {
+        padding: 0 0.75rem;
+        --md-primary-tab-container-color: $card-background;
+        --md-primary-tab-container-shape: 1rem;
+        --md-secondary-tab-icon-color: $tab-font-color;
+        //--_active-indicator-color: $tab-font-color;
+        //--_active-label-text-color: $tab-font-color;
+        --md-sys-color-surface: $card-background;
+        --md-sys-color-primary: #3a79c8;
+      }
+    }
+
+    .border-line {
+      display: inline-flex;
+      border-bottom: 0.1rem solid;
+      border-bottom-color: #bcbcbc;
+      flex: 1 1 auto;
     }
   }
-  .border-line{
-    display: inline-flex;
-    border-bottom: 0.1rem solid;
-    border-bottom-color: #bcbcbc;
-    flex: 1 1 auto;
-  }
-  }
-  .active{
+
+  .active {
     display: block !important;
   }
+
   .tabpanel {
     margin-top: 0.25rem;
     padding-left: 2rem;
@@ -295,8 +313,7 @@ body {
       box-shadow: 0 0 0 2px $ring-color;
     }
 
-    .positions-header,
-    .positions-content {
+    .positions-header {
       display: flex;
       justify-content: space-between;
       margin-top: 1rem;
@@ -304,21 +321,33 @@ body {
 
       .positions-header {
         margin-bottom: 1rem;
+
       }
 
+    }
+    .positions-content {
+      margin-top: 1rem;
+      color: $muted-foreground-color;
+
+      .item{
+        display: flex;
+        justify-content: space-between;
+        margin: 1rem 0;
+        cursor: pointer;
+        text-decoration: none;
+      }
 
     }
     .positions-content-no-positions {
       display: flex;
-      justify-content: center ;
+      justify-content: center;
       margin-top: 1rem;
       color: $muted-foreground-color;
     }
   }
 }
 
-.surface
- {
+.surface {
   position: relative;
   border-radius: 16px;
 
