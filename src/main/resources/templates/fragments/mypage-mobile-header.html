@@ -49,12 +49,10 @@
                     </md-icon-button>
                 </md-text-button>
                 <md-menu anchor="usage-submenu-anchor-mobile" has-overflow id="usage-submenu-mobile">
-                    <md-menu-item>
-                        <div>Sign Up</div>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                        <div>Log Out</div>
                     </md-menu-item>
-                    <md-menu-item>
-                        <div>Log in</div>
-                    </md-menu-item>  <md-menu-item>
+  <md-menu-item>
                         <div>Activity</div>
                     </md-menu-item>  <md-menu-item>
                         <div>Rank</div>

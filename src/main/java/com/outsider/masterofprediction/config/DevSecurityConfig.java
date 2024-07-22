@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -79,7 +80,16 @@ public class    DevSecurityConfig{
                 )
                 .addFilterAfter(customAuthenticationFilter(),
                         // UsernamePasswordAuthenticationFilter.class);
-                        BasicAuthenticationFilter.class).csrf(AbstractHttpConfigurer::disable);
+                        BasicAuthenticationFilter.class).csrf(AbstractHttpConfigurer::disable)
+                .logout(logout ->{
+            logout.logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"));
+            logout.deleteCookies("JSESSIONID"); // 로그아웃 시 사용자의 JSESSIONID 삭제
+            logout.invalidateHttpSession(true);// 세션을 소멸하도록 허용하는 것
+            logout.logoutSuccessUrl("/"); // 로그아웃시 이동할 페이지 설정
+        }).sessionManagement(session ->{
+                    session.maximumSessions(1);// session의 허용 개수를 제한
+                    session.invalidSessionUrl("/"); // 세션만료시 이동할 페이지
+                }).csrf(csrf -> csrf.disable());
 
         return http.build();
 
