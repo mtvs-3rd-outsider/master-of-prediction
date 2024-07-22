@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.outsider.masterofprediction.mapper.PointHistoryMapper">
+    <insert id="insertHistoryByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+    INSERT INTO tbl_point_history (
+    change_amount,
+    change_reason,
+    change_user_no
+    ) VALUES (
+    #{orderAmount},
+    #{orderChoice},
+    #{orderUserNo}
+    )
+    </insert>
+</mapper>

@@ -5,6 +5,7 @@ import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.constatnt.StringConstants;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
+import com.outsider.masterofprediction.utils.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class BettingUpdateService {
     public void update(TblSubjectDTO tblSubjectDTO, MultipartFile file, Date date) throws IOException {
 
         tblSubjectDTO.setSubjectSettlementTimestamp(new Timestamp(date.getTime()));
+        Validation.subject(tblSubjectDTO);
         if (!file.isEmpty()){
             TblAttachmentDTO tblAttachmentDTO = this.attachmentMapper.getAttachmentsBySubjectNo(tblSubjectDTO.getSubjectNo());
             if (StringConstants.BASIC_IMAGE.equals(file.getOriginalFilename())

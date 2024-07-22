@@ -29,6 +29,9 @@ public interface AttachmentMapper {
     @Select("SELECT * FROM tbl_attachment WHERE attachment_user_no=#{id}")
     public TblAttachmentDTO getAttachmentsByUserNo(Long id);
 
+    @Select("SELECT * FROM tbl_attachment WHERE tier_no=#{id}")
+    public TblAttachmentDTO getAttachmentsByTierNo(Long id);
+
     @Insert("INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, subject_no) " +
             "values (#{attachmentFileAddress}, #{attachmentRegistUserNo}, #{subjectNo})")
     public void setAttachmentsBySubjectNo(TblAttachmentDTO tblAttachmentDTO);
@@ -45,6 +48,10 @@ public interface AttachmentMapper {
     @Insert("INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, notice_no) " +
             "values (#{attachmentFileAddress}, #{attachmentRegistUserNo}, #{noticeNo})")
     public void setAttachmentsByNoticeNo(TblAttachmentDTO tblAttachmentDTO);
+
+    @Insert("INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no) " +
+            "values (#{attachmentFileAddress}, #{attachmentRegistUserNo}, #{tierNo})")
+    public void setAttachmentsByTierNo(TblAttachmentDTO tblAttachmentDTO);
 
 
     @Update("UPDATE tbl_attachment SET " +
@@ -80,5 +87,6 @@ public interface AttachmentMapper {
 
     @Delete("DELETE FROM tbl_attachment WHERE notice_no = #{noticeNo}")
     void deleteAttachmentsByNoticeNo(long noticeNo);
+
 
 }

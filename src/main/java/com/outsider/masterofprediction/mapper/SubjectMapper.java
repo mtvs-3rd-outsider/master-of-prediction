@@ -1,5 +1,6 @@
 package com.outsider.masterofprediction.mapper;
 
+import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.response.BettingAndAttachmentDTO;
 import org.apache.ibatis.annotations.*;
@@ -109,4 +110,5 @@ public interface SubjectMapper {
     void deleteSubject(long subjectNo);
 
 
+    void updateTotalPointByDTO(TblBettingOrderDTO bettingOrderDTO);
 }

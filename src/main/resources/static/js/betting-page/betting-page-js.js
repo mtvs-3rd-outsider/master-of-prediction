@@ -1,12 +1,35 @@
 var login = true;
 var sideSelect = true;
 var activeSelect = 0;
+let selectedChoice = null;
+var sumYPoint;
+var sumNPoint
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
     graphChart();
-}
+    sumYPoint = document.getElementById("sumYPoint").value;
+    sumNPoint=document.getElementById("sumNPoint").value;
+    // batting_modal-container 숨기기
+    const bettingModalContainer = document.querySelector('.batting_modal-container');
+    bettingModalContainer.style.display = 'none';
 
+    // popup_setting-content 숨기기
+    const popupSettingContent = document.querySelector('.popup_setting-content');
+    popupSettingContent.style.display = 'none';
+}
+document.addEventListener('DOMContentLoaded', function() {
+    const bettingWarningElement = document.querySelector('.betting-warning');
+
+    // Assuming you have the userAuthority value from the controller
+    const userAuthority = '{{ userAuthority }}';
+
+    if (userAuthority === 'ROLE_ADMIN') {
+        bettingWarningElement.classList.remove('hidden');
+    } else {
+        bettingWarningElement.classList.add('hidden');
+    }
+});
 function sideSelectBuy() {
     sideSelect = true;
     const buyButton = document.querySelector('.buy-item button');
@@ -15,6 +38,8 @@ function sideSelectBuy() {
     buyButton.style.borderBottom='3px solid #8D7CBB';
     sellButton.style.borderBottom='none';
     sellButton.style.color='gray';
+    // 123
+    sideSelect = true;
     createSideMain();
 
 }
@@ -58,60 +83,62 @@ function popupCancle() {
 }
 
 function createSideMain() {
-            // 부모 요소 선택
-            const sideMainContent = document.querySelector('.side_main-container');
-
-            let battingModalStr;
-            if(login===true){
-                if(sideSelect===true){
-            battingModalStr=` <button class="batting-buy-modal" onclick="buyModal()">구매</button>`;
-        }else{
-            battingModalStr=` <button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
+    const sideMainContent = document.querySelector('.side_main-container');
+    let battingModalStr;
+    if (login === true) {
+        if (sideSelect === true) {
+            battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" disabled>구매</button>`;
+        } else {
+            battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
         }
-    }else{
-        battingModalStr=` <button class="batting-login-modal" onclick="loginModal()">로그인</button>`;
+    } else {
+        battingModalStr = `<button class="batting-login-modal" onclick="loginModal()">로그인</button>`;
     }
-    // 새로운 HTML 문자열 생성
     const sideHtml = `
     <div class="${sideSelect ? 'side_buy-content' : 'side_sell-content'}">
-     <ul>
-                    <li>예측</li>
-                    <li>
-                        <div class="side_buy-yesno-li">
-                            <button class="yesno-button" onclick="yesButton()">YES</button>
-                            <button class="yesno-button" onclick="noButton()">NO</button>
-                        </div>
-                    </li>
-                    <li>구매포인트</li>
-                    <li>
-                        <div class="side-point-input">
-                            <button>+</button>
-                            <input type="number" id="inputPoint" onchange="calculateTotal()" step="10">
-                            <button>-</button>
-                        </div>
-                    </li>
-                    <li>
-                        `+battingModalStr+`
-                    </li>
-                    <li>
-                        <div class="side-sum-content">
-                            합계 <span id="totalPoint">0<span>Point</span></span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="side-return-content">
-                            잠재수익률 <span id="returnPoint">0<span>%</span></span>
-                        </div>
-                    </li>
-                </ul>
+        <ul>
+            <li>예측</li>
+            <li>
+                <div class="side_buy-yesno-li">
+                    <button class="yesno-button" onclick="yesButton()">YES</button>
+                    <button class="yesno-button" onclick="noButton()">NO</button>
+                </div>
+            </li>
+            <li>${sideSelect ? '구매포인트' : '판매포인트'}</li>
+            <li>
+                <div class="side-point-input">
+                    <button onclick="changePoint(10)">+</button>
+                    <input type="number" id="inputPoint" onchange="calculateTotal()" step="10" min="0">
+                    <button onclick="changePoint(-10)">-</button>
+                </div>
+            </li>
+            <li>
+                ${battingModalStr}
+            </li>
+            <li>
+                <div class="side-sum-content">
+                    합계 <span id="totalPoint">0<span>Point</span></span>
+                </div>
+            </li>
+            <li>
+                <div class="side-return-content">
+                    보유포인트 <span id="returnPoint"><span>Point</span></span>
+                </div>
+            </li>
+        </ul>
     </div>
-  `;
-
-    // HTML 문자열을 innerHTML로 설정
+    `;
     sideMainContent.innerHTML = sideHtml;
+    document.getElementById('inputPoint').disabled = true;
+    document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = true;
+
+
 }
 
 function yesButton(){
+    selectedChoice = 'YES';
+    enableInput();
+    updateReturnPoint(sumYPoint);
     const Btns=document.querySelectorAll('.yesno-button');
     Btns[0].style.backgroundColor='green';
     Btns[0].style.color='white';
@@ -120,19 +147,49 @@ function yesButton(){
 }
 
 function noButton(){
+    selectedChoice = 'NO';
+    enableInput();
+    updateReturnPoint(sumNPoint);
     const Btns=document.querySelectorAll('.yesno-button');
     Btns[1].style.backgroundColor='red';
     Btns[1].style.color='white';
     Btns[0].style.backgroundColor='#f0f0f0';
     Btns[0].style.color='black';
 }
+function updateReturnPoint(point) {
+    document.getElementById("returnPoint").innerText = point + " Point";
+}
+function enableInput() {
+    document.getElementById('inputPoint').disabled = false;
+    document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = false;
+    validatePurchaseButton();
+}
 
-
+function changePoint(amount) {
+    const input = document.getElementById('inputPoint');
+    let value = parseInt(input.value || '0') + amount;
+    if (value < 0) value = 0;
+    input.value = value;
+    calculateTotal();
+}
 
 function calculateTotal() {
-    const sellInputPoint = document.getElementById('sellInputPoint');
-    const selTotalPoint = document.getElementById('selTotalPoint');
+    const inputPoint = document.getElementById('inputPoint');
+    const totalPoint = document.getElementById('totalPoint');
+    totalPoint.textContent = `${inputPoint.value} Point`;
+    validatePurchaseButton();
 }
+
+function validatePurchaseButton() {
+    const inputPoint = document.getElementById('inputPoint');
+    const purchaseButton = document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal');
+    if (selectedChoice && inputPoint.value > 0) {
+        purchaseButton.disabled = false;
+    } else {
+        purchaseButton.disabled = true;
+    }
+}
+
 
 function addComment(value) {
     const newCommentInput = document.getElementById('new-comment');
@@ -154,8 +211,10 @@ function addComment(value) {
     fetch('/comment', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+
         },
+        credentials: 'include',
         body: JSON.stringify(TblCommentDTO)
     })
         .then(response => {
@@ -330,7 +389,7 @@ function addReply(commentNo) {
 
 
 
-function userActivityRanking(value){
+function userActivityRanking(value) {
     const userActivityContent = document.querySelector('.user_active-content');
     const buttons = document.querySelectorAll('.user-activity-button');
     buttons.forEach((button, index) => {
@@ -351,8 +410,10 @@ function userActivityRanking(value){
           </ul>
         `;
 
-                data.forEach(ranking => {
-                    if (ranking.choice === choice.toLowerCase()) {
+                // 데이터를 sum 값 내림차순으로 정렬
+                data.filter(ranking => ranking.choice === choice.toLowerCase())
+                    .sort((a, b) => b.sum - a.sum)
+                    .forEach(ranking => {
                         html += `
               <ul>
                 <li>
@@ -362,8 +423,7 @@ function userActivityRanking(value){
                 <li class="${className}-amount">${ranking.sum}</li>
               </ul>
             `;
-                    }
-                });
+                    });
 
                 return html;
             };
@@ -378,6 +438,7 @@ function userActivityRanking(value){
         }
     });
 }
+
 
 function userActivityActive(value){
     const userActivityContent = document.querySelector('.user_active-content');
@@ -426,30 +487,88 @@ function userActivityActive(value){
     });
 }
 
-function buyModal(){
+function buyModal() {
+    const totalPoints = document.getElementById('totalPoint').innerText;
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display='block';
-    battingModalContainer.innerHTML=`  <div class="buy_modal-content">
-        <p class="modal-title">제목</p>
-        <p><span>yes</span>를 선택하셨습니다.</p>
-        <p><span>310p</span>를 소모해여 <span>구매</span>하시겠습니까?</p>
-        <div class="modal-btns">
-            <button class="modal-btns-buy">구매</button>
-            <button class="modal-btns-cancel" onclick="battingModalCancle()">취소</button>
-        </div>
-    </div>`;
+    battingModalContainer.style.display = 'block';
+    battingModalContainer.innerHTML = `
+        <div class="buy_modal-content">
+            <p class="modal-title">제목</p>
+            <p><span>${selectedChoice}</span>를 선택하셨습니다.</p>
+            <p><span>${totalPoints}</span>를 소모하여 <span>구매</span>하시겠습니까?</p>
+            <div class="modal-btns">
+                <button class="modal-btns-buy" onclick="submitPurchase()">구매</button>
+                <button class="modal-btns-cancel" onclick="battingModalCancel()">취소</button>
+            </div>
+        </div>`;
 }
-function sellModal(){
+
+
+function battingModalCancel() {
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display='block';
-    battingModalContainer.innerHTML=`<div class="sell_modal-content">
-             <p class="modal-title">제목</p>
-        <p><span>no</span>를 선택하셨습니다.</p>
-        <p>310p를 <span>판매</span>하시겠습니까?</p>
-        <div class="modal-btns">
-            <button class="modal-btns-sell">판매</button>
-            <button class="modal-btns-cancel" onclick="battingModalCancle()">취소</button>
-        </div>
+    battingModalContainer.style.display = 'none';
+}
+
+function submitPurchase() {
+    const orderAmount = parseInt(document.getElementById('inputPoint').value);
+    const orderChoice = selectedChoice;
+
+    $.ajax({
+        url: '/buyItem',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ orderAmount, orderChoice }),
+        success: function(response) {
+            alert(response.message);
+            // window.location.href = '/betting?subjectNo=' + urlParams.get('subjectNo');
+            location.reload(true);
+
+        },
+        error: function(xhr) {
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message);
+            if (response.redirectUrl) {
+                window.location.href = response.redirectUrl;
+            }
+        }
+    });
+}
+function submitSale() {
+    const orderAmount = parseInt(document.getElementById('inputPoint').value);
+    const orderChoice = selectedChoice;
+
+    $.ajax({
+        url: '/sellItem',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({ orderAmount, orderChoice }),
+        success: function(response) {
+            alert(response.message);
+            window.location.href = '/betting';
+        },
+        error: function(xhr) {
+            const response = JSON.parse(xhr.responseText);
+            alert(response.message);
+            if (response.redirectUrl) {
+                window.location.href = response.redirectUrl;
+            }
+        }
+    });
+}
+
+function sellModal() {
+    const totalPoints = document.getElementById('totalPoint').innerText;
+    const battingModalContainer = document.querySelector('.batting_modal-container');
+    battingModalContainer.style.display = 'block';
+    battingModalContainer.innerHTML = `
+        <div class="sell_modal-content">
+            <p class="modal-title">제목</p>
+            <p><span>${selectedChoice}</span>를 선택하셨습니다.</p>
+            <p><span>${totalPoints}</span>를 <span>판매</span>하시겠습니까?</p>
+            <div class="modal-btns">
+                <button class="modal-btns-sell" onclick="submitSale()">판매</button>
+                <button class="modal-btns-cancel" onclick="battingModalCancel()">취소</button>
+            </div>
         </div>`;
 }
 function loginModal(){
@@ -465,7 +584,7 @@ function graphChart() {
     new Chart(document.getElementById("line-chart"), {
         type: 'line',
         data: {
-            labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050,2100],
+            labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
             datasets: [
                 {
                     data: [168,170,178,190,203,276,408,547,675,734],
@@ -482,6 +601,8 @@ function graphChart() {
             ]
         },
         options: {
+            responsive: false,
+            maintainAspectRatio:true,
             title: {
                 display: true,
                 text: 'World population per region (in millions)'
@@ -490,7 +611,7 @@ function graphChart() {
                 x: {
                     grid: {
                         display: false,
-                        
+
                     }
                 }
             },

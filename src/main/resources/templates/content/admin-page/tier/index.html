@@ -37,7 +37,7 @@
             <div class="admin-main-head">
                 <div class="subject"><h1>티어목록</h1></div>
                 <div>
-                    <a th:onclick="createClick()">
+                    <a th:href="@{/admin-page/tier/create}">
                         <md-filled-tonal-button class="create-button"
                         >등록버튼
                         </md-filled-tonal-button
@@ -56,23 +56,30 @@
                     <span>선택</span>
                 </div>
                 <div class="title">
-                    <span>카테고리명</span>
+                    <span>티어 제목</span>
+                </div>
+                <div class="title">
+                    <span>티어 내용</span>
                 </div>
             </div>
 
             <!--            삭제 전용 form-->
-            <div class="admin-main-body" th:each="item: ${tier}">
+            <div class="admin-main-body" th:each="tier: ${tiers}">
                 <div class="main-node">
                     <div class="checkbox">
                         <form action="#" id="delete-form" method="post" th:action="@{/admin-page/tier/delete}">
-                            <md-checkbox th:name="ids" th:value="${item.getTierNo()}" touch-target="wrapper">
+                            <md-checkbox th:name="ids" th:value="${tier.tierNo}" touch-target="wrapper">
                             </md-checkbox>
                         </form>
                     </div>
-                    <!--                        <div class="title" onclick="updateNotification(event)" th:data-id="${item.getCategoryNo()}">-->
-                    <div class="title" th:data-id="${tier.getTierNo()}" onclick="updateClick(event)">
+                    <!--                        <div class="title" onclick="updateNotification(event)" th:data-id="${tier.getCategoryNo}">-->
+                    <div class="title" th:data-id="${tier.tierNo}" onclick="updateClick(event)">
                             <span class=".category-span"
-                                  th:text="${item.getTierName()}"></span>
+                                  th:text="${tier.tierName}"></span>
+                    </div>
+                    <div class="title" th:data-id="${tier.tierNo}" onclick="updateClick(event)">
+                            <span class=".category-span"
+                                  th:text="${tier.tierContent}"></span>
                     </div>
                 </div>
             </div>
@@ -102,36 +109,11 @@
                 </div>
             </form>
 
-            <form id="update-form" method="post" th:action="@{/admin-page/tier/update}">
-                <div class="dialog-overlay" id="update-dialog">
-                    <div class="dialog">
-                        <p id="update-name-refresh">티어 이름을 변경하시겠습니까?</p>
-                        <p>새로운 이름을 입력하세요.</p>
-                        <div>
-                            <md-outlined-text-field
-                                    id="category-update-name"
-                                    label="티어이름"
-                                    name="categoryName"
-                                    autocomplete="off"
-                                    required></md-outlined-text-field>
-                        </div>
-                        <input type="hidden" id="data-set-id" name="categoryNo" value="" />
-                        <button onclick="confirmDelete()" type="submit">수정</button>
-                        <button onclick="cancelUpdate()" type="button">취소</button>
-                    </div>
-                </div>
-            </form>
 
             <script>
                 function updateClick(event) {
-                    document.getElementById("data-set-id").value = event.currentTarget.getAttribute("data-id");
-                    document.getElementById("update-name-refresh").innerText = `${event.target.innerText} 카테고리 이름을 변경하시겠습니까?`;
-                    document.getElementById("update-dialog").style.display = "flex";
-                }
-
-                function cancelUpdate() {
-                    document.getElementById("category-update-name").reset();
-                    document.getElementById("update-dialog").style.display = "none";
+                    const data_id = event.currentTarget.getAttribute("data-id");
+                    window.location.href = `./tier/${data_id}`
                 }
             </script>
 

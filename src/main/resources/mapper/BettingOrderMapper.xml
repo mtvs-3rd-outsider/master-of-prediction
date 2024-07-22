@@ -43,6 +43,31 @@
         <result property="totalLossPoints" column="total_loss_points" />
         <result property="netProfitPoints" column="net_profit_points" />
     </resultMap>
+
+    <resultMap id="ActivityUserSubjectResultMap" type="com.outsider.masterofprediction.dto.ActivityUserSubjectDTO">
+        <id property="orderNo" column="ORDER_NO"/>
+        <result property="orderAmount" column="ORDER_AMOUNT"/>
+        <result property="orderChoice" column="ORDER_CHOICE"/>
+        <result property="orderTimestamp" column="ORDER_TIMESTAMP"/>
+
+        <collection property="user" ofType="com.outsider.masterofprediction.dto.TblUserDTO">
+            <id property="userNo" column="USER_NO"/>
+            <result property="userName" column="USER_NAME"/>
+        </collection>
+        <collection property="subject" ofType="com.outsider.masterofprediction.dto.TblSubjectDTO">
+            <id property="subjectNo" column="SUBJECT_NO"/>
+            <result property="subjectTitle" column="SUBJECT_Title"/>
+        </collection>
+        <collection property="attachmentUser" ofType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
+            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
+            <result property="attachmentFileAddress" column="ATTACH_FILE_ADDRESS"/>
+        </collection>
+        <collection property="attachmentSubject" ofType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
+            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
+            <result property="attachmentFileAddress" column="ATTACH_FILE_ADDRESS"/>
+        </collection>
+    </resultMap>
+
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
         SELECT
@@ -247,4 +272,66 @@ WHERE
         WHERE
             c.subject_status = '진행중';
     </select>
+    <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        INSERT INTO tbl_betting_order (
+            order_amount,
+            order_choice,
+            order_subject_no,
+            order_user_no
+        ) VALUES (
+                     #{orderAmount},
+                     #{orderChoice},
+                     #{orderSubjectNo},
+                     #{orderUserNo}
+                 )
+    </insert>
+    <select id="getYesSumPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" resultType="int">
+        SELECT
+            SUM(CASE WHEN a.order_choice = 'Yes' THEN a.order_amount ELSE 0 END) AS Yes
+        FROM (
+                 SELECT *
+                 FROM tbl_betting_order
+                 WHERE order_user_no = #{orderUserNo}
+                   AND order_subject_no = #{orderSubjectNo}
+             ) a
+        GROUP BY a.order_user_no
+    </select>
+    <select id="getNoSumPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" resultType="int">
+        SELECT
+            SUM(CASE WHEN a.order_choice = 'No' THEN a.order_amount ELSE 0 END) AS No
+        FROM (
+                 SELECT *
+                 FROM tbl_betting_order
+                 WHERE order_user_no = #{orderUserNo}
+                   AND order_subject_no = #{orderSubjectNo}
+             ) a
+        GROUP BY a.order_user_no
+    </select>
+
+    <select id="findActivity" resultMap="ActivityUserSubjectResultMap">
+        SELECT
+                A.ORDER_NO
+                , A.ORDER_AMOUNT
+                , A.ORDER_CHOICE
+                , A.ORDER_TIMESTAMP
+                , B.USER_NO
+                , B.USER_NAME
+                , C.SUBJECT_NO
+                , C.SUBJECT_TITLE
+                , D.ATTACHMENT_FILE_NO
+                , D.ATTACHMENT_FILE_ADDRESS
+                , E.ATTACHMENT_FILE_NO
+                , E.ATTACHMENT_FILE_ADDRESS
+        FROM
+                TBL_BETTING_ORDER A
+                LEFT JOIN TBL_USER B ON A.ORDER_USER_NO = B.USER_NO
+                LEFT JOIN TBL_SUBJECT C ON A.ORDER_SUBJECT_NO = C.SUBJECT_NO
+                LEFT JOIN TBL_ATTACHMENT D ON A.ORDER_USER_NO = D.ATTACHMENT_USER_NO
+                LEFT JOIN TBL_ATTACHMENT E ON A.ORDER_SUBJECT_NO = E.SUBJECT_NO
+        WHERE
+                B.USER_AUTHORITY = '회원'
+        ORDER BY
+                A.ORDER_TIMESTAMP DESC
+    </select>
+
 </mapper>

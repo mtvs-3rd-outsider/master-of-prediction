@@ -1,3 +1,16 @@
+
+.betting-warning {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.betting-warning.hidden {
+    display: none;
+}
 .title-content{
     display: flex; /* flexbox 사용 */
     align-items: center; /* 세로 방향 중앙 정렬 */

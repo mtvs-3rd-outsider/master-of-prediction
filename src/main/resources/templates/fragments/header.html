@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <header id="DeskHeader" class="header" th:fragment="content">
     <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
@@ -8,7 +8,7 @@
     <div style="box-shadow: 0 2px 2px -2px gray;">
         <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
-                <a href="header.html">
+                <a href="/">
                     <img height="90px" src="../images/logo2.png" width="90px">
                 </a>
                 <div style="width: 100%;display: flex;align-items: center;">
@@ -32,7 +32,7 @@
                     </md-icon>
                     <span class="child">Activity</span>
                 </a>
-                <a class="header-menu-hover" href=""
+                <a class="header-menu-hover" href="/rankpage"
                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
                     <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
     padding-right: 12px;">Trophy
@@ -40,13 +40,11 @@
                     <span class="child">Rank</span>
                 </a>
             </div>
-            <div>
-                <th:block th:if="${userId == 0}">
-                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>
-                </th:block>
-                <th:block  th:unless="${userId == 0 }">
-                    <th:block th:replace="~{fragments/login-header-profile :: content}"/>
-                </th:block>
+            <div  sec:authorize="isAnonymous()">
+                <th:block   th:replace="~{fragments/logout-header-profile :: content}"/>
+            </div>
+            <div  sec:authorize="isAuthenticated()">
+                <th:block  th:replace="~{fragments/login-header-profile :: content}"/>
             </div>
             <div style="position: relative">
                 <md-text-button id="usage-submenu-anchor">
@@ -58,8 +56,14 @@
 <!--                    <md-menu-item>-->
 <!--                        <div>Sign Up</div>-->
 <!--                    </md-menu-item>-->
-                    <md-menu-item>
+                    <md-menu-item sec:authorize="isAnonymous()" class='open-login-dialog-btn'>
                         <div>Log in</div>
+                    </md-menu-item>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/mypage}">
+                        <div>My Page</div>
+                    </md-menu-item>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                        <div>Log Out</div>
                     </md-menu-item>
                 </md-menu>
             </div>
@@ -67,12 +71,16 @@
         <div class="category">
             <ul id="header-ul">
                 <li><a href="">전체</a></li>
-                <li><a href="">인기</a></li>
-                <li><a href="">최신</a></li>
-                <li><a href="">많은</a></li>
-                <li><a href="">곧 마감</a></li>
-                <li><a href="">종료된</a></li>
-                <li><a href="">찜한</a></li>
+                <li th:each="category : ${categories}">
+                    <a th:href="'/?categoryNo=' + ${category.categoryNo}"
+                        th:text="${category.categoryName}"></a>
+                </li>
+<!--                    <li><a href="">인기</a></li>-->
+<!--                    <li><a href="">사회</a></li>-->
+<!--                    <li><a href="">스포츠</a></li>-->
+<!--                    <li><a href="">일상</a></li>-->
+<!--                    <li><a href="">연예</a></li>-->
+<!--                    <li><a href="">세계</a></li>-->
             </ul>
         </div>
     </div>
@@ -97,48 +105,8 @@
             </div>
         </div>
     </md-dialog>
-    <md-dialog type="alert" id='login-dialog'>
-        <div slot="headline"><div class="headline" >로그인</div></div>
-        <form slot="content" id="form-id3" method="dialog">
-            <div th:replace="~{content/login-page/login :: content}">Right Content</div>
-        </form>
-        <div slot="actions">
-            <div class="register-btn-group">
-                <md-text-button id="inquiry-register-close-button" form="form-id2" value="cancel">취소</md-text-button>
-            </div>
-        </div>
-    </md-dialog>
-    <script>
-        const signUpDialog = document.getElementById('sign-up-dialog');
-        const openSignUpDialogBtn = document.getElementById('open-sign-up-dialog-btn');
-        const signUpForm = signUpDialog.querySelector('form');
-        openSignUpDialogBtn.addEventListener('click', () => {
-            console.log("등록 됨")
-            signUpDialog.show(); // 다이얼로그를 엽니다.
-        });
-        const siginUpCloseButton = signUpDialog.querySelector('#inquiry-register-close-button');
 
-        siginUpCloseButton.addEventListener('click', () => {
-            signUpForm.reportValidity()
-            signUpDialog.close();
 
-        });
-    const loginDialog = document.getElementById('login-dialog');
-    const openLoginDialogBtn = document.getElementById('open-login-dialog-btn');
-    const loginForm = loginDialog.querySelector('form');
-    openLoginDialogBtn.addEventListener('click', () => {
-        console.log("등록 됨")
-        loginDialog.show(); // 다이얼로그를 엽니다.
-    });
-    const closeButton = loginDialog.querySelector('#inquiry-register-close-button');
-
-    closeButton.addEventListener('click', () => {
-        loginForm.reportValidity()
-        loginDialog.close();
-
-    });
-
-</script>
 </header>
 </body>
 </html>

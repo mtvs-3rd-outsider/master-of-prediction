@@ -10,7 +10,7 @@
     <div >
         <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
-                <a href="header.html">
+                <a href="/">
                     <img height="90px" src="../images/logo2.png" width="90px">
                 </a>
                 <div style="width: 100%;display: flex;align-items: center;">
@@ -60,8 +60,8 @@
 <!--                    <md-menu-item>-->
 <!--                        <div>Sign Up</div>-->
 <!--                    </md-menu-item>-->
-                    <md-menu-item>
-                        <div>Log in</div>
+                    <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
+                        <div>Log Out</div>
                     </md-menu-item>
                 </md-menu>
             </div>
