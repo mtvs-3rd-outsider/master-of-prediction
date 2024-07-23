@@ -56,15 +56,15 @@
         </collection>
         <collection property="subject" ofType="com.outsider.masterofprediction.dto.TblSubjectDTO">
             <id property="subjectNo" column="SUBJECT_NO"/>
-            <result property="subjectTitle" column="SUBJECT_Title"/>
+                <result property="subjectTitle" column="SUBJECT_Title"/>
         </collection>
         <collection property="attachmentUser" ofType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
             <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
-            <result property="attachmentFileAddress" column="ATTACH_FILE_ADDRESS"/>
+            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
         </collection>
         <collection property="attachmentSubject" ofType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
             <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
-            <result property="attachmentFileAddress" column="ATTACH_FILE_ADDRESS"/>
+            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
         </collection>
     </resultMap>
 
@@ -329,9 +329,36 @@ WHERE
                 LEFT JOIN TBL_ATTACHMENT D ON A.ORDER_USER_NO = D.ATTACHMENT_USER_NO
                 LEFT JOIN TBL_ATTACHMENT E ON A.ORDER_SUBJECT_NO = E.SUBJECT_NO
         WHERE
-                B.USER_AUTHORITY = '회원'
+                B.USER_AUTHORITY = 'ROLE_USER'
         ORDER BY
                 A.ORDER_TIMESTAMP DESC
+    </select>
+
+    <select id="findActivityCount" resultMap="ActivityUserSubjectResultMap" parameterType="int">
+        SELECT
+            A.ORDER_NO
+             , A.ORDER_AMOUNT
+             , A.ORDER_CHOICE
+             , A.ORDER_TIMESTAMP
+             , B.USER_NO
+             , B.USER_NAME
+             , C.SUBJECT_NO
+             , C.SUBJECT_TITLE
+             , D.ATTACHMENT_FILE_NO
+             , D.ATTACHMENT_FILE_ADDRESS
+             , E.ATTACHMENT_FILE_NO
+             , E.ATTACHMENT_FILE_ADDRESS
+        FROM
+            TBL_BETTING_ORDER A
+                LEFT JOIN TBL_USER B ON A.ORDER_USER_NO = B.USER_NO
+                LEFT JOIN TBL_SUBJECT C ON A.ORDER_SUBJECT_NO = C.SUBJECT_NO
+                LEFT JOIN TBL_ATTACHMENT D ON A.ORDER_USER_NO = D.ATTACHMENT_USER_NO
+                LEFT JOIN TBL_ATTACHMENT E ON A.ORDER_SUBJECT_NO = E.SUBJECT_NO
+        WHERE
+            B.USER_AUTHORITY = 'ROLE_USER'
+        ORDER BY
+            A.ORDER_TIMESTAMP DESC
+        LIMIT #{count}
     </select>
 
 </mapper>
