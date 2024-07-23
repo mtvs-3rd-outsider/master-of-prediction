@@ -2,7 +2,7 @@ name: Copy Incomplete Issues to Next Iteration
 
 on:
   schedule:
-    - cron: '50 10 * * *' # 매월 1일 00:00에 실행 (필요에 따라 수정 가능)
+    - cron: '49 10 * * *' # 매월 1일 00:00에 실행 (필요에 따라 수정 가능)
 
 jobs:
   copy_issues:
