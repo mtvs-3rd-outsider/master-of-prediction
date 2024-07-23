@@ -4,6 +4,8 @@ import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.UserSubjectDTO;
 import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
+import com.outsider.masterofprediction.dto.constatnt.StringConstants;
+import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
 import com.outsider.masterofprediction.mapper.BettingOrderMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -51,7 +54,7 @@ public class SubjectService {
 
         //결과 상품의 정보 가져오기
         TblSubjectDTO subjectDTO = subjectMapper.getSubjectById(subjectNo);
-        if (subjectDTO != null && "종료".equals(subjectDTO.getSubjectFinishResult())) {
+        if (subjectDTO != null && !SubjectStatus.SETTLEMENT.equals(SubjectStatus.fromValue(subjectDTO.getSubjectStatus()))) {
             // 해당 상품 승리에 베팅한 사람들의 정보 가져오기
             List<TblBettingOrderDTO> users = bettingOrderMapper.getUsersBySubjectNo(subjectNo);
             for (TblBettingOrderDTO user : users) {
@@ -74,15 +77,19 @@ public class SubjectService {
                 // returnPoint를 이용한 로직 추가
                 userMapper.updateUserPointById(user.getOrderUserNo(),returnPoint);
             }
-
             return true;
-
         }
         else {
             return false;
         }
+    }
 
-
+    public boolean setSubjectFinishResult(long subjectNo, String result) {
+        if (StringConstants.YES.equals(result) || StringConstants.NO.equals(result)){
+            subjectMapper.setSubjectFinishResult(subjectNo, result, LocalDateTime.now());
+            return true;
+        }
+        return false;
     }
     // 수익 포인트 계산 함수
     private BigDecimal calculateProfitPoint(String result, BigDecimal totalUserBettingPointBD, BigDecimal subjectTotalYesPointBD, BigDecimal subjectTotalNoPointBD) {
