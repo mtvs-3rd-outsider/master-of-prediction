@@ -30,39 +30,39 @@ SELECT 6, 'Nostradamus', '노스트라다무스', 91, 100
     WHERE NOT EXISTS (SELECT 1 FROM TBL_TIER WHERE tier_no = 6);
 -- tbl_attachment 테이블에 조건부 데이터 삽입
 INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no)
-SELECT '초보자.svg', 1, 1
+SELECT 'novice.jpeg', 1, 1
     WHERE NOT EXISTS (
-    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = '초보자.svg' AND attachment_regist_user_no = 1 AND tier_no = 1
+    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = 'novice.jpeg' AND attachment_regist_user_no = 1 AND tier_no = 1
 );
 
 INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no)
-SELECT '견습생.svg', 1, 2
+SELECT 'apprentice.jpeg', 1, 2
     WHERE NOT EXISTS (
-    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = '견습생.svg' AND attachment_regist_user_no = 1 AND tier_no = 2
+    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = 'apprentice.jpeg' AND attachment_regist_user_no = 1 AND tier_no = 2
 );
 
 INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no)
-SELECT '선견자.svg', 1, 3
+SELECT 'seer.jpeg', 1, 3
     WHERE NOT EXISTS (
-    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = '선견자.svg' AND attachment_regist_user_no = 1 AND tier_no = 3
+    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = 'seer.jpeg' AND attachment_regist_user_no = 1 AND tier_no = 3
 );
 
 INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no)
-SELECT '오라클.svg', 1, 4
+SELECT 'oracle.jpeg', 1, 4
     WHERE NOT EXISTS (
-    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = '오라클.svg' AND attachment_regist_user_no = 1 AND tier_no = 4
+    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = 'oracle.jpeg' AND attachment_regist_user_no = 1 AND tier_no = 4
 );
 
 INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no)
-SELECT '예언자.svg', 1, 5
+SELECT 'prophet.jpeg', 1, 5
     WHERE NOT EXISTS (
-    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = '예언자.svg' AND attachment_regist_user_no = 1 AND tier_no = 5
+    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = 'prophet.jpeg' AND attachment_regist_user_no = 1 AND tier_no = 5
 );
 
 INSERT INTO tbl_attachment (attachment_file_address, attachment_regist_user_no, tier_no)
-SELECT '노스트라다무스.svg', 1, 6
+SELECT 'nostradamus.jpeg', 1, 6
     WHERE NOT EXISTS (
-    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = '노스트라다무스.svg' AND attachment_regist_user_no = 1 AND tier_no = 6
+    SELECT 1 FROM tbl_attachment WHERE attachment_file_address = 'nostradamus.jpeg' AND attachment_regist_user_no = 1 AND tier_no = 6
 );
 
 -- TblInquiry 테이블에 데이터 삽입
