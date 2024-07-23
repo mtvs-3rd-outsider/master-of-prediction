@@ -365,6 +365,7 @@
     height: 100%;
     width: 100%;
     object-fit: fill;
+    border-radius: 100%;
 }
 
 .main-active-item-div{
@@ -434,7 +435,7 @@
 .main-rank-item-circle{
     border-radius: 50%;
     display: inline-block;
-    border: 1px solid black;
+    border: 1px solid #e6dddd;
     background-color: #5c636a;
     position: relative;
 }
