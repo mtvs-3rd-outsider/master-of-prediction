@@ -29,8 +29,6 @@ import static com.outsider.masterofprediction.dto.constatnt.StringConstants.DEFA
 @Component
 public class AutoLoginFilter extends GenericFilterBean {
 
-
-
     @Bean
     public DevAuthenticationFilter customAuthenticationFilter() {
         return new DevAuthenticationFilter();
@@ -52,8 +50,6 @@ public class AutoLoginFilter extends GenericFilterBean {
         HttpSession session = request.getSession(true);
         session.setAttribute(HttpSessionSecurityContextRepository.SPRING_SECURITY_CONTEXT_KEY, SecurityContextHolder.getContext());
     }
-
-
 
     @Override
     public void doFilter(

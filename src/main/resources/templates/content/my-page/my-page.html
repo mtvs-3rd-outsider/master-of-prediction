@@ -15,7 +15,7 @@
                 <div th:if="${attachmentAddress == null}">
                     <span class="avatar">TY</span>
                 </div>
-                    <button sec:authorize th:access="${isMine}" onclick="location.href='/mypage/change-personal-information'" class="edit-button surface" id="open-dialog-btn">
+                    <button th:if= "${isMine}" onclick="location.href='/mypage/change-personal-information'" class="edit-button surface" id="open-dialog-btn">
                         <md-elevation></md-elevation>
                        <span class="material-symbols-outlined">settings</span>
                     </button>
@@ -127,7 +127,7 @@
             </div>
 
         </div>
-        <div class="tabs" sec:authorize th:access="${isMine}">
+        <div class="tabs" th:if= "${isMine}">
             <div class="tablist-line">
                 <md-tabs role="tablist" class="tablist">
                     <md-primary-tab role="tab" class="tab" id="tab1">문의 내역</md-primary-tab>
