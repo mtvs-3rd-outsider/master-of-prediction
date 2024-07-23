@@ -22,6 +22,11 @@
         <result property="answerTitle" column="answer_title" />
         <result property="answerTimestamp" column="answer_timestamp" />
     </resultMap>
+<!--    <resultMap id="InquiryDetailResultMap" type="com.outsider.masterofprediction.dto.InquiryDetailDTO">-->
+<!--        <result property="inquiryTitle" column="inquiry_title" />-->
+<!--        <result property="inquiryContent" column="inquiry_content" />-->
+<!--        <result property="inquiryTimestamp" column="inquiry_timestamp" />-->
+<!--    </resultMap>-->
     <!-- 최근 문의 내역 조회 -->
     <select id="getLatestInquiryByUserId" resultType="string">
         SELECT
@@ -89,6 +94,7 @@
             FROM TBL_INQUIRY a
             JOIN TBL_INQUIRY_REPLY b ON a.inquiry_no = b.answer_inquiry_no
             WHERE a.inquiry_user_no = #{inquiryUserNo}
+            AND inquiry_no = #{inquiryNo}
         </if>
     </select>
 

@@ -18,9 +18,10 @@ public class UserManagementService {
     private UserMapper userMapper;
     private CommentMapper commentMapper;
 
-    public UserManagementService(AttachmentMapper attachmentMapper, UserMapper userMapper) {
+    public UserManagementService(AttachmentMapper attachmentMapper, UserMapper userMapper,CommentMapper commentMapper) {
         this.attachmentMapper = attachmentMapper;
         this.userMapper = userMapper;
+        this.commentMapper = commentMapper;
     }
     public void createDefaultUser(User user) {
         String pwd = user.getPassword();

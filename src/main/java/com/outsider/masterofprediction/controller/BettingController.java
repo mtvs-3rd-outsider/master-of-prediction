@@ -45,8 +45,8 @@ public class BettingController {
     }
 
 
-    @GetMapping("/betting")
-    public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
+    @GetMapping("/betting/{subjectNo}")
+    public String getBettingPage(Model model ,@PathVariable long subjectNo) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
