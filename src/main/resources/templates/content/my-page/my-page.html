@@ -22,8 +22,8 @@
                 </div>
                 <h1 class="username" th:text="${name}">tripleyoung</h1>
                 <div class="details">
-                    <img class="tier" src="images/tier/노스트라다무스.svg" alt="Description of SVG">
-                    <div class="badge">노스트라다무스</div>
+                    <img class="tier" th:src="${tierImgUrl}" alt="Description of SVG">
+                    <div class="badge" th:text="${tierName}">노스트라다무스</div>
                     <span class="joined-date" th:text="'Joined ' + ${userJoinDate}">Joined Jun 2024</span>
                 </div>
             </div>

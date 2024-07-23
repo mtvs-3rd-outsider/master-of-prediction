@@ -114,4 +114,8 @@ public class CustomUserDetail implements UserDetails , OAuth2User {
         }
     }
 
+    public Long getUserTierId() {
+        return this.user.getTierNo();
+    }
+
 }
