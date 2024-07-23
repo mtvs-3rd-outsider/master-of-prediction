@@ -11,9 +11,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="notice : ${noticeList}" onclick="routeHandler(this)" th:name="${notice.id}"
+        <tr th:each="notice, iter : ${noticeList}" onclick="routeHandler(this)" th:name="${notice.id}"
             th:data-id="${notice.id}">
-            <td th:text="${notice.id}"></td>
+            <td th:text="${iter.count}"></td>
             <td class="notice-table-title" th:text="${notice.title}"></td>
             <td th:text="${#dates.format(notice.timestamp, 'yyyy-MM-dd')}">2024-07-22 10:00</td>
         </tr>
