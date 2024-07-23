@@ -3,6 +3,7 @@ package com.outsider.masterofprediction.service;
 import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.UserSubjectDTO;
+import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
 import com.outsider.masterofprediction.mapper.BettingOrderMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -25,9 +27,24 @@ public class SubjectService {
         this.bettingOrderMapper = bettingOrderMapper;
         this.userMapper = userMapper;
     }
-
+    public boolean isSubjectFinishTimestampAfterCurrentTime(TblSubjectDTO tblSubjectDTO) {
+        Timestamp subjectFinishTimestamp = tblSubjectDTO.getSubjectFinishTimestamp();
+        Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+        return subjectFinishTimestamp.after(currentTime);
+    }
     public TblSubjectDTO getSubjectBySubjectNo(long subjectNo) {
         return subjectMapper.getSubjectBySubjectNo(subjectNo);
+    }
+    public void updateSubjectStatus()
+    {
+       List<TblSubjectDTO> subjectDTOS  =  subjectMapper.getAllSubjects();
+        for (TblSubjectDTO tblSubjectDTO : subjectDTOS) {
+            if(isSubjectFinishTimestampAfterCurrentTime(tblSubjectDTO))
+            {
+                tblSubjectDTO.setSubjectStatus(SubjectStatus.SETTLEMENT.getValue());
+                subjectMapper.updateSubject(tblSubjectDTO);
+            }
+        }
     }
     @Transactional
     public boolean BetSettlement(long subjectNo) {
