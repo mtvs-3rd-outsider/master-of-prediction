@@ -47,7 +47,8 @@ public class MyPageController {
     @GetMapping("api/purchase-history/{page}")
     public ResponseEntity<Map<String, Object>> getPurchaseHistory(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user) {
         int itemsPerPage = ITEMS_PER_PAGE;
-        List<BettingOrderDTO> items = bettingOrderService.getBettingOrdersByUserId(new UserPaginationDTO(user.getId(), page, itemsPerPage));
+        int start = (page - 1) * itemsPerPage;
+        List<BettingOrderDTO> items = bettingOrderService.getBettingOrdersByUserId(new UserPaginationDTO(user.getId(), start, itemsPerPage));
         int totalItems = bettingOrderService.getOrderCountByUserId(user.getId());
         int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
 
@@ -121,11 +122,11 @@ public class MyPageController {
         mv.addObject("tierName", tblTierDTO.getTierContent());
         mv.addObject("userJoinDate",user.getJoinDate(String.class));
 //      현재 포지션 가치
-        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()));
+        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()).toString() +" P");
 //      한달 손익률
-        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user.getId()));
+        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user.getId()).toString() +" %");
 //      한달 거래 포인트
-        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()));
+        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()).toString() +" P");
 //      거래수
         mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
         return mv;

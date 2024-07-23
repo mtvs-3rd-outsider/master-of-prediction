@@ -116,7 +116,7 @@ CREATE TABLE `TBL_INQUIRY`
 
 CREATE TABLE `TBL_INQUIRY_REPLY`
 (
-    `answer_no`    BIGINT NOT NULL COMMENT '답변번호',
+    `answer_no`    BIGINT NOT NULL AUTO_INCREMENT COMMENT '답변번호',
     `answer_content`    VARCHAR(255) NOT NULL COMMENT '답변내용',
     `answer_timestamp`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '답변일시',
     `answer_inquiry_no`    BIGINT NOT NULL COMMENT '문의번호',
