@@ -103,11 +103,13 @@ public class MyPageController {
             return new ModelAndView("redirect:/mypage/" + user.getId());
         }
         mv.addObject("isMine",userId.intValue() == user.getId());
+        System.out.println(userId.intValue());
+        System.out.println(user.getId());
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
         mv.setViewName("/layout/my-page/index");
+        System.out.println(userId.intValue() == user.getId());
         mv.addObject("view", "content/my-page/my-page");
-        mv.addObject("name", "Dummy User"); // Dummy username
         mv.addObject("name",user.getUsername() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
