@@ -362,5 +362,23 @@ WHERE
             A.ORDER_TIMESTAMP DESC
         LIMIT #{count}
     </select>
+    <select id="getBettingOrdersByUserSubjectDTO"
+            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        SELECT
+            order_no, order_amount
+        FROM
+            TBL_BETTING_ORDER
+        WHERE
+            order_user_no = #{userId} AND order_subject_no = #{orderSubjectNo} AND order_choice = #{orderChoice}
+    </select>
+    <select id="getUsersBySubjectNo"
+            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        SELECT
+            order_user_no
+        FROM
+            TBL_BETTING_ORDER
+        WHERE
+            order_subject_no = #{orderSubjectNo}
+    </select>
 
 </mapper>
