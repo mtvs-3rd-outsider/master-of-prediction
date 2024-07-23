@@ -1,11 +1,9 @@
 package com.outsider.masterofprediction.controller;
 
-import com.outsider.masterofprediction.dto.TblAttachmentDTO;
-import com.outsider.masterofprediction.dto.TblUserDTO;
-import com.outsider.masterofprediction.dto.User;
-import com.outsider.masterofprediction.dto.UserAttachmentDTO;
+import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.RankFindService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,7 +25,7 @@ public class RankPageController {
     }
 
     @GetMapping
-    public ModelAndView getRankPage(ModelAndView mv){
+    public ModelAndView getRankPage(ModelAndView mv,@AuthenticationPrincipal CustomUserDetail user){
 
         // mv.addObject();
         mv.setViewName("/layout/rank-page/index");
@@ -39,8 +37,8 @@ public class RankPageController {
 //        mv.addObject("userList", userList);
 
         List<UserAttachmentDTO> userRank = rankFindService.findAllRank();
+        mv.addObject("Point",user.getPoint());
         mv.addObject("userRank", userRank);
-
         System.out.println(userRank);
 
         return mv;

@@ -100,24 +100,21 @@ public class MyPageController {
 //페이지
     @GetMapping(value = {"", "{userId}"})
     public ModelAndView getMyPage( @PathVariable(required = false) Integer  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
-        if (userId == null || userId.intValue() != user.getId()) {
+        boolean isMine =  userManagementService.isUserSessionValid(userId,user.getId());
+        if (isMine) {
             return new ModelAndView("redirect:/mypage/" + user.getId());
         }
-        mv.addObject("isMine",userId.intValue() == user.getId());
-        System.out.println(userId.intValue());
-        System.out.println(user.getId());
+        mv.addObject("isMine",isMine);
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
         mv.setViewName("/layout/my-page/index");
-        System.out.println(userId.intValue() == user.getId());
         mv.addObject("view", "content/my-page/my-page");
         mv.addObject("name",user.getUsername() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
-        String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user.getUserTierId());
-        System.out.println(tierImgUrl);
-        TblTierDTO tblTierDTO = tierService.findByTierNo(user.getUserTierId());
+        String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user.getTierNo());
+        TblTierDTO tblTierDTO = tierService.findByTierNo(user.getTierNo());
         mv.addObject("tierImgUrl", tierImgUrl);
         mv.addObject("tierName", tblTierDTO.getTierContent());
         mv.addObject("userJoinDate",user.getJoinDate(String.class));
@@ -129,13 +126,16 @@ public class MyPageController {
         mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()).toString() +" P");
 //      거래수
         mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
+        mv.addObject("Point",user.getPoint());
         return mv;
     }
 //탈퇴
     @GetMapping("/withdrawal")
-    public ModelAndView getWithdrawal(ModelAndView mv) {
+    public ModelAndView getWithdrawal(ModelAndView mv , @AuthenticationPrincipal CustomUserDetail user) {
         mv.setViewName("/layout/my-page/withdrawal");
         mv.addObject("view", "content/my-page/withdrawal");
+        mv.addObject("Point",user.getPoint());
+
         return mv;
     }
     @PostMapping("/withdrawal")
@@ -155,6 +155,8 @@ public class MyPageController {
         mv.addObject("name", user.getUsername());
         mv.addObject("password", user.getPassword());
         mv.addObject("view", "content/my-page/change-personal-information");
+        mv.addObject("Point",user.getPoint());
+
         return mv;
     }
 

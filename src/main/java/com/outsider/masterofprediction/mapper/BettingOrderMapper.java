@@ -30,7 +30,7 @@ public interface BettingOrderMapper {
      * @return 해당 종목의 베팅 주문을 포함하는 ActiveDTO 목록
      */
     List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo);
-
+    List<TblBettingOrderDTO> getBettingOrdersByUserSubjectDTO(UserSubjectDTO userSubjectDTO);
     /**
      * 특정 종목 번호에 대한 랭킹을 조회합니다.
      *
@@ -68,7 +68,7 @@ public interface BettingOrderMapper {
      * @return 사용자의 현재 포지션 가치 총합
      */
     Long getTotalPositionValueByUserId(Long userId);
-
+    List<TblBettingOrderDTO> getUsersBySubjectNo(Long subjectNo);
     /**
      * 특정 사용자의 현재 포지션 가치를 조회합니다.
      *

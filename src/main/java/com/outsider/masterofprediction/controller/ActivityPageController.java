@@ -1,10 +1,12 @@
 package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.dto.ActivityUserSubjectDTO;
+import com.outsider.masterofprediction.dto.CustomUserDetail;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
 import com.outsider.masterofprediction.mapper.BettingAddMapper;
 import com.outsider.masterofprediction.service.ActivityFindService;
 import com.outsider.masterofprediction.service.CategoryService;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +27,7 @@ public class ActivityPageController {
     }
 
     @GetMapping
-    public ModelAndView getActivityPage(ModelAndView mv) {
+    public ModelAndView getActivityPage(ModelAndView mv,@AuthenticationPrincipal CustomUserDetail user) {
 
         // mv.addObject();
         mv.setViewName("/layout/activity-page/index");
@@ -35,7 +37,7 @@ public class ActivityPageController {
 
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();
         mv.addObject("userActivity", userActivity);
-
+        mv.addObject("Point",user.getPoint());
         System.out.println(userActivity);
 
         return mv;

@@ -45,9 +45,11 @@ public class InquiryController {
     }
 
     @GetMapping("inquiry/register")
-    public ModelAndView getInquiryRegister(ModelAndView mv) {
+    public ModelAndView getInquiryRegister(@AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
         mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-register2");
+        mv.addObject("Point",user.getPoint());
+
         return mv;
     }
 
