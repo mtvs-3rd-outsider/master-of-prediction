@@ -99,7 +99,7 @@ public class MyPageController {
     }
 //페이지
     @GetMapping(value = {"", "{userId}"})
-    public ModelAndView getMyPage( @PathVariable(required = false) Integer  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
+    public ModelAndView getMyPage( @PathVariable(required = false) Long  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
         boolean isMine =  userManagementService.isUserSessionValid(userId,user.getId());
         if (isMine) {
             return new ModelAndView("redirect:/mypage/" + user.getId());

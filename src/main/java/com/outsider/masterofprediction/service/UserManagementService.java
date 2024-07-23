@@ -23,8 +23,8 @@ public class UserManagementService {
         this.userMapper = userMapper;
         this.commentMapper = commentMapper;
     }
-    public boolean isUserSessionValid(Integer userId, Long sessionId) {
-        return userId == null || userId.intValue() != sessionId;
+    public boolean isUserSessionValid(Long userId, Long sessionId) {
+        return userId == null || userId.longValue() != sessionId;
     }
     public void createDefaultUser(User user) {
         String pwd = user.getPassword();
