@@ -67,7 +67,7 @@ public interface UserMapper {
             "user_point=#{point} " +
             "WHERE user_no=#{id}"
     )
-    void updateUserPointById(Long id, double point);
+    void updateUserPointById(Long id, BigDecimal point);
 
     @Select("SELECT SUM(user_point) FROM tbl_user")
     BigDecimal findAllUsrPointSUM();
