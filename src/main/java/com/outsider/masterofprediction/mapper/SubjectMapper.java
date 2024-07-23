@@ -111,4 +111,6 @@ public interface SubjectMapper {
 
 
     void updateTotalPointByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    long getSubjectRegistUserNoBySubjectNo(long subjectNo);
 }

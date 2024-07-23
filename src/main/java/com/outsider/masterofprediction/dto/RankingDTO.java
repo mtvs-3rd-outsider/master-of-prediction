@@ -5,8 +5,10 @@ import lombok.Setter;
 import lombok.ToString;
 
 public class RankingDTO {
+    private int userNo;
     private String name;
     private String choice;
+
     private long sum;
 
     public RankingDTO() {
@@ -16,6 +18,14 @@ public class RankingDTO {
         this.name = name;
         this.choice = choice;
         this.sum = sum;
+    }
+
+    public int getUserNo() {
+        return userNo;
+    }
+
+    public void setUserNo(int userNo) {
+        this.userNo = userNo;
     }
 
     public String getName() {
@@ -45,7 +55,8 @@ public class RankingDTO {
     @Override
     public String toString() {
         return "RankingDTO{" +
-                "name='" + name + '\'' +
+                "userNo=" + userNo +
+                ", name='" + name + '\'' +
                 ", choice='" + choice + '\'' +
                 ", sum=" + sum +
                 '}';

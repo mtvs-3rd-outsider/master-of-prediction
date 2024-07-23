@@ -19,6 +19,7 @@
         <result property="activeTimestamp" column="order_timestamp"/>
     </resultMap>
     <resultMap id="RankingResultMap" type="com.outsider.masterofprediction.dto.RankingDTO">
+        <result property="userNo" column="userNo"/>
         <result property="name" column="userName"/>
         <result property="choice" column="choice"/>
         <result property="sum" column="sum"/>
@@ -110,6 +111,7 @@
 
     <select id="getRankingBySubjectNo" parameterType="long" resultMap="RankingResultMap">
         SELECT
+            u.user_no as userNo,
             u.user_name AS userName,
             'yes' AS choice,
             SUM(CASE WHEN bo.order_choice = 'yes' THEN bo.order_amount ELSE 0 END) AS sum
@@ -118,13 +120,14 @@
             JOIN
             tbl_user u ON bo.order_user_no = u.user_no
         WHERE
-            bo.order_subject_no = #{subjectNo}
+            bo.order_subject_no = #{ subjectNo }
         GROUP BY
-            u.user_name
+            u.user_name, u.user_no
         HAVING
             SUM(CASE WHEN bo.order_choice = 'yes' THEN bo.order_amount ELSE 0 END) > 0
         UNION ALL
         SELECT
+            u.user_no as userNo,
             u.user_name AS userName,
             'no' AS choice,
             SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) AS sum
@@ -133,9 +136,9 @@
             JOIN
             tbl_user u ON bo.order_user_no = u.user_no
         WHERE
-            bo.order_subject_no = #{subjectNo}
+            bo.order_subject_no = #{ subjectNo }
         GROUP BY
-            u.user_name
+            u.user_name, u.user_no
         HAVING
             SUM(CASE WHEN bo.order_choice = 'no' THEN bo.order_amount ELSE 0 END) > 0
         ORDER BY
