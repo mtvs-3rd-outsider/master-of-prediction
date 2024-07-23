@@ -3,162 +3,42 @@
 <div class="main-rank" th:fragment="main-rank">
     <div class="main-body-rank">
         <div class="main-body-see-all">
-            <span class="main-active-rank-title">Top Volume This Week</span>
+            <span class="main-active-rank-title">Top10 Point Rank</span>
             <md-outlined-button>See all</md-outlined-button>
         </div>
         <div class="main-body-rank-div">
             <div class="main-rank-items">
-                <div class="main-rank-item-layout">
+                        <div class="main-rank-item-layout" th:each="item, iter : ${leftUsers}">
                     <div>
                         <div class="main-active-item-div    main-rank-item-circle">
                         <div class="badge-div">
-                            <div class="badge-text"><span>1</span>
+                            <div class="badge-text" th:text="${iter.count}"><span>1</span>
                             </div>
                         </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
+                            <img class="main-active-item-img" th:src="'/images/upload/' + ${item.attachmentFileAddress}"/>
                         </div>
                     </div>
                     <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>2</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>3</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>4</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>5</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
+                        <p class="main-rank-user-name" th:text="${item.userName}">undertaker</p>
+                        <p class="main-rank-user-point" th:text="${item.userPoint}">$5,784,124</p>
                     </div>
                 </div>
             </div>
 
             <div class="main-rank-items">
-                <div class="main-rank-item-layout">
+                <div class="main-rank-item-layout" th:each="item, iter : ${rightUsers}">
                     <div>
                         <div class="main-active-item-div    main-rank-item-circle">
                             <div class="badge-div">
-                                <div class="badge-text"><span>6</span>
+                                <div class="badge-text" th:text="${iter.count} + 5"><span>6</span>
                                 </div>
                             </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
+                            <img class="main-active-item-img" th:src="'/images/upload/' + ${item.attachmentFileAddress}"/>
                         </div>
                     </div>
                     <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>7</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>8</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>9</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
-                    </div>
-                </div>
-                <div class="main-rank-item-layout">
-                    <div>
-                        <div class="main-active-item-div    main-rank-item-circle">
-                            <div class="badge-div">
-                                <div class="badge-text"><span>10</span>
-                                </div>
-                            </div>
-                            <img class="main-active-item-img" src="../images/logo2.png"/>
-                        </div>
-                    </div>
-                    <div>
-                        <p class="main-rank-user-name">undertaker</p>
-                        <p class="main-rank-user-point">$5,784,124</p>
+                        <p class="main-rank-user-name" th:text="${item.userName}">undertaker</p>
+                        <p class="main-rank-user-point" th:text="${item.userPoint}">$5,784,124</p>
                     </div>
                 </div>
             </div>
