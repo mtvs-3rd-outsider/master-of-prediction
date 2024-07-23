@@ -3,6 +3,7 @@ package com.outsider.masterofprediction.controller;
 import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.RankFindService;
+import com.outsider.masterofprediction.service.UserManagementService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,10 +19,12 @@ public class RankPageController {
 
     private final RankFindService rankFindService;
     private final CategoryService categoryService;
+    private final UserManagementService userManagementService;
 
-    public RankPageController(RankFindService rankFindService, CategoryService categoryService){
+    public RankPageController(RankFindService rankFindService, CategoryService categoryService, UserManagementService userManagementService){
         this.rankFindService = rankFindService;
         this.categoryService = categoryService;
+        this.userManagementService = userManagementService;
     }
 
     @GetMapping
@@ -37,7 +40,7 @@ public class RankPageController {
 //        mv.addObject("userList", userList);
 
         List<UserAttachmentDTO> userRank = rankFindService.findAllRank();
-        mv.addObject("Point",user.getPoint());
+        mv.addObject("Point",userManagementService.getUserPoint());
         mv.addObject("userRank", userRank);
         System.out.println(userRank);
 

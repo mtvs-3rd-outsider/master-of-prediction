@@ -71,7 +71,7 @@ public class BettingController {
         model.addAttribute("returnNRate", returnNRate);
         model.addAttribute("subject", subject);
         model.addAttribute("userAuthority", userAuthority);
-        model.addAttribute("Point",user.getPoint());
+        model.addAttribute("Point",userManagementService.getUserPoint());
 
         return "/content/betting-page/betting-page";
     }

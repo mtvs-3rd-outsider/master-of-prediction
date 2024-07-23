@@ -7,6 +7,7 @@ import com.outsider.masterofprediction.mapper.CommentMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -51,6 +52,17 @@ public class UserManagementService {
     {
         userMapper.updateUser(user);
 
+    }
+    public BigDecimal getUserPoint()
+    {
+
+        if(UserSession.getUserId()==0)
+        {
+            return BigDecimal.ZERO;
+        }else {
+           User getUser =  userMapper.getUserById(UserSession.getUserId());
+           return getUser.getPoint();
+        }
     }
 
     public TblAttachmentDTO getAttachmentsByUserNo(Long userId){

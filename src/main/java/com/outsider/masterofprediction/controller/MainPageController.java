@@ -33,13 +33,15 @@ public class MainPageController {
     private final CategoryService categoryService;
     private final BettingOrderMapper bettingOrderMapper;
     private final UserMapper userMapper;
+    private final UserManagementService userManagementService;
 
     @Autowired
-    public MainPageController(MainPageService mainPageService, CategoryService categoryService, BettingOrderMapper bettingOrderMapper, UserMapper userMapper) {
+    public MainPageController(MainPageService mainPageService, CategoryService categoryService, BettingOrderMapper bettingOrderMapper, UserMapper userMapper, UserManagementService userManagementService) {
         this.mainPageService = mainPageService;
         this.categoryService = categoryService;
         this.bettingOrderMapper = bettingOrderMapper;
         this.userMapper = userMapper;
+        this.userManagementService = userManagementService;
     }
 
     /**
@@ -95,7 +97,7 @@ public class MainPageController {
         mv.addObject("leftUsers", rightUsers);
         mv.addObject("rightUsers", leftUsers);
         mv.addObject("view", "content/main-page/main-page");
-        mv.addObject("Point",user.getPoint());
+        mv.addObject("Point",userManagementService.getUserPoint());
         return mv;
     }
 }
