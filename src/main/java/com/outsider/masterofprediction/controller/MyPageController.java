@@ -126,7 +126,7 @@ public class MyPageController {
         mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()).toString() +" P");
 //      거래수
         mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
-        mv.addObject("Point",user.getPoint());
+        mv.addObject("Point",userManagementService.getUserPoint());
         return mv;
     }
 //탈퇴
@@ -134,7 +134,7 @@ public class MyPageController {
     public ModelAndView getWithdrawal(ModelAndView mv , @AuthenticationPrincipal CustomUserDetail user) {
         mv.setViewName("/layout/my-page/withdrawal");
         mv.addObject("view", "content/my-page/withdrawal");
-        mv.addObject("Point",user.getPoint());
+        mv.addObject("Point",userManagementService.getUserPoint());
 
         return mv;
     }
@@ -155,7 +155,7 @@ public class MyPageController {
         mv.addObject("name", user.getUsername());
         mv.addObject("password", user.getPassword());
         mv.addObject("view", "content/my-page/change-personal-information");
-        mv.addObject("Point",user.getPoint());
+        mv.addObject("Point",userManagementService.getUserPoint());
 
         return mv;
     }

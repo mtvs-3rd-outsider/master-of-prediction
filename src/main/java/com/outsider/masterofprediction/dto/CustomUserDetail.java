@@ -119,6 +119,10 @@ public class CustomUserDetail implements UserDetails , OAuth2User {
         return this.user.getTierNo();
     }
     public BigDecimal getPoint() {
+        if (this.user == null) {
+            // Handle the null case, return a default value or handle it accordingly
+            return BigDecimal.ZERO; // or any other default value
+        }
         return this.user.getPoint();
     }
 

@@ -32,7 +32,15 @@ public class SubjectService {
     }
     public boolean isSubjectFinishTimestampAfterCurrentTime(TblSubjectDTO tblSubjectDTO) {
         Timestamp subjectFinishTimestamp = tblSubjectDTO.getSubjectFinishTimestamp();
+
+        // Null check for subjectFinishTimestamp
+        if (subjectFinishTimestamp == null) {
+            // Handle the null case, return false or true based on your business logic
+            return false;
+        }
+
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
+
         return subjectFinishTimestamp.after(currentTime);
     }
     public TblSubjectDTO getSubjectBySubjectNo(long subjectNo) {
