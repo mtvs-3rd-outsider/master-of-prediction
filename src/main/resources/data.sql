@@ -68,6 +68,7 @@ SELECT '노스트라다무스.svg', 1, 6
 -- TblInquiry 테이블에 데이터 삽입
 -- 세션 변수를 사용하여 이메일을 기준으로 user_no를 조회
 SET @user_no = (SELECT user_no FROM TBL_USER WHERE user_email = '1@gmail.com');
+SET @user_no2 = (SELECT user_no FROM TBL_USER WHERE user_email = 'jane@example.com');
 
 -- TblAttachment 테이블에 데이터 삽입 (조건부)
 INSERT INTO TBL_ATTACHMENT (attachment_user_no, attachment_regist_user_no, attachment_file_address)
@@ -78,10 +79,16 @@ SELECT @user_no, @user_no, 'https://lh3.googleusercontent.com/a/ACg8ocKCH9UgnTgb
 
 -- TblInquiry 테이블에 데이터 삽입 (조건부)
 INSERT INTO TBL_INQUIRY (inquiry_user_no, inquiry_title, inquiry_content, inquiry_timestamp)
-SELECT @user_no, 'qewjkjkjkj', 'qewdfsfsfsfsfjkjkjkj', CURRENT_TIMESTAMP
+SELECT @user_no, '포인트 관련', '포인트가 안올라가용 수정해줘요', CURRENT_TIMESTAMP
     WHERE NOT EXISTS (
-    SELECT 1 FROM TBL_INQUIRY WHERE inquiry_user_no = @user_no AND inquiry_title = 'qewjkjkjkj'
+    SELECT 1 FROM TBL_INQUIRY WHERE inquiry_user_no = @user_no AND inquiry_title = '포인트 관련'
 );
+INSERT INTO TBL_INQUIRY (inquiry_user_no, inquiry_title, inquiry_content, inquiry_timestamp)
+SELECT @user_no, '랭킹 관련', '랭킹이 안올라가용 수정해줘요', CURRENT_TIMESTAMP
+WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_INQUIRY WHERE inquiry_user_no = @user_no AND inquiry_title = '랭킹 관련'
+);
+SET @inquiry_no = (SELECT inquiry_no FROM TBL_INQUIRY WHERE inquiry_title = '포인트 관련');
 
 -- TBL_CATEGORY 테이블에 데이터 삽입 (조건부)
 
@@ -124,7 +131,7 @@ SELECT  '트럼프 vs 바이든', @category_no , @user_no, DATE_ADD(CURRENT_TIME
 SET @subject_no = (SELECT subject_no FROM TBL_SUBJECT WHERE subject_title = '트럼프 vs 바이든');
 
 INSERT INTO TBL_ATTACHMENT (subject_no, attachment_regist_user_no, attachment_file_address)
-SELECT @subject_no, @user_no, '트럼프.jpg'
+SELECT @subject_no, @user_no, 'Donald.jpg'
     WHERE NOT EXISTS (
     SELECT 1 FROM TBL_ATTACHMENT WHERE subject_no = @subject_no
 );
@@ -136,4 +143,11 @@ values (10,'YES',@subject_no, @user_no);
 INSERT INTO tbl_comment (comment_content, comment_user_no, comment_subject_no)
 values ('트럼프가 무조건 이기지', @user_no, @subject_no );
 
--- UPDATE TBL_SUBJECT SET subject_status = "정산"
+UPDATE TBL_SUBJECT SET subject_total_yes_point = 10 WHERE subject_no = @subject_no;
+UPDATE TBL_SUBJECT SET subject_total_no_point = 10 WHERE subject_no = @subject_no;
+UPDATE TBL_SUBJECT SET subject_finish_result = 'YES' WHERE subject_no = @subject_no;
+
+INSERT INTO TBL_INQUIRY_REPLY (answer_title, answer_content, answer_user_no, answer_inquiry_no)
+values ('[답변]포인트가 안올라감','문제 시정했습니다. 확인해주세요', @user_no2, @inquiry_no  );
+
+UPDATE TBL_INQUIRY SET inquiry_reply_status = 1 WHERE inquiry_user_no  = @user_no AND inquiry_no = @inquiry_no ;

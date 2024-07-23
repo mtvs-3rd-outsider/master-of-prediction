@@ -31,4 +31,9 @@ public class UserInquiryService {
     public InquiryDetailDTO getInquiryDetail(TblInquiryDTO tblInquiryDTO) {
         return inquiryMapper.getInquiryDetailByUserId(tblInquiryDTO);
     }
+
+    public int getReplyStatus(TblInquiryDTO tblInquiryDTO) {
+
+        return inquiryMapper.getInquiryReplyStatus(tblInquiryDTO);
+    }
 }

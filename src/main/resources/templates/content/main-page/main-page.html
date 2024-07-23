@@ -38,7 +38,7 @@
 
         </div>
         <div class="main-view-all">
-            <md-text-button>View All</md-text-button>
+            <a href="/category/all"><md-text-button>View All</md-text-button></a>
         </div>
         <div class="main-body-active-rank">
             <div class="main-body-active" th:replace="~{fragments/activity :: main-active}">
@@ -50,7 +50,7 @@
 <script>
     function onClickSubject(event) {
         const subjectNo = event.currentTarget.getAttribute("value");
-        location.href = "/betting?subjectNo=" + encodeURI(subjectNo);
+        location.href = "/betting/" + encodeURI(subjectNo);
     }
 </script>
 </div>
