@@ -3,7 +3,7 @@
 }
 
 .title{
-  width: 60%;
+  width: 50%;
 }
 
 .status{
@@ -12,4 +12,28 @@
 
 .timestamp{
   width: 20%;
+}
+
+.betting-result{
+  display: none;
+}
+
+.admin-main-body p{
+  margin: 0;
+}
+
+.admin-main-body:hover {
+  background-color: #f5f5f5;
+  .betting-result{
+    display: block;
+    color: indianred;
+  }
+
+  .betting-result:hover p{
+    border-radius: 10px;
+    border: 1px solid indianred;
+    background-color: indianred;
+    color: white;
+    padding: 5px;
+  }
 }

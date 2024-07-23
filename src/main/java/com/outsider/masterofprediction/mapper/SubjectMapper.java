@@ -5,6 +5,7 @@ import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.response.BettingAndAttachmentDTO;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper
@@ -111,4 +112,9 @@ public interface SubjectMapper {
 
 
     void updateTotalPointByDTO(TblBettingOrderDTO bettingOrderDTO);
+
+    @Update("UPDATE tbl_subject SET " +
+            "subject_finish_result = #{result}, subject_finish_timestamp = #{now} " +
+            "WHERE subject_no = #{subjectNo}")
+    void setSubjectFinishResult(long subjectNo, String result, LocalDateTime now);
 }

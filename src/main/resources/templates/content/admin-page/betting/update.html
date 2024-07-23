@@ -34,7 +34,7 @@
     <section class="section" th:fragment="betting-add">
         <link rel="stylesheet" th:href="@{css/betting-add-page/betting-add-page.css}">
         <div class="container">
-            <h2 class="form-title">게임을 등록하세요.</h2>
+            <h2 class="form-title">게임 수정</h2>
             <form class="form" enctype="multipart/form-data" method="post"
                   th:action="@{/admin-page/betting/update/{subjectNo}(subjectNo=${subjectNo})}" onsubmit="">
                 <div class="image-preview-container">
@@ -73,7 +73,7 @@
                     <input class="form-input" id="time" name="deadlineTime" type="time"
                            th:value="${deadlineTime}" required/>
                 </div>
-                <button class="submit-button" type="submit">Submit</button>
+                <button class="submit-button" type="submit">Update</button>
             </form>
         </div>
         <script>
