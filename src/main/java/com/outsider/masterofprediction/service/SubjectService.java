@@ -5,7 +5,6 @@ import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.UserSubjectDTO;
 import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
 import com.outsider.masterofprediction.dto.constatnt.StringConstants;
-import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
 import com.outsider.masterofprediction.mapper.BettingOrderMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
@@ -30,18 +29,10 @@ public class SubjectService {
         this.bettingOrderMapper = bettingOrderMapper;
         this.userMapper = userMapper;
     }
-    public boolean isSubjectFinishTimestampAfterCurrentTime(TblSubjectDTO tblSubjectDTO) {
-        Timestamp subjectFinishTimestamp = tblSubjectDTO.getSubjectFinishTimestamp();
-
-        // Null check for subjectFinishTimestamp
-        if (subjectFinishTimestamp == null) {
-            // Handle the null case, return false or true based on your business logic
-            return false;
-        }
-
+    public boolean isSubjectSubjectSettlementTimestampAfterCurrentTime(TblSubjectDTO tblSubjectDTO) {
+        Timestamp subjectSettlementTimestamp = tblSubjectDTO.getSubjectSettlementTimestamp();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-
-        return subjectFinishTimestamp.after(currentTime);
+        return subjectSettlementTimestamp.after(currentTime);
     }
     public TblSubjectDTO getSubjectBySubjectNo(long subjectNo) {
         return subjectMapper.getSubjectBySubjectNo(subjectNo);
@@ -50,7 +41,7 @@ public class SubjectService {
     {
        List<TblSubjectDTO> subjectDTOS  =  subjectMapper.getAllSubjects();
         for (TblSubjectDTO tblSubjectDTO : subjectDTOS) {
-            if(isSubjectFinishTimestampAfterCurrentTime(tblSubjectDTO))
+            if(isSubjectSubjectSettlementTimestampAfterCurrentTime(tblSubjectDTO))
             {
                 tblSubjectDTO.setSubjectStatus(SubjectStatus.SETTLEMENT.getValue());
                 subjectMapper.updateSubject(tblSubjectDTO);
