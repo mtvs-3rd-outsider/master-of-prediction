@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <base th:href="@{/}">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
+    <meta charset="UTF-8">
+<!--    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"-->
+<!--          name="viewport">-->
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title th:text="${title}">제목확인</title>
 
+    <link href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined" rel="stylesheet">
     <script type="importmap">
         {
           "imports": {
@@ -18,142 +22,70 @@
 
         document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
     </script>
-
     <link rel="stylesheet" th:href="@{/css/admin-page/index.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-page/notification/create.css}">
-    <link rel="stylesheet" th:href="@{/css/admin-page/betting/update.css}">
     <link rel="stylesheet" th:href="@{/css/admin-page/font.css}">
+
 </head>
 <body>
+
 <div id="main">
     <div id="sidebar" th:replace="content/admin-page/fragments/sidebar.html"></div>
     <div id="wrapper">
-        <section id="response-section">
-            <div class="admin-main-head">
-                <h1 th:attr="data-id=${betting.subjectNo}">배팅상품 수정</h1>
-            </div>
-            <div class="admin-main-body-frame">
-                <form id="send-data" method="post"
-                      onsubmit="return validateForm()"
-                      th:action="@{/admin-page/betting/result/{id}(id=${betting.subjectNo})}"
-                      th:object="${betting}">
-                    <div class="admin-main-body">
-                        <div class="custom-file-input">
-                            <img class="img-tag" th:src="*{attachmentFileAddress}"/>
-                            <input class="file-input" onchange="previewImage(event)" type="file"/>
-                        </div>
-                        <div class="create-notification-title">
-                            <h2>주제</h2>
-                            <md-outlined-text-field id="notification-text-field" name="title"
-                                                    th:attr="value=${betting.subjectTitle}"
-                                                    th:field="*{subjectTitle}"
-                                                    th:readonly="readonly"
-                            ></md-outlined-text-field>
-                        </div>
-                        <div>
-                            <span>카테고리</span>
-                            <select class="body-value" name="subjectCategoryNo" th:value="${betting.subjectCategoryNo}">
-                                <option th:value="${category.categoryNo}"
-                                        th:text="${category.categoryName}"></option>
-                            </select>
-                        </div>
-                        <div>
-                            <span>날짜</span>
-                            <input id="calendar" class="body-value" name="deadline" th:value="${deadline}" type="date" th:readonly="readonly"/>
-                        </div>
-                    </div>
-                </form>
-                <div id="button-frame">
-                    <md-filled-tonal-button class="cansle-button" id="result-button">결과발표</md-filled-tonal-button>
-                    <md-filled-tonal-button class="cansle-button" onclick="history.back()">취소</md-filled-tonal-button>
+    <section class="section" th:fragment="betting-add">
+        <link rel="stylesheet" th:href="@{css/betting-add-page/betting-add-page.css}">
+        <div class="container">
+            <h2 class="form-title">게임 결과발표</h2>
+            <form class="form" enctype="multipart/form-data" method="post"
+                  th:action="@{/admin-page/betting/result/{subjectNo}(subjectNo=${subjectNo})}" onsubmit="">
+                <div class="image-preview-container">
+                    <img class="image-preview" id="image-preview" th:src="${betting.getAttachmentFileAddress()}" />
                 </div>
-
-                <div id="result-frame">
-                    <md-text-button class="result-yes-button" th:onclick="resultClick('Yes')"
-                    >Yes
-                    </md-text-button
-                    >
-                    <md-text-button class="result-no-button" th:onclick="resultClick('No')">No</md-text-button>
+                <div class="form-group">
+                    <label class="form-label" for="subjectTitle">Title</label>
+                    <input class="form-input" id="subjectTitle"
+                           type="text" th:value="${betting.subjectTitle}" readonly/>
                 </div>
-                <form method="post" th:action="@{/admin-page/betting/result/{id}(id=${betting.getSubjectNo()})}">
-                    <div class="dialog-overlay" id="delete-dialog" style="display: none">
-                        <div class="dialog">
-                            <p id="selection-result"></p>
-                            <input id="result-choose"   type="hidden" value=""/>
-<!--                            <input name="subjectNo" th:attr="value=${betting.getSubjectNo()}" type="hidden"/>-->
-                            <p>결과를 발표하시겠습니까?</p>
-                            <button onclick="confirmSend()" form="send-data" type="submit">발표</button>
-                            <button onclick="cancelSend()" type="button">취소</button>
-                        </div>
-                    </div>
-                </form>
+                <div class="form-group">
+                    <label class="form-label" for="category">Category</label>
+                    <select class="form-select" id="category"
+                             disabled
+                            th:value="${betting.subjectCategoryNo}">
+                        <option th:each="category : ${categories}" th:text="${category.categoryName}"
+                                th:value="${category.categoryNo}" ></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="date">Date</label>
+                    <input class="form-input" id="date"  type="date"
+                           th:value="${deadlineDate}" readonly/></div>
+                <div class="form-group">
+                    <label class="form-label" for="time">Select End Time</label>
+                    <input class="form-input" id="time"  type="time"
+                           th:value="${deadlineTime}" readonly/>
+                </div>
+            <div    style="display: flex; gap:3%">
+                <button class="submit-button" style="width: 50%" type="submit" name="result" th:value="Yes">Yes</button>
+                <button class="submit-button" style="width: 50%" type="submit" name="result" th:value="No">No</button>
             </div>
-        </section>
+            </form>
+        </div>
+        <script>
+            const imageInputElement = document.querySelector("#image");
+            const imagePreviewImgElement = document.querySelector("#image-preview");
+            imageInputElement.addEventListener("change", (event) => {
+                let imageFile = event.target.files[0];
+                console.log(imageFile.size)
+                if (imageFile.size > 1000000) {
+                    alert("Too big!")
+                    imageInputElement.value = null;
+                    imagePreviewImgElement.src = ""; // 빈값 넣어주기.
+                } else {
+                    imagePreviewImgElement.src = URL.createObjectURL(imageFile);
+                }
+            });
+        </script>
+    </section>
     </div>
 </div>
-<!--결과발표 선택 dialog-->
-<script>
-    function resultClick(result) {
-        document.getElementById('result-choose').value = result;
-        document.getElementById('selection-result').textContent = result + '를 선택하셨습니다.';
-        document.getElementById('delete-dialog').style.display = 'flex';
-    }
-
-    function confirmSend() {
-        document.getElementById('delete-dialog').style.display = 'none';
-    }
-
-    function cancelSend() {
-        document.getElementById('delete-dialog').style.display = 'none';
-    }
-
-
-</script>
-
-
-<!--결과발표 toggle-->
-<script>
-    const toggleButton = document.querySelector('#result-button');
-    const container = document.querySelector('#result-frame');
-    container.setAttribute('class', 'remove');
-    toggleButton.addEventListener('click', () => {
-        if (container.getAttribute('class', 'remove')) {
-            container.removeAttribute('class', 'remove');
-        } else {
-            container.setAttribute('class', 'remove');
-        }
-    })
-</script>
-<!--이미지 태그 미리보기-->
-<script>
-    function previewImage(event) {
-        const file = event.target.files[0];
-        const reader = new FileReader();
-        reader.onloadend = function () {
-            document.getElementsByClassName("img-tag")[0].src = reader.result;
-        };
-        if (file) {
-            reader.readAsDataURL(file);
-        } else {
-            document.getElementsByClassName("img-tag")[0].src = "";
-        }
-    }
-</script>
-<script>
-    function validateForm() {
-        const textField = document.getElementById("notification-text-field");
-        const textArea = document.getElementById("notification-text-body");
-
-        if (
-            textField.value.trim("").length == 0 ||
-            textArea.value.trim("").length == 0
-        ) {
-            return false;
-        }
-        // 등록 로직 추가
-        return true;
-        // window.location.href = "./";
-    }
-</script>
 </body>
 </html>
