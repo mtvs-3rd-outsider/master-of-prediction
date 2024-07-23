@@ -2,10 +2,7 @@ package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.config.SecurityConfigUser;
 import com.outsider.masterofprediction.dto.*;
-import com.outsider.masterofprediction.service.BettingOrderService;
-import com.outsider.masterofprediction.service.ProcessFileService;
-import com.outsider.masterofprediction.service.UserInquiryService;
-import com.outsider.masterofprediction.service.UserManagementService;
+import com.outsider.masterofprediction.service.*;
 import com.outsider.masterofprediction.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -34,16 +31,19 @@ public class MyPageController {
 //    REST API
     private final ProcessFileService processFileService;
     private final UserInquiryService userInquiryService;
-
-    public MyPageController(UserManagementService userManagementService, BettingOrderService bettingOrderService, ProcessFileService processFileService, UserInquiryService userInquiryService) {
+    private final TierService tierService;
+    public MyPageController(UserManagementService userManagementService, BettingOrderService bettingOrderService, ProcessFileService processFileService, UserInquiryService userInquiryService, TierService tierService) {
         this.userManagementService = userManagementService;
         this.bettingOrderService = bettingOrderService;
         this.processFileService = processFileService;
         this.userInquiryService = userInquiryService;
+        this.tierService = tierService;
     }
+    @Value("${file.tierImgUrl}")
+    private String tierImgUrl;
 
     @Value("${file.imgUrl}")
-    private String imgUrl;
+    private String imgUrl ;
     @GetMapping("api/purchase-history/{page}")
     public ResponseEntity<Map<String, Object>> getPurchaseHistory(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user) {
         int itemsPerPage = ITEMS_PER_PAGE;
@@ -103,15 +103,22 @@ public class MyPageController {
             return new ModelAndView("redirect:/mypage/" + user.getId());
         }
         mv.addObject("isMine",userId.intValue() == user.getId());
+        System.out.println(userId.intValue());
+        System.out.println(user.getId());
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
         mv.setViewName("/layout/my-page/index");
+        System.out.println(userId.intValue() == user.getId());
         mv.addObject("view", "content/my-page/my-page");
-        mv.addObject("name", "Dummy User"); // Dummy username
         mv.addObject("name",user.getUsername() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
+        String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user.getUserTierId());
+        System.out.println(tierImgUrl);
+        TblTierDTO tblTierDTO = tierService.findByTierNo(user.getUserTierId());
+        mv.addObject("tierImgUrl", tierImgUrl);
+        mv.addObject("tierName", tblTierDTO.getTierContent());
         mv.addObject("userJoinDate",user.getJoinDate(String.class));
 //      현재 포지션 가치
         mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()));

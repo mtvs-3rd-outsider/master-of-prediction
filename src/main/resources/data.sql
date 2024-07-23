@@ -82,3 +82,58 @@ SELECT @user_no, 'qewjkjkjkj', 'qewdfsfsfsfsfjkjkjkj', CURRENT_TIMESTAMP
     WHERE NOT EXISTS (
     SELECT 1 FROM TBL_INQUIRY WHERE inquiry_user_no = @user_no AND inquiry_title = 'qewjkjkjkj'
 );
+
+-- TBL_CATEGORY 테이블에 데이터 삽입 (조건부)
+
+INSERT INTO TBL_CATEGORY ( category_name)
+SELECT   '사회'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_CATEGORY WHERE   category_name = '사회'
+);
+
+
+INSERT INTO TBL_CATEGORY ( category_name)
+SELECT   '스포츠'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_CATEGORY WHERE   category_name = '스포츠'
+);
+INSERT INTO TBL_CATEGORY ( category_name)
+SELECT   '일상'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_CATEGORY WHERE   category_name = '일상'
+);
+INSERT INTO TBL_CATEGORY ( category_name)
+SELECT   '연예'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_CATEGORY WHERE   category_name = '연예'
+);
+INSERT INTO TBL_CATEGORY ( category_name)
+SELECT   '세계'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_CATEGORY WHERE   category_name = '세계'
+);
+-- TBL_SUBJECT 테이블에 데이터 삽입 (조건부)
+
+SET @category_no = (SELECT category_no FROM TBL_CATEGORY WHERE category_name = '사회');
+
+INSERT INTO TBL_SUBJECT (subject_title, subject_category_no, subject_register_user_no,subject_settlement_timestamp ,subject_register_timestamp)
+SELECT  '트럼프 vs 바이든', @category_no , @user_no, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY) , CURRENT_TIMESTAMP
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_SUBJECT WHERE subject_register_user_no = @user_no AND subject_category_no = @category_no AND subject_title = '트럼프 vs 바이든'
+);
+SET @subject_no = (SELECT subject_no FROM TBL_SUBJECT WHERE subject_title = '트럼프 vs 바이든');
+
+INSERT INTO TBL_ATTACHMENT (subject_no, attachment_regist_user_no, attachment_file_address)
+SELECT @subject_no, @user_no, '트럼프.jpg'
+    WHERE NOT EXISTS (
+    SELECT 1 FROM TBL_ATTACHMENT WHERE subject_no = @subject_no
+);
+
+INSERT INTO tbl_betting_order (order_amount, order_choice, order_subject_no,order_user_no)
+values (10,'YES',@subject_no, @user_no);
+
+
+INSERT INTO tbl_comment (comment_content, comment_user_no, comment_subject_no)
+values ('트럼프가 무조건 이기지', @user_no, @subject_no );
+
+-- UPDATE TBL_SUBJECT SET subject_status = "정산"

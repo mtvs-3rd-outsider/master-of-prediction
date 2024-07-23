@@ -6,5 +6,12 @@
 <mapper namespace="com.outsider.masterofprediction.mapper.AttachmentMapper">
 
 
-
+    <select id="getImgById" resultType="java.lang.String">
+        SELECT
+            attachment_file_address
+        FROM
+            TBL_ATTACHMENT
+        WHERE
+            tier_no = #{tierNo}
+    </select>
 </mapper>

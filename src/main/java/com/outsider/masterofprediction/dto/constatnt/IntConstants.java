@@ -5,4 +5,5 @@ public class IntConstants {
     public static final int ITEMS_PER_PAGE = 4;
     public static final int Yes = 1;
     public static final int No = 0;
+    public static final int MAIN_PAGE_ACTIVITY_COUNT = 5;
 }
