@@ -4,6 +4,7 @@ import com.outsider.masterofprediction.dto.TblAttachmentDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
+import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.RankFindService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,19 +19,21 @@ import java.util.List;
 public class RankPageController {
 
     private final RankFindService rankFindService;
+    private final CategoryService categoryService;
 
-    public RankPageController(RankFindService rankFindService){
+    public RankPageController(RankFindService rankFindService, CategoryService categoryService){
         this.rankFindService = rankFindService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
     public ModelAndView getRankPage(ModelAndView mv){
 
-
         // mv.addObject();
         mv.setViewName("/layout/rank-page/index");
         mv.addObject("title", "User Ranking");
         mv.addObject("view", "content/rank-page/rank-page");
+        mv.addObject("categories", categoryService.findAll());
 
 //        List<TblAttachmentDTO> userList = rankFindService.findRank();
 //        mv.addObject("userList", userList);

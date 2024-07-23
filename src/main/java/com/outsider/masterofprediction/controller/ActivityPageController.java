@@ -2,7 +2,9 @@ package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.dto.ActivityUserSubjectDTO;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
+import com.outsider.masterofprediction.mapper.BettingAddMapper;
 import com.outsider.masterofprediction.service.ActivityFindService;
+import com.outsider.masterofprediction.service.CategoryService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,9 +17,11 @@ import java.util.List;
 public class ActivityPageController {
 
     private final ActivityFindService activityFindService;
+    private final CategoryService categoryService;
 
-    public ActivityPageController(ActivityFindService activityFindService) {
+    public ActivityPageController(ActivityFindService activityFindService, CategoryService categoryService) {
         this.activityFindService = activityFindService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
@@ -27,6 +31,7 @@ public class ActivityPageController {
         mv.setViewName("/layout/activity-page/index");
         mv.addObject("title", "Recent Activity");
         mv.addObject("view", "content/activity-page/activity-page");
+        mv.addObject("categories", categoryService.findAll());
 
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();
         mv.addObject("userActivity", userActivity);

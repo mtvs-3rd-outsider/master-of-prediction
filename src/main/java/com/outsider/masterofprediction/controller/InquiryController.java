@@ -52,12 +52,14 @@ public class InquiryController {
     }
 
     @GetMapping("inquiry/detail/{inquiryNo}")
-    public ModelAndView getInquiryDetail(@AuthenticationPrincipal CustomUserDetail user, @PathVariable int inquiryNo, @RequestParam int replyStatus , ModelAndView mv) {
+    public ModelAndView getInquiryDetail(@AuthenticationPrincipal CustomUserDetail user, @PathVariable int inquiryNo, ModelAndView mv) {
         TblInquiryDTO tblInquiryDTO = new TblInquiryDTO();
         tblInquiryDTO.setInquiryUserNo(user.getId());
         tblInquiryDTO.setInquiryNo(inquiryNo);
+        int replyStatus = userInquiryService.getReplyStatus(tblInquiryDTO);
         tblInquiryDTO.setInquiryReplyStatus(replyStatus);
         InquiryDetailDTO inquiryDetailDTO = userInquiryService.getInquiryDetail(tblInquiryDTO);
+        System.out.println(inquiryDetailDTO);
         mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-detail");
         mv.addObject("inquiryDetail", inquiryDetailDTO);
