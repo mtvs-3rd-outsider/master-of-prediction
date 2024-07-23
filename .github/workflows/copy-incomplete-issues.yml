@@ -16,8 +16,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # 현재 iteration 레이블
-          current_label="iteration:current"
-          next_label="iteration:next"
+          current_label="iteration:previous"
+          next_label="iteration:current"
           
           # 미완료 이슈 목록 가져오기
           issues=$(gh issue list --state open --label $current_label --json number,title,body,labels --jq '.[] | @base64')
