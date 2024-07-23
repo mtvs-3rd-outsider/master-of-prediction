@@ -70,9 +70,10 @@
         </div>
         <div class="category">
             <ul id="header-ul">
-                <li><a href="">전체</a></li>
+                <li><a href="/category/all">전체</a></li>
+                <li><a href="/category/recent">최신순</a></li>
                 <li th:each="category : ${categories}">
-                    <a th:href="'/?categoryNo=' + ${category.categoryNo}"
+                    <a th:href="'/category/' + ${category.categoryNo}"
                         th:text="${category.categoryName}"></a>
                 </li>
 <!--                    <li><a href="">인기</a></li>-->
@@ -105,8 +106,6 @@
             </div>
         </div>
     </md-dialog>
-
-
 </header>
 </body>
 </html>
