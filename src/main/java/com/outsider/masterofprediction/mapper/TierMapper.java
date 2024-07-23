@@ -30,4 +30,5 @@ public interface TierMapper {
 
     @Select("SELECT * FROM tbl_tier WHERE tier_no = #{tierNo}")
     TblTierDTO findByTierNo(Long tierNo);
+
 }

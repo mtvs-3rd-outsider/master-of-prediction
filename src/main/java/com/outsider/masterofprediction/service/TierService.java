@@ -66,6 +66,9 @@ public class TierService {
 
     public void deleteList(List<Long> ids) {
     }
+    public String getImgById(Long tierNo) {
+        return attachmentMapper.getImgById(tierNo);
+    }
 
 
 
