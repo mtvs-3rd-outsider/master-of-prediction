@@ -1,8 +1,12 @@
 package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.dto.ActivityUserSubjectDTO;
+
+import com.outsider.masterofprediction.dto.CustomUserDetail;
+
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
+
 import com.outsider.masterofprediction.dto.constatnt.IntConstants;
 import com.outsider.masterofprediction.dto.response.MainPageSubjectDTO;
 import com.outsider.masterofprediction.dto.response.UserAndAttachmentDTO;
@@ -12,6 +16,7 @@ import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.MainPageService;
 import com.outsider.masterofprediction.service.UserManagementService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -67,7 +72,7 @@ public class MainPageController {
 
 
     @GetMapping()
-    public ModelAndView getMainPage(ModelAndView mv){
+    public ModelAndView getMainPage(ModelAndView mv,@AuthenticationPrincipal CustomUserDetail user){
 
         // mv.addObject();
         List<MainPageSubjectDTO> mainPageSubjectDTOS =  mainPageService.findMainPageSubjectList();
@@ -90,7 +95,7 @@ public class MainPageController {
         mv.addObject("leftUsers", rightUsers);
         mv.addObject("rightUsers", leftUsers);
         mv.addObject("view", "content/main-page/main-page");
-
+        mv.addObject("Point",user.getPoint());
         return mv;
     }
 }

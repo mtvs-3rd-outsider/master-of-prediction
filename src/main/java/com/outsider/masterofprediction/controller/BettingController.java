@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class BettingController {
 
 
     @GetMapping("/betting/{subjectNo}")
-    public String getBettingPage(Model model ,@PathVariable long subjectNo) {
+    public String getBettingPage(Model model ,@PathVariable long subjectNo ,@AuthenticationPrincipal CustomUserDetail user) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
@@ -70,6 +71,8 @@ public class BettingController {
         model.addAttribute("returnNRate", returnNRate);
         model.addAttribute("subject", subject);
         model.addAttribute("userAuthority", userAuthority);
+        model.addAttribute("Point",user.getPoint());
+
         return "/content/betting-page/betting-page";
     }
 
