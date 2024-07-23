@@ -86,4 +86,6 @@ public interface BettingOrderMapper {
     List<BettingInfoDTO> getMonthProfitsByUserId(Long userId);
 
     List<ActivityUserSubjectDTO> findActivity();
+
+    List<ActivityUserSubjectDTO> findActivityCount(int count);
 }
