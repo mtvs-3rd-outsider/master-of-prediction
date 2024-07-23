@@ -124,7 +124,7 @@ SELECT  '트럼프 vs 바이든', @category_no , @user_no, DATE_ADD(CURRENT_TIME
 SET @subject_no = (SELECT subject_no FROM TBL_SUBJECT WHERE subject_title = '트럼프 vs 바이든');
 
 INSERT INTO TBL_ATTACHMENT (subject_no, attachment_regist_user_no, attachment_file_address)
-SELECT @subject_no, @user_no, '트럼프.jpg'
+SELECT @subject_no, @user_no, 'Donald.jpg'
     WHERE NOT EXISTS (
     SELECT 1 FROM TBL_ATTACHMENT WHERE subject_no = @subject_no
 );

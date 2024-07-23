@@ -1,0 +1,54 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<section class="notice-container notice-container-page" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/notice-page/notice.css}">
+    <h1>공지사항</h1>
+    <table class="notice-table">
+        <thead>
+        <tr>
+            <th>번호</th>
+            <th class="notice-table-title">제목</th>
+            <th>작성일시</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="notice : ${noticeList}" onclick="routeHandler(this)" th:name="${notice.id}"
+            th:data-id="${notice.id}">
+            <td th:text="${notice.id}"></td>
+            <td class="notice-table-title" th:text="${notice.title}"></td>
+            <td th:text="${#dates.format(notice.timestamp, 'yyyy-MM-dd')}">2024-07-22 10:00</td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="notice-pagination">
+        <a th:href="@{/notification(page=${currentPage - 1})}">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"
+                      d="m15 19-7-7 7-7"/>
+            </svg>
+        </a>
+        <div th:each="page : ${#numbers.sequence(start, end)}">
+            <div>
+                <a class="notice-pagination-active" th:if="${page == currentPage}" th:text="${page}"></a>
+            </div>
+            <div>
+                <a th:href="@{/notification(page=${page})}" th:if="${page != currentPage}"
+                   th:text="${page}"></a>
+            </div>
+        </div>
+        <a th:href="@{/notification(page=${currentPage + 1})}">
+            <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
+                 viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.1"
+                      d="m9 5 7 7-7 7"/>
+            </svg>
+        </a>
+    </div>
+    <script>
+        const routeHandler = () => {
+            window.location.href = `/notification/${this.event.currentTarget.dataset.id}`;
+        }
+    </script>
+</section>
+
+</html>

@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="notice-container notice-container-detail" th:fragment="content">
+    <link rel="stylesheet" th:href="@{css/notice-page/notice.css}">
+    <div class="detail-page-title">공지사항</div>
+    <div class="detail-main">
+        <div class="detail-title" th:text="${notice.title}"></div>
+        <div class="detail-timestamp" th:text="${#dates.format(notice.timestamp, 'yyyy-MM-dd HH:mm')}"></div>
+        <div class="divider"></div>
+        <div class="detail-content" th:text="${notice.content}"></div>
+    </div>
+</div>
+</div>
+</html>
