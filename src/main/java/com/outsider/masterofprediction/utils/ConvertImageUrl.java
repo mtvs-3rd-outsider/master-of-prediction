@@ -11,7 +11,7 @@ public class ConvertImageUrl {
 
     public static <T extends AttachmentFileAddressable> void convert(List<T> items){
         for (T item : items){
-            if (item instanceof UserAttachmentDTO){
+            if (item instanceof UserAttachmentDTO && ((UserAttachmentDTO) item).getAttachment() == null){
                 ((UserAttachmentDTO) item).setAttachment(new TblAttachmentDTO());
             }
             if (item.getAttachmentFileAddress() == null){

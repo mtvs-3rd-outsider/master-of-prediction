@@ -3,6 +3,7 @@ package com.outsider.masterofprediction.controller;
 import com.outsider.masterofprediction.dto.ActivityUserSubjectDTO;
 import com.outsider.masterofprediction.service.ActivityFindService;
 import com.outsider.masterofprediction.service.CategoryService;
+import com.outsider.masterofprediction.utils.FileUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,10 @@ public class ActivityPageController {
         mv.addObject("title", "Recent Activity");
         mv.addObject("view", "content/activity-page");
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();
+        for (ActivityUserSubjectDTO tblAttachmentDTO: userActivity) {
+            tblAttachmentDTO.getAttachmentUser().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentUser().getAttachmentFileAddress()));
+            tblAttachmentDTO.getAttachmentSubject().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentSubject().getAttachmentFileAddress()));
+        }
         mv.addObject("userActivity", userActivity);
 
 

@@ -68,12 +68,12 @@
                 <result property="subjectTitle" column="SUBJECT_Title"/>
         </collection>
         <collection property="attachmentUser" ofType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
-            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
-            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
+            <id property="attachmentFileNo" column="USER_ATTACHMENT_FILE_NO"/>
+            <result property="attachmentFileAddress" column="USER_ATTACHMENT_FILE_ADDRESS"/>
         </collection>
         <collection property="attachmentSubject" ofType="com.outsider.masterofprediction.dto.TblAttachmentDTO">
-            <id property="attachmentFileNo" column="ATTACHMENT_FILE_NO"/>
-            <result property="attachmentFileAddress" column="ATTACHMENT_FILE_ADDRESS"/>
+            <id property="attachmentFileNo" column="SUBJECT_ATTACHMENT_FILE_NO"/>
+            <result property="attachmentFileAddress" column="SUBJECT_ATTACHMENT_FILE_ADDRESS"/>
         </collection>
     </resultMap>
 
@@ -330,10 +330,10 @@ WHERE
                 , B.USER_NAME
                 , C.SUBJECT_NO
                 , C.SUBJECT_TITLE
-                , D.ATTACHMENT_FILE_NO
-                , D.ATTACHMENT_FILE_ADDRESS
-                , E.ATTACHMENT_FILE_NO
-                , E.ATTACHMENT_FILE_ADDRESS
+                , D.ATTACHMENT_FILE_NO AS USER_ATTACHMENT_FILE_NO
+                , D.ATTACHMENT_FILE_ADDRESS AS USER_ATTACHMENT_FILE_ADDRESS
+                , E.ATTACHMENT_FILE_NO AS SUBJECT_ATTACHMENT_FILE_NO
+                , E.ATTACHMENT_FILE_ADDRESS AS SUBJECT_ATTACHMENT_FILE_ADDRESS
         FROM
                 TBL_BETTING_ORDER A
                 LEFT JOIN TBL_USER B ON A.ORDER_USER_NO = B.USER_NO
@@ -620,10 +620,10 @@ WHERE
              , B.USER_NAME
              , C.SUBJECT_NO
              , C.SUBJECT_TITLE
-             , D.ATTACHMENT_FILE_NO
-             , D.ATTACHMENT_FILE_ADDRESS
-             , E.ATTACHMENT_FILE_NO
-             , E.ATTACHMENT_FILE_ADDRESS
+             , D.ATTACHMENT_FILE_NO AS USER_ATTACHMENT_FILE_NO
+             , D.ATTACHMENT_FILE_ADDRESS AS USER_ATTACHMENT_FILE_ADDRESS
+             , E.ATTACHMENT_FILE_NO AS SUBJECT_ATTACHMENT_FILE_NO
+             , E.ATTACHMENT_FILE_ADDRESS AS SUBJECT_ATTACHMENT_FILE_ADDRESS
         FROM
             TBL_BETTING_ORDER A
                 LEFT JOIN TBL_USER B ON A.ORDER_USER_NO = B.USER_NO

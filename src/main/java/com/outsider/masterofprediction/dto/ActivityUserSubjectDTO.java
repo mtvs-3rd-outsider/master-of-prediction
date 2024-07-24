@@ -1,5 +1,7 @@
 package com.outsider.masterofprediction.dto;
 
+import com.outsider.masterofprediction.utils.AttachmentFileAddressable;
+
 import java.sql.Timestamp;
 
 public class ActivityUserSubjectDTO {
