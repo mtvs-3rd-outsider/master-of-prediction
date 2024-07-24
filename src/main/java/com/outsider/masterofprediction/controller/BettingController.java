@@ -78,9 +78,9 @@ public class BettingController {
         Timestamp settleTime = subject.getSubjectSettlementTimestamp();
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        if(UserSession.getUserId().equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime)) {
-            model.addAttribute("isAccountBtnOn", true);
-        }
+        model.addAttribute("isAccountBtnOn",
+                UserSession.getUserId().
+                        equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime));
         return "content/betting-page/betting-page";
 
     }
