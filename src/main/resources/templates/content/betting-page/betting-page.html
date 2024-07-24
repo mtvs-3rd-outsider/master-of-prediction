@@ -48,6 +48,7 @@
                         <li th:text="${subject.getSubjectSettlementTimestamp().toString().split(' ')[0]}"></li>
                         <li id="betting-state" th:text="${subject.subjectStatus}"></li>
                         <li th:text="${userAuthority}"></li>
+                        <li><button class="accountBtn" th:text="'정산하기'" th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}">aaa</button></li>
                     </ul>
                     <h2 th:text="${subject.subjectTitle}"></h2>
                 </div>
@@ -188,11 +189,11 @@
         </div>
     </div>
 </div>
-<input type="hidden" id="loggedSubjectNo" value="1"/>
+<input type="hidden" id="subjectNo" th:value="${subject.getSubjectNo()}"/>
 <input type="hidden" id="loggedInUserId" th:value="${loggedInUserId}" />
 <input type="hidden" id="sumYPoint" th:value="${sumYPoint}">
 <input type="hidden" id="sumNPoint" th:value="${sumNPoint}">
+<input type="hidden" id="subjectRegisterUserNo" th:value="${subject.subjectRegisterUserNo}"/>
 </body>
 <script type="text/javascript" th:src="@{/js/betting-page/betting-page-js.js}"></script>
-
 </html>
