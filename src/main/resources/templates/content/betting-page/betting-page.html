@@ -39,7 +39,7 @@
                 <p class="betting-warning hidden">이 게임은 사용자가 만든 게임입니다. 승패에 관해서 운영진은 책임지지 않습니다!</p>
             </div>
             <div class="title-content">
-                <img th:src="'/images/upload/' + ${subjectImage}" alt="배팅 이미지" onerror="this.onerror=null;this.src='me.jpg';">
+                <img th:src="${subjectImage}" alt="배팅 이미지" onerror="this.onerror=null;this.src='me.jpg';">
                 <div class="title_text-content">
                     <ul>
                         <li>$&nbsp<span th:text="${subject.getSubjectTotalYesPoint()+subject.getSubjectTotalNoPoint()}"></span>&nbspPoint</li>

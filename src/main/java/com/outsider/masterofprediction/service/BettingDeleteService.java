@@ -41,7 +41,6 @@ public class BettingDeleteService {
             // 구매한 사용자 불러오기 및 포인트 조회
             List<BettingDeleteOrderDTO> bettingDeleteOrderDTO =
                     this.bettingDeleteMapper.findSumOrderAmountBySubjectNo(id);
-            System.out.println(bettingDeleteOrderDTO);
 
                 StringBuilder changeReason = new StringBuilder("'" + id + "번상품 삭제로 인한 환불'");
                 // 포인트 변경내역에 추가

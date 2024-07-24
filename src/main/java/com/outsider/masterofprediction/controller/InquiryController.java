@@ -20,11 +20,9 @@ public class InquiryController {
 
 
     private final UserInquiryService userInquiryService;
-    private final UserManagementService userManagementService;
 
-    public InquiryController(UserInquiryService userInquiryService, UserManagementService userManagementService) {
+    public InquiryController(UserInquiryService userInquiryService) {
         this.userInquiryService = userInquiryService;
-        this.userManagementService = userManagementService;
     }
 
 
@@ -64,7 +62,6 @@ public class InquiryController {
         int replyStatus = userInquiryService.getReplyStatus(tblInquiryDTO);
         tblInquiryDTO.setInquiryReplyStatus(replyStatus);
         InquiryDetailDTO inquiryDetailDTO = userInquiryService.getInquiryDetail(tblInquiryDTO);
-        System.out.println(inquiryDetailDTO);
         mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-detail");
         mv.addObject("inquiryDetail", inquiryDetailDTO);

@@ -9,7 +9,6 @@ public class ConvertImageUrl {
 
     public static <T extends AttachmentFileAddressable> void convert(List<T> items){
         for (T item : items){
-            System.out.println(item.getAttachmentFileAddress());
             item.setAttachmentFileAddress(
                     FileUtil.checkFileOrigin(item.getAttachmentFileAddress()));
         }

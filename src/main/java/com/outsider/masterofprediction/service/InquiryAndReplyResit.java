@@ -20,10 +20,7 @@ public class InquiryAndReplyResit {
 
     @Transactional
     public void resit(InquiryReplyStatus inquiryReplyStatus, TblInquiryReplyDTO reply) {
-        System.out.println("TEST : " + inquiryReplyStatus);
-        // 문의상태를 업데이트한다
         inquiryStatusUpdateService.update(inquiryReplyStatus, reply.getAnswerInquiryNo());
-        // // 답변 업데이트
         inquiryReplyCreateService.createInquiry(reply);
     }
 
