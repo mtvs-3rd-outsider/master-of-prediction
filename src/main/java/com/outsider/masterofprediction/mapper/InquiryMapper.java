@@ -53,7 +53,8 @@ public interface InquiryMapper {
 
    @Select("SELECT * FROM tbl_inquiry where inquiry_no = #{inquiryNo}")
     CustomTblInquiryDTO getTBLInquiryById(Long inquiryNo);
-
+    @Select("SELECT inquiry_reply_status FROM tbl_inquiry where inquiry_no = #{inquiryNo}")
+    int getInquiryReplyStatus(TblInquiryDTO inquiryDTO);
    // 결과 저장
     @Update("UPDATE tbl_inquiry SET inquiry_reply_status= #{inquiryReplyStatus.value} where inquiry_no=#{inquiryNo}")
     void updateState(InquiryReplyStatus inquiryReplyStatus, Long inquiryNo);

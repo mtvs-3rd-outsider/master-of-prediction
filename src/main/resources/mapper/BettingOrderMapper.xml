@@ -44,6 +44,13 @@
         <result property="totalLossPoints" column="total_loss_points" />
         <result property="netProfitPoints" column="net_profit_points" />
     </resultMap>
+    <resultMap id="BettingOrderResultMap" type="BettingOrderDTO">
+        <result property="subjectNo" column="subject_no"/>
+        <result property="subjectTitle" column="subject_title"/>
+        <result property="orderChoice" column="order_choice"/>
+        <result property="subjectStatus" column="subject_status"/>
+        <result property="subjectFinishResult" column="subject_finish_result"/>
+    </resultMap>
 
     <resultMap id="ActivityUserSubjectResultMap" type="com.outsider.masterofprediction.dto.ActivityUserSubjectDTO">
         <id property="orderNo" column="ORDER_NO"/>
@@ -80,13 +87,14 @@
     </select>
 
     <!-- 구매내역 조회 -->
-    <select id="getBettingOrdersByUserId" resultMap="TblBettingOrderResultMap">
+    <select id="getBettingOrdersByUserId" resultMap="BettingOrderResultMap">
         SELECT
-            b.subject_title, a.order_choice, b.subject_status, b.subject_finish_result
+            b.subject_title, a.order_choice, b.subject_status, b.subject_finish_result, b.subject_no
         FROM
             TBL_BETTING_ORDER a
         JOIN
             TBL_SUBJECT b ON b.subject_no = a.order_subject_no
+        WHERE a.order_user_no =  #{userId}
         ORDER BY
             order_timestamp DESC
         LIMIT #{itemsPerPage} OFFSET #{start}
@@ -158,7 +166,7 @@
     <select id="getMonthProfitsByUserId" resultMap="BettingInfoResultMap">
         -- 사용자의 수익 포인트와 손실 포인트 계산
         SELECT
-            u.user_no,
+            bo.order_user_no as user_no,
             bo.order_amount,
             bo.order_choice,
             c.subject_total_yes_point,
@@ -182,13 +190,11 @@
         ELSE 0
         END AS loss_points
 FROM
-    TBL_USER u
-JOIN
-    TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+    TBL_BETTING_ORDER bo
 JOIN
     TBL_Subject c ON bo.order_subject_no = c.subject_no
 WHERE
-    u.user_no = #{userId}
+            bo.order_user_no = #{userId}
         AND bo.order_timestamp >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
         AND c.subject_status = '완료';
     </select>
@@ -215,13 +221,11 @@ WHERE
                          ELSE 0
                          END AS loss_points
                  FROM
-                     TBL_USER u
-                         JOIN
-                     TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+                     TBL_BETTING_ORDER bo
                          JOIN
                      TBL_Subject c ON bo.order_subject_no = c.subject_no
                  WHERE
-                     u.user_no = #{userId}
+                     bo.order_user_no = #{userId}
                    AND bo.order_timestamp >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
                    AND c.subject_status = '완료'
              ) AS UserBettingData;
@@ -229,7 +233,7 @@ WHERE
 
     <select id="getPositionValueByUserId" resultMap="BettingInfoResultMap">
         SELECT
-            u.user_no,
+            bo.order_user_no as user_no,
             bo.order_amount,
             bo.order_choice,
             c.subject_total_yes_point,
@@ -246,13 +250,11 @@ WHERE
                 ELSE 0
                 END AS current_position_value
         FROM
-            TBL_USER u
-                JOIN
-            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+            TBL_BETTING_ORDER bo
                 JOIN
             TBL_Subject c ON bo.order_subject_no = c.subject_no
         WHERE
-            u.user_no = #{userId}
+            bo.order_user_no = #{userId}
           AND c.subject_status = '진행중';
     </select>
     <select id="getTotalPositionValueByUserId" resultType="java.lang.Long">
@@ -362,6 +364,24 @@ WHERE
         ORDER BY
             A.ORDER_TIMESTAMP DESC
         LIMIT #{count}
+    </select>
+    <select id="getBettingOrdersByUserSubjectDTO"
+            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        SELECT
+            order_no, order_amount
+        FROM
+            TBL_BETTING_ORDER
+        WHERE
+            order_user_no = #{userId} AND order_subject_no = #{orderSubjectNo} AND order_choice = #{orderChoice}
+    </select>
+    <select id="getUsersBySubjectNo"
+            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+        SELECT
+            order_user_no
+        FROM
+            TBL_BETTING_ORDER
+        WHERE
+            order_subject_no = #{orderSubjectNo}
     </select>
 
 </mapper>

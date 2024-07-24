@@ -365,6 +365,7 @@
     height: 100%;
     width: 100%;
     object-fit: fill;
+    border-radius: 100%;
 }
 
 .main-active-item-div{
@@ -434,7 +435,7 @@
 .main-rank-item-circle{
     border-radius: 50%;
     display: inline-block;
-    border: 1px solid black;
+    border: 1px solid #e6dddd;
     background-color: #5c636a;
     position: relative;
 }
@@ -475,13 +476,19 @@
     overflow: hidden;
 }
 
-.bounding-betting-add-page-entry {
+.bottom-right-button-container {
     position:fixed;
     bottom:0;
     right:0;
     margin:25px;
-    width: 75px;
-    height: 75px;
+    display: flex;
+    gap:10px;
+}
+
+.bounding-betting-add-page-entry {
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
     border-radius: 100%;
     background: rgba(252, 58, 21, 0.43);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -509,4 +516,22 @@
     100% {
         opacity: 1;
     }
+}
+
+.notification-page-entry {
+    width: 50px;
+    height: 50px;
+    border-radius: 100%;
+    background: rgba(252, 58, 21, 0.43);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.1px);
+    -webkit-backdrop-filter: blur(5.1px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor:pointer;
+}
+
+.hidden {
+    display: none;
 }

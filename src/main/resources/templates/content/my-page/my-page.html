@@ -294,13 +294,16 @@
 
         function updatePanelContent(tabIndex, data) {
             const panel = document.getElementById(`panel${tabIndex}-content`);
-            const contentContainer = document.querySelector('.positions-content-no-positions');
+            const contentContainers = document.querySelectorAll('.positions-content-no-positions');
 
             if (data.items.length === 0) {
-                contentContainer.textContent = `${tabIndex === 1 ? '문의' : tabIndex === 2 ? '댓글' : '구매'} 내역이 없습니다.`;
+                // contentContainer.textContent = `${tabIndex === 1 ? '문의' : tabIndex === 2 ? '댓글' : '구매'} 내역이 없습니다.`;
                 return;
             }
-            contentContainer.innerHTML = ''; // Clear existing content
+
+            contentContainers.forEach(container => {
+                container.innerHTML = '';
+            });
             panel.innerHTML = ''; // Clear existing content
             if(tabIndex === 1)
             {
@@ -310,7 +313,7 @@
                 const itemElement = document.createElement('a');
                 itemElement.classList.add('item');
                 itemElement.classList.add('item');
-                itemElement.href = `/mypage/inquiry/detail/${item.inquiryNo}?replyStatus=${item.inquiryReplyStatus}`;
+                itemElement.href = `/mypage/inquiry/detail/${item.inquiryNo}`;
                 itemElement.innerHTML=`
                 <span>${item.inquiryTitle}</span>
                 <div class="flex">
@@ -324,29 +327,40 @@
                 data.items.forEach(item => {
                     const itemElement = document.createElement('a');
                     itemElement.classList.add('item');
-                    itemElement.href = ``;
+                    itemElement.href = `/betting/${item.commentSubjectNo}`;
                     itemElement.innerHTML=`
                 <span>${item.subjectTitle}</span>
                 <div class="flex">
                     <span>${item.commentContent}</span>
                 </div>
             `;
-                    contentContainer.appendChild(itemElement);
+                    panel.appendChild(itemElement);
                 });
             }else if(tabIndex === 3)
             {
                 data.items.forEach(item => {
-                    const itemElement = document.createElement('div');
+                    const itemElement = document.createElement('a');
                     itemElement.classList.add('item');
+                    itemElement.href = `/betting/${item.subjectNo}`;
+                    let subjectFinish;
+                    let color;
+
+                    if (item.orderChoice === item.subjectFinishResult) {
+                        subjectFinish = '승리';
+                        color = 'green'; // 초록색
+                    } else {
+                        subjectFinish = '패배';
+                        color = 'red'; // 빨간색
+                    }
                     itemElement.innerHTML=`
                 <span>${item.subjectTitle}</span>
                 <div class="flex">
                     <span>${item.orderChoice}</span>
                     <span>${item.subjectStatus}</span>
-                    <span>${item.subjectFinishResult}</span>
+                     <span style="color: ${color};">${subjectFinish}</span>
                 </div>
             `;
-                    contentContainer.appendChild(itemElement);
+                    panel.appendChild(itemElement);
                 });
             }
 

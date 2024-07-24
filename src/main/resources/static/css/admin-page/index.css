@@ -58,7 +58,7 @@ a:-webkit-any-link {
 
 #admin-main-title {
     display: flex;
-    justify-content: space-between;
+    /*justify-content: space-between;*/
     padding-top: 5px;
     padding-bottom: 5px;
     border: 2px solid black;
@@ -77,22 +77,22 @@ a:-webkit-any-link {
 }
 
 #paginnation-frame div {
-  width: 30px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+    width: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
-.active{
-  background-color: #267FFF;
-  color: white;
+.active {
+    background-color: #267FFF;
+    color: white;
 }
 
-#paginnation-frame a{
-  height: 30px;
+#paginnation-frame a {
+    height: 30px;
 }
 
-#sidebar p{
+#sidebar p {
     color: white;
 }
 

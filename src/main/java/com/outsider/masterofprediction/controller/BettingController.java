@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -46,8 +47,8 @@ public class BettingController {
     }
 
 
-    @GetMapping("/betting")
-    public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
+    @GetMapping("/betting/{subjectNo}")
+    public String getBettingPage(Model model ,@PathVariable long subjectNo ,@AuthenticationPrincipal CustomUserDetail user) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
@@ -73,6 +74,7 @@ public class BettingController {
         model.addAttribute("subject", subject);
         model.addAttribute("userAuthority", userAuthority);
 
+
         Timestamp settleTime = subject.getSubjectSettlementTimestamp();
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
@@ -80,6 +82,7 @@ public class BettingController {
             model.addAttribute("isAccountBtnOn", true);
         }
         return "content/betting-page/betting-page";
+
     }
 
     /**

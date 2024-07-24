@@ -6,6 +6,7 @@ import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblUserDTO;
 import com.outsider.masterofprediction.dto.User;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
+import com.outsider.masterofprediction.dto.response.UserAndAttachmentDTO;
 import org.apache.ibatis.annotations.*;
 
 import java.math.BigDecimal;
@@ -67,7 +68,7 @@ public interface UserMapper {
             "user_point=#{point} " +
             "WHERE user_no=#{id}"
     )
-    void updateUserPointById(Long id, double point);
+    void updateUserPointById(Long id, BigDecimal point);
 
     @Select("SELECT SUM(user_point) FROM tbl_user")
     BigDecimal findAllUsrPointSUM();
@@ -89,6 +90,11 @@ public interface UserMapper {
             "</script>"
     })
     void bulkUpdateUserTiers(@Param("users") List<TblUserDTO> users);
+
+    @Select("SELECT * FROM tbl_user Left join tbl_attachment " +
+            "ON tbl_user.user_no = tbl_attachment.attachment_user_no " +
+            "ORDER BY user_point DESC LIMIT  #{count}")
+    List<UserAndAttachmentDTO> findUserOrderByPointLIMIT(int count);
 
     // 회원 탈퇴 여부 수정
     void updateWithdrawalStatusByUser(User user);

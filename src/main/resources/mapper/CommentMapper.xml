@@ -40,7 +40,7 @@
     </select>
 
     <!-- 댓글목록 조회 -->
-    <select id="getCommentsByUserId" resultMap="TblCommentResultMap">
+    <select id="getCommentsByUserId" resultMap="CommentResultMap">
         SELECT
             b.subject_title, a.comment_content, a.comment_subject_no
         FROM

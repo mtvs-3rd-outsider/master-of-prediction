@@ -7,6 +7,7 @@ import com.outsider.masterofprediction.mapper.CommentMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -18,9 +19,13 @@ public class UserManagementService {
     private UserMapper userMapper;
     private CommentMapper commentMapper;
 
-    public UserManagementService(AttachmentMapper attachmentMapper, UserMapper userMapper) {
+    public UserManagementService(AttachmentMapper attachmentMapper, UserMapper userMapper,CommentMapper commentMapper) {
         this.attachmentMapper = attachmentMapper;
         this.userMapper = userMapper;
+        this.commentMapper = commentMapper;
+    }
+    public boolean isUserSessionValid(Long userId, Long sessionId) {
+        return userId == null || !userId.equals(sessionId);
     }
     public void createDefaultUser(User user) {
         String pwd = user.getPassword();
@@ -47,6 +52,17 @@ public class UserManagementService {
     {
         userMapper.updateUser(user);
 
+    }
+    public BigDecimal getUserPoint()
+    {
+
+        if(UserSession.getUserId()==0)
+        {
+            return BigDecimal.ZERO;
+        }else {
+           User getUser =  userMapper.getUserById(UserSession.getUserId());
+           return getUser.getPoint();
+        }
     }
 
     public TblAttachmentDTO getAttachmentsByUserNo(Long userId){
