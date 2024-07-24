@@ -91,7 +91,7 @@
                 TBL_USER A
                 LEFT JOIN TBL_ATTACHMENT B ON (A.USER_NO = B.ATTACHMENT_USER_NO)
         WHERE
-                A.USER_AUTHORITY = '회원'
+                A.USER_AUTHORITY = 'ROLE_USER'
         ORDER BY
             A.USER_POINT DESC
     </select>
