@@ -107,7 +107,7 @@ public class MyPageController {
         mv.addObject("isMine",isMine);
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
-        mv.setViewName("/layout/my-page/index");
+        mv.setViewName("layout/my-page/index");
         mv.addObject("view", "content/my-page/my-page");
         mv.addObject("name",user.getUsername() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
@@ -132,7 +132,7 @@ public class MyPageController {
 //탈퇴
     @GetMapping("/withdrawal")
     public ModelAndView getWithdrawal(ModelAndView mv , @AuthenticationPrincipal CustomUserDetail user) {
-        mv.setViewName("/layout/my-page/withdrawal");
+        mv.setViewName("layout/my-page/withdrawal");
         mv.addObject("view", "content/my-page/withdrawal");
         
 

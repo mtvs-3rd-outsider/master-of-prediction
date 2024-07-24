@@ -25,7 +25,7 @@ public class ActivityPageController {
     @GetMapping
     public ModelAndView getActivityPage(ModelAndView mv) {
 
-        mv.setViewName("/layout/index");
+        mv.setViewName("layout/index");
         mv.addObject("title", "Recent Activity");
         mv.addObject("view", "content/activity-page");
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();

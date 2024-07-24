@@ -40,7 +40,7 @@ public class BettingAddPageController {
             mv.setViewName("redirect:/");
         }
         List<TblCategoryDTO> categoryList = categoryService.findAll();
-        mv.setViewName("/layout/index");
+        mv.setViewName("layout/index");
         mv.addObject("title", "Add Betting Page");
         mv.addObject("view", "fragments/betting-add");
         mv.addObject("categoryList", categoryList);

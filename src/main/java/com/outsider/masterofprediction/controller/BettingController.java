@@ -74,7 +74,7 @@ public class BettingController {
         String attachmentFileAddress = FileUtil.checkFileOrigin(attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress());
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 
-        mv.setViewName("/layout/index");
+        mv.setViewName("layout/index");
 //        mv.setViewName("content/betting-page/betting-page");
         mv.addObject("sumYPoint", sumYPoint);
         mv.addObject("sumNPoint", sumNPoint);

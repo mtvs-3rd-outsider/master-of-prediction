@@ -28,7 +28,7 @@ public class CategoryController {
     }
 
     private void common(ModelAndView mv){
-        mv.setViewName("/layout/index");
+        mv.setViewName("layout/index");
         mv.addObject("title", "Master Of Prediction");
         mv.addObject("view", "content/category");
     }

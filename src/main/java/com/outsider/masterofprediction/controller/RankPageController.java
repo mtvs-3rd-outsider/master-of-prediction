@@ -23,7 +23,7 @@ public class RankPageController {
     @GetMapping
     public ModelAndView getRankPage(ModelAndView mv){
 
-        mv.setViewName("/layout/index");
+        mv.setViewName("layout/index");
         mv.addObject("title", "User Ranking");
         mv.addObject("view", "content/rank-page");
 

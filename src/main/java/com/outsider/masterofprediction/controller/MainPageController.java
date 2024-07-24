@@ -88,7 +88,7 @@ public class MainPageController {
 
         ConvertImageUrl.convert(mainPageSubjectDTOS);
 
-        mv.setViewName("/layout/index");
+        mv.setViewName("layout/index");
         mv.addObject("subjects", mainPageSubjectDTOS);
             mv.addObject("title", "Master Of Prediction");
         mv.addObject("activity", activityUserSubjectDTO);
