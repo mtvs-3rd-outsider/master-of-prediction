@@ -4,6 +4,7 @@ import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.SubjectMapper;
 import com.outsider.masterofprediction.service.*;
+import com.outsider.masterofprediction.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -52,50 +53,44 @@ public class BettingController {
         this.subjectMapper = subjectMapper;
     }
 
-
     @GetMapping("/betting/{subjectNo}")
-    public ModelAndView getBettingPage(ModelAndView mv , @PathVariable long subjectNo) {
+    public ModelAndView getBettingPage(ModelAndView mv, @PathVariable("subjectNo") long subjectNo) {
         this.subjectNo = subjectNo;
-        TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
+        TblSubjectDTO subject = subjectService.getSubjectBySubjectNo(subjectNo);
         subject.setSubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
         TblBettingOrderDTO dto = new TblBettingOrderDTO();
         dto.setOrderSubjectNo(subjectNo);
         dto.setOrderUserNo(UserSession.getUserId());
 
-
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
-        String returnYRate ="0% Chance";
-        String returnNRate="0% Chance";
-        if((subject.getSubjectTotalNoPoint()+subject.getSubjectTotalYesPoint())!=0){
-            returnYRate=(int)(subject.getSubjectTotalYesPoint()/(float)(subject.getSubjectTotalNoPoint()+subject.getSubjectTotalYesPoint())*100)+"% Chance";
-            returnNRate = (int)(subject.getSubjectTotalNoPoint()/(float)(subject.getSubjectTotalNoPoint()+subject.getSubjectTotalYesPoint())*100)+"% Chance";
+        String returnYRate = "0% Chance";
+        String returnNRate = "0% Chance";
+        if ((subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) != 0) {
+            returnYRate = (int) (subject.getSubjectTotalYesPoint() / (float) (subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) * 100) + "% Chance";
+            returnNRate = (int) (subject.getSubjectTotalNoPoint() / (float) (subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) * 100) + "% Chance";
         }
 
-
         System.out.println(returnYRate);
-        String attachment_file_address = attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress();
+        String attachmentFileAddress = FileUtil.checkFileOrigin(attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress());
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 
-
         mv.setViewName("/layout/index");
+//        mv.setViewName("content/betting-page/betting-page");
         mv.addObject("sumYPoint", sumYPoint);
         mv.addObject("sumNPoint", sumNPoint);
-        mv.addObject("subjectImage", attachment_file_address);
+        mv.addObject("subjectImage", attachmentFileAddress);
         mv.addObject("loggedInUserId", UserSession.getUserId());
         mv.addObject("returnYRate", returnYRate);
         mv.addObject("returnNRate", returnNRate);
         mv.addObject("subject", subject);
         mv.addObject("userAuthority", userAuthority);
 
-
         Timestamp settleTime = subject.getSubjectSettlementTimestamp();
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        mv.addObject("isAccountBtnOn",
-                UserSession.getUserId().
-                        equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime));
+        mv.addObject("isAccountBtnOn", UserSession.getUserId().equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime));
         mv.addObject("view", "content/betting-page");
         return mv;
     }
