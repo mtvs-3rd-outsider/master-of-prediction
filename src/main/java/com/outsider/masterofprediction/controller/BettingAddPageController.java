@@ -31,7 +31,7 @@ public class BettingAddPageController {
     @GetMapping()
     public ModelAndView getBettingAddPage(ModelAndView mv) {
         List<TblCategoryDTO> categoryList = categoryService.findAll();
-        mv.setViewName("layout/main-page/index");
+        mv.setViewName("/layout/index");
         mv.addObject("title", "Add Betting Page");
         mv.addObject("view", "fragments/betting-add");
         mv.addObject("categoryList", categoryList);
