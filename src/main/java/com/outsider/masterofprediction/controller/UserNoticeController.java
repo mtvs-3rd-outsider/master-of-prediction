@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
@@ -38,14 +39,15 @@ public class UserNoticeController {
         } else {
             model.addAttribute("view", "content/notice-page/index");
         }
-        return "/layout/main-page/index";
+        return "layout/index";
     }
 
     @GetMapping("/{notification_id}")
-    public String adminNotificationUpdatePage(@PathVariable Long notification_id, Model model) {
+    public ModelAndView adminNotificationUpdatePage(@PathVariable Long notification_id, ModelAndView mv) {
         Notice notice = userNoticeService.noticeById(notification_id);
-        model.addAttribute("view", "content/notice-page/detail");
-        model.addAttribute("notice", notice);
-        return "/layout/main-page/index";
+        mv.setViewName("layout/index");
+        mv.addObject("view","content/notice-page/detail" );
+        mv.addObject("notice", notice);
+        return mv;
     }
 }
