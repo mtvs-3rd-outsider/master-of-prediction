@@ -86,10 +86,10 @@
         }
     }
 
-    // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
-    window.onload = updateHeader;
-    window.onresize = updateHeader;
 
+    // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
+    window.addEventListener('load', updateHeader);
+    window.addEventListener('resize', updateHeader);
 
     const BettingAddPageElement = document.querySelector(".bounding-betting-add-page-entry")
     BettingAddPageElement.addEventListener("click", () => {
