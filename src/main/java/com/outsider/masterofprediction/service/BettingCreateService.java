@@ -39,6 +39,9 @@ public class BettingCreateService {
     public void create(TblSubjectDTO tblSubjectDTO, MultipartFile file){
         
         long userId = UserSession.getUserId();
+        if (userId == 0) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized");
+        }
 
         Validation.subject(tblSubjectDTO);
         tblSubjectDTO.setSubjectRegisterUserNo(userId);
