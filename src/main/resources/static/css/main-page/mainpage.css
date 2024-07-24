@@ -535,3 +535,7 @@
 .hidden {
     display: none;
 }
+
+.see-all{
+    padding: 10px;
+}
