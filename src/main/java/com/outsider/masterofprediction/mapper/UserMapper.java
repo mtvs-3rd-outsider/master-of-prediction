@@ -34,6 +34,7 @@ public interface UserMapper {
 
     //id로유저 조회
     @Select("SELECT * FROM tbl_user WHERE user_no=#{id}")
+    @ResultMap("userResultMap")
     User getUserById(Long id);
 
     @Select("SELECT * FROM tbl_user WHERE user_no > #{id}")

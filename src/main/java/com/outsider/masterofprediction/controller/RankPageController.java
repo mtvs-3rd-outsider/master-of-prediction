@@ -28,7 +28,7 @@ public class RankPageController {
     }
 
     @GetMapping
-    public ModelAndView getRankPage(ModelAndView mv,@AuthenticationPrincipal CustomUserDetail user){
+    public ModelAndView getRankPage(ModelAndView mv){
 
         // mv.addObject();
         mv.setViewName("/layout/rank-page/index");
@@ -40,7 +40,7 @@ public class RankPageController {
 //        mv.addObject("userList", userList);
 
         List<UserAttachmentDTO> userRank = rankFindService.findAllRank();
-        mv.addObject("Point",userManagementService.getUserPoint());
+        
         mv.addObject("userRank", userRank);
         System.out.println(userRank);
 

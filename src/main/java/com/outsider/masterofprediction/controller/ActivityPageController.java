@@ -30,7 +30,7 @@ public class ActivityPageController {
     }
 
     @GetMapping
-    public ModelAndView getActivityPage(ModelAndView mv,@AuthenticationPrincipal CustomUserDetail user) {
+    public ModelAndView getActivityPage(ModelAndView mv) {
 
         // mv.addObject();
         mv.setViewName("/layout/activity-page/index");
@@ -40,7 +40,7 @@ public class ActivityPageController {
 
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();
         mv.addObject("userActivity", userActivity);
-        mv.addObject("Point",userManagementService.getUserPoint());
+        
         System.out.println(userActivity);
 
         return mv;
