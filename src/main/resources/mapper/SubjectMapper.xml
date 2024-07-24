@@ -9,4 +9,9 @@
             subject_total_no_point = subject_total_no_point + (CASE WHEN #{orderChoice} = 'No' THEN #{orderAmount} ELSE 0 END)
         WHERE subject_no = #{orderSubjectNo}
     </update>
+
+    <select id="getSubjectRegistUserNoBySubjectNo" resultType="long">
+        SELECT subject_register_user_no FROM tbl_subject
+        WHERE subject_no = #{ subjectNo }
+    </select>
 </mapper>

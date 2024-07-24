@@ -74,7 +74,7 @@ public class MainPageController {
 
 
     @GetMapping()
-    public ModelAndView getMainPage(ModelAndView mv,@AuthenticationPrincipal CustomUserDetail user){
+    public ModelAndView getMainPage(ModelAndView mv){
 
         // mv.addObject();
         List<MainPageSubjectDTO> mainPageSubjectDTOS =  mainPageService.findMainPageSubjectList();
@@ -97,7 +97,7 @@ public class MainPageController {
         mv.addObject("leftUsers", rightUsers);
         mv.addObject("rightUsers", leftUsers);
         mv.addObject("view", "content/main-page/main-page");
-        mv.addObject("Point",userManagementService.getUserPoint());
+        
         return mv;
     }
 }
