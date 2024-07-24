@@ -11,4 +11,27 @@ google:
   redirect:
     uri: ${GOOGLE_REDIRECT_URI}
 
+spring:
+  application:
+    name: master-of-prediction
+  devtools:
+    livereload:
+      enabled: true
+    restart:
+      enabled: true
+  thymeleaf:
+    cache: false
+    check-template-location: true
+  sql:
+    init:
+      mode: always
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
+  mvc:
+    contentnegotiation:
+      media-types:
+        svg: image/svg+xml
 
+default_image: logo2.png
+file:
+  tierImgUrl: images/tier
