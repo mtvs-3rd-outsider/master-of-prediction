@@ -18,12 +18,15 @@
                 </div>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
-                <form style="display: flex;">
-                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">
+
+                <form style="display: flex;" action="/search" method="get">
+                    <md-outlined-text-field name="searchWord" value=""
+                                            id="header-search-parent" placeholder="Search markets" style="width: 90%">
                         <md-icon class="child" slot="leading-icon">search</md-icon>
                     </md-outlined-text-field>
-
+                    <button type="submit" id="searchBtn">검색</button>
                 </form>
+
             </div>
             <div class="menu" style="display: flex;">
                 <a class="header-menu-hover" href="/activitypage"
@@ -97,6 +100,14 @@
             menuEl.open = true;
             // menuEl.open = !menuEl.open;
         });
+
+        document.getElementById("searchBtn").onclick = function(){
+            let searchWord = document.getElementById("searchWord").value;
+
+            // let url = "/search?searchWord" + encodeURIComponent(searchWord);
+
+            href = "/";
+        };
     </script>
     <md-dialog type="alert" id='sign-up-dialog'>
         <div slot="headline">회원가입</div>
