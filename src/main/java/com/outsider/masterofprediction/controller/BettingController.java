@@ -8,16 +8,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+        import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PostExchange;
 import org.springframework.web.servlet.ModelAndView;
 
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.*;
 
 @Controller
 public class BettingController {
@@ -52,6 +53,7 @@ public class BettingController {
     public ModelAndView getBettingPage(ModelAndView mv , @PathVariable long subjectNo) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
+        subject.setSubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
         TblBettingOrderDTO dto = new TblBettingOrderDTO();
         dto.setOrderSubjectNo(subjectNo);
@@ -85,8 +87,6 @@ public class BettingController {
                         equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime));
         mv.addObject("view", "content/betting-page");
         return mv;
-        // return "content/betting-page/betting-page";
-
     }
 
     /**
@@ -176,5 +176,12 @@ public class BettingController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(responseBody);
         }
+    }
+
+
+    @PostMapping(value = "/graph", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<GraphDTO> getGraph(@RequestBody GraphDTO graphDTO) {
+        return bettingOrderService.getGraphByDTO(graphDTO);
     }
 }

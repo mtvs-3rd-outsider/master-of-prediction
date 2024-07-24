@@ -59,7 +59,8 @@
                     <p id="graph_percent-content-yesno_percent" th:text="${returnYRate}"></p>
                 </div>
                 <div class="graph_canvas-content">
-                    <canvas id="line-chart" width="770vw"></canvas>
+<!--                    <canvas id="line-chart" width="770vw"></canvas>-->
+                    <canvas id="line-chart"></canvas>
                 </div>
 
                 <div class="popup_setting-content">
@@ -67,11 +68,11 @@
                     <p id="popup-title">Chart Settings<span id="popup-cancle" onclick="popupCancle()"
                                                             class="material-symbols-outlined">close</span></p>
                     <p>YES<label class="switch">
-                        <input type="checkbox">
+                        <input id="yes-Switch"  type="checkbox" checked="checked" onchange="updateChart()">
                         <span class="slider round"></span>
                     </label></p>
                     <p>NO<label class="switch">
-                        <input type="checkbox">
+                        <input id="no-Switch" type="checkbox" checked="checked" onchange="updateChart()">
                         <span class="slider round"></span>
                     </label></p>
 
@@ -118,7 +119,7 @@
                         </ul>
                     </div>
                     <div class="graph_setting-content">
-                        <md-icon-button onclick="graphSetting()">
+                        <md-icon-button onclick="changeSetting()">
                            <span class="material-symbols-outlined">cached</span>
                         </md-icon-button>
                         <md-icon-button onclick="graphSetting()">
@@ -189,7 +190,11 @@
         </div>
     </div>
 </div>
+
+<input type="hidden" id="loggedSubjectNo" th:value="${subject.getSubjectNo()}"/>
+
 <input type="hidden" id="subjectNo" th:value="${subject.getSubjectNo()}"/>
+
 <input type="hidden" id="loggedInUserId" th:value="${loggedInUserId}" />
 <input type="hidden" id="sumYPoint" th:value="${sumYPoint}">
 <input type="hidden" id="sumNPoint" th:value="${sumNPoint}">

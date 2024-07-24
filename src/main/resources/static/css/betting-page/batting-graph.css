@@ -85,3 +85,7 @@
     display: flex;
     gap: 10px; /* 버튼들 사이에 간격을 주기 */
 }
+
+#line-chart{
+    width: 100%;
+}
