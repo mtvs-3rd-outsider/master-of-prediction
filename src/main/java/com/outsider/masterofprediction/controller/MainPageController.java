@@ -15,6 +15,7 @@ import com.outsider.masterofprediction.mapper.UserMapper;
 import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.MainPageService;
 import com.outsider.masterofprediction.service.UserManagementService;
+import com.outsider.masterofprediction.utils.ConvertImageUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -85,18 +86,15 @@ public class MainPageController {
         List<UserAndAttachmentDTO> leftUsers = userMapper.findUserOrderByPointLIMIT(IntConstants.MAIN_PAGE_RANK);
         List<UserAndAttachmentDTO> rightUsers = splitAndRemoveHalf(leftUsers);
 
-        System.out.println(leftUsers);
-        System.out.println(rightUsers);
+        ConvertImageUrl.convert(mainPageSubjectDTOS);
 
-
-        mv.setViewName("/layout/main-page/index");
+        mv.setViewName("/layout/index");
         mv.addObject("subjects", mainPageSubjectDTOS);
-        mv.addObject("categories", categoryService.findAll());
-        mv.addObject("title", "Master Of Prediction");
+            mv.addObject("title", "Master Of Prediction");
         mv.addObject("activity", activityUserSubjectDTO);
         mv.addObject("leftUsers", rightUsers);
         mv.addObject("rightUsers", leftUsers);
-        mv.addObject("view", "content/main-page/main-page");
+        mv.addObject("view", "content/main-page");
         
         return mv;
     }
