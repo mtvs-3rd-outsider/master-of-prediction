@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <base th:href="@{/category}">
+    <base th:href="@{/}">
     <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
             rel="stylesheet"
@@ -16,28 +16,28 @@
     </script>
     <script type="module">
         import "@material/web/all.js";
-        import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+        import {styles as typescaleStyles} from "@material/web/typography/md-typescale-styles.js";
 
         document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
     </script>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title th:text="${title}">예측의 달인</title>
-    <link rel="stylesheet" th:href="@{/css/main-page/mainpage.css}" />
+    <link rel="stylesheet" th:href="@{/css/main-page/mainpage.css}"/>
     <link
             href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"
             rel="stylesheet"
     />
     <style>
-        #DeskHeader, #MobileHeader{
+        #DeskHeader, #MobileHeader {
             display: none;
         }
     </style>
 </head>
 <body>
 
-<header th:replace="~{fragments/header :: content}" >Header</header>
-<header th:replace="~{fragments/mobileHeader :: content}" >Header</header>
+<header th:replace="~{fragments/header :: content}">Header</header>
+<header th:replace="~{fragments/mobileHeader :: content}">Header</header>
 
 
 <div th:replace="~{${view} :: content}">Right Content</div>
@@ -59,7 +59,9 @@
     </div>
 </div>
 <md-dialog type="alert" id='login-dialog'>
-    <div slot="headline"><div class="headline" >로그인</div></div>
+    <div slot="headline">
+        <div class="headline">로그인</div>
+    </div>
     <form slot="content" id="form-id3" method="dialog">
         <div th:replace="~{content/login-page/login :: content}">Right Content</div>
     </form>
@@ -91,9 +93,25 @@
 
     const BettingAddPageElement = document.querySelector(".bounding-betting-add-page-entry")
     BettingAddPageElement.addEventListener("click", () => {
-        location.href="/bettingaddpage"
+        location.href = "/bettingaddpage";
     })
 
+
+    const NotificationPageEntry = document.querySelector(".notification-page-entry")
+    NotificationPageEntry.addEventListener("click", () => {
+        location.href = "/notification";
+    })
+
+    const checkoutPathname = () => {
+        const pathname = window.location.pathname;
+        if (pathname.includes("notification") || pathname.includes("bettingaddpage")) {
+            BettingAddPageElement.classList.add("hidden")
+        } else {
+            BettingAddPageElement.classList.remove("hidden")
+        }
+    }
+
+    window.addEventListener("load", checkoutPathname);
 </script>
 <script>
     //TODO: signup dialog 비활성화

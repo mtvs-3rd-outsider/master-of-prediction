@@ -24,7 +24,7 @@
                     </div>
                     <div class="main-surface-footer">
                         <div class="main-surface-footer-left">
-                            <span class="material-symbols-outlined">paid</span>
+                            <span class="material-symbols-outlined paid">paid</span>
 <!--                            <span>144.5 Points</span>-->
                             <span th:text="${subject.totalPoints} + 'Points'">144.5 Points</span>
                         </div>
@@ -38,7 +38,7 @@
 
         </div>
         <div class="main-view-all">
-            <a href="/category/all"><md-text-button>View All</md-text-button></a>
+            <a href="/category/all"><md-text-button class="see-all">View All</md-text-button></a>
         </div>
         <div class="main-body-active-rank">
             <div class="main-body-active" th:replace="~{fragments/activity :: main-active}">

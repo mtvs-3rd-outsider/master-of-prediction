@@ -60,6 +60,8 @@ public class FileUtil {
         return sb.toString();
     }
     public static String checkFileOrigin(String path) {
+        if (path == null)
+            return path;
         if (!path.startsWith("https://")) {
             // Resolve the address with imgUrl
             path =combinePaths(imgUrl, path);

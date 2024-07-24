@@ -1,6 +1,5 @@
 package com.outsider.masterofprediction.dto;
 
-import com.outsider.masterofprediction.utils.AttachmentFileAddressable;
 import lombok.*;
 
 @Setter
@@ -8,7 +7,7 @@ import lombok.*;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryPageSubjectDTO implements AttachmentFileAddressable {
+public class SearchPageSubjectDTO {
     private Long subjectNo;
     private String subjectTitle;
     private String subjectStatus;
