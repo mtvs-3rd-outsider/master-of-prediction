@@ -59,14 +59,19 @@ public class BettingController {
         dto.setOrderSubjectNo(subjectNo);
         dto.setOrderUserNo(UserSession.getUserId());
 
+
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
 
+        String returnYRate ="0% Chance";
+        String returnNRate="0% Chance";
+        if((subject.getSubjectTotalNoPoint()+subject.getSubjectTotalYesPoint())!=0){
+            returnYRate=(int)(subject.getSubjectTotalYesPoint()/(float)(subject.getSubjectTotalNoPoint()+subject.getSubjectTotalYesPoint())*100)+"% Chance";
+            returnNRate = (int)(subject.getSubjectTotalNoPoint()/(float)(subject.getSubjectTotalNoPoint()+subject.getSubjectTotalYesPoint())*100)+"% Chance";
+        }
 
 
-        String returnYRate =  (int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100)+"% Chance";
-        String returnNRate = (int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100)+"% Chance";
-
+        System.out.println(returnYRate);
         String attachment_file_address = attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress();
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 

@@ -9,8 +9,10 @@ var copyGraphDataList;
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
+    graphSettingButton(5);
     sumYPoint = document.getElementById("sumYPoint").value;
     sumNPoint=document.getElementById("sumNPoint").value;
+
     // batting_modal-container 숨기기
     const bettingModalContainer = document.querySelector('.batting_modal-container');
     bettingModalContainer.style.display = 'none';
@@ -530,7 +532,7 @@ function userActivityActive(value){
 function buyModal() {
     const totalPoints = document.getElementById('totalPoint').innerText;
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display = 'block';
+    battingModalContainer.style.display = 'flex';
     battingModalContainer.innerHTML = `
         <div class="buy_modal-content">
             <p class="modal-title">제목</p>
@@ -599,7 +601,7 @@ function submitSale() {
 function sellModal() {
     const totalPoints = document.getElementById('totalPoint').innerText;
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display = 'block';
+    battingModalContainer.style.display = 'flex';
     battingModalContainer.innerHTML = `
         <div class="sell_modal-content">
             <p class="modal-title">제목</p>
