@@ -35,13 +35,9 @@
                 </a>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
-                <form style="display: flex;">
-                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">
-                        <md-icon class="child" slot="leading-icon">search</md-icon>
-                    </md-outlined-text-field>
 
-                </form>
             </div>
+            <th:block th:replace="~{fragments/login-mypage-header-profile :: content}"/>
             <div style="position: relative">
                 <md-text-button id="usage-submenu-anchor-mobile" style="">
                     <md-icon-button id="header-icon-name-menu" toggle>
@@ -52,11 +48,7 @@
                     <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
                         <div>Log Out</div>
                     </md-menu-item>
-  <md-menu-item>
-                        <div>Activity</div>
-                    </md-menu-item>  <md-menu-item>
-                        <div>Rank</div>
-                    </md-menu-item>
+
                 </md-menu>
             </div>
         </div>
@@ -64,13 +56,7 @@
             <swiper-container class="mySwiper" slides-per-view="5"
                                   space-between="1" free-mode="true">
 <!--            <ul id="header-ul">-->
-                <swiper-slide><a class="a-attr-remove" href="">전체</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">인기</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">최신</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">많은</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">곧 마감</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">종료된</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">찜한</a></swiper-slide>
+                <swiper-slide><a href="/mypage" style="white-space: nowrap">마이 페이지 홈</a></swiper-slide>
 <!--            </ul>-->
             </swiper-container>
         </div>
