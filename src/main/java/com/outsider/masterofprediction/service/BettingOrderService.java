@@ -33,7 +33,7 @@ public class BettingOrderService {
     public List<RankingDTO> getRankingBySubjectNo(Long subjectNo) {
         List<RankingDTO> list = bettingOrderMapper.getRankingBySubjectNo(subjectNo);
         for(RankingDTO dto :list){
-            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(dto.getNo()).getAttachmentFileAddress()));
+            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo((long)dto.getUserNo()).getAttachmentFileAddress()));
         }
         return list;
     }
