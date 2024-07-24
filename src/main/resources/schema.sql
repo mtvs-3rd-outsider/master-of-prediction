@@ -116,7 +116,7 @@ CREATE TABLE `TBL_INQUIRY`
 
 CREATE TABLE `TBL_INQUIRY_REPLY`
 (
-    `answer_no`    BIGINT NOT NULL COMMENT '답변번호',
+    `answer_no`    BIGINT NOT NULL AUTO_INCREMENT COMMENT '답변번호',
     `answer_content`    VARCHAR(255) NOT NULL COMMENT '답변내용',
     `answer_timestamp`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '답변일시',
     `answer_inquiry_no`    BIGINT NOT NULL COMMENT '문의번호',
@@ -156,7 +156,7 @@ CREATE TABLE `TBL_SUBJECT`
         COMMENT '베팅상품번호',
     `subject_title`    VARCHAR(255) NOT NULL COMMENT '제목',
     `subject_total_yes_point`    INTEGER DEFAULT 0 NOT NULL COMMENT 'Yes 총 합계',
-    `subject_status`    VARCHAR(100) DEFAULT '진행' NOT NULL COMMENT '상태',
+    `subject_status`    VARCHAR(100) DEFAULT '진행중' NOT NULL COMMENT '상태',
     `subject_register_timestamp`    TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL COMMENT '베팅등록 일시',
     `subject_finish_timestamp`    TIMESTAMP COMMENT '베팅종료 일시',
     `subject_category_no`    BIGINT NOT NULL COMMENT '카테고리 번호',

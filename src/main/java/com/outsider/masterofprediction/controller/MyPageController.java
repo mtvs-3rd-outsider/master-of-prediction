@@ -2,10 +2,7 @@ package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.config.SecurityConfigUser;
 import com.outsider.masterofprediction.dto.*;
-import com.outsider.masterofprediction.service.BettingOrderService;
-import com.outsider.masterofprediction.service.ProcessFileService;
-import com.outsider.masterofprediction.service.UserInquiryService;
-import com.outsider.masterofprediction.service.UserManagementService;
+import com.outsider.masterofprediction.service.*;
 import com.outsider.masterofprediction.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -34,20 +31,24 @@ public class MyPageController {
 //    REST API
     private final ProcessFileService processFileService;
     private final UserInquiryService userInquiryService;
-
-    public MyPageController(UserManagementService userManagementService, BettingOrderService bettingOrderService, ProcessFileService processFileService, UserInquiryService userInquiryService) {
+    private final TierService tierService;
+    public MyPageController(UserManagementService userManagementService, BettingOrderService bettingOrderService, ProcessFileService processFileService, UserInquiryService userInquiryService, TierService tierService) {
         this.userManagementService = userManagementService;
         this.bettingOrderService = bettingOrderService;
         this.processFileService = processFileService;
         this.userInquiryService = userInquiryService;
+        this.tierService = tierService;
     }
+    @Value("${file.tierImgUrl}")
+    private String tierImgUrl;
 
     @Value("${file.imgUrl}")
-    private String imgUrl;
+    private String imgUrl ;
     @GetMapping("api/purchase-history/{page}")
     public ResponseEntity<Map<String, Object>> getPurchaseHistory(@PathVariable int page, @AuthenticationPrincipal CustomUserDetail user) {
         int itemsPerPage = ITEMS_PER_PAGE;
-        List<BettingOrderDTO> items = bettingOrderService.getBettingOrdersByUserId(new UserPaginationDTO(user.getId(), page, itemsPerPage));
+        int start = (page - 1) * itemsPerPage;
+        List<BettingOrderDTO> items = bettingOrderService.getBettingOrdersByUserId(new UserPaginationDTO(user.getId(), start, itemsPerPage));
         int totalItems = bettingOrderService.getOrderCountByUserId(user.getId());
         int totalPages = (int) Math.ceil((double) totalItems / itemsPerPage);
 
@@ -98,36 +99,43 @@ public class MyPageController {
     }
 //페이지
     @GetMapping(value = {"", "{userId}"})
-    public ModelAndView getMyPage( @PathVariable(required = false) Integer  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
-        if (userId == null || userId.intValue() != user.getId()) {
+    public ModelAndView getMyPage( @PathVariable(required = false) Long  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
+        boolean isMine =  userManagementService.isUserSessionValid(userId,user.getId());
+        if (isMine) {
             return new ModelAndView("redirect:/mypage/" + user.getId());
         }
-        mv.addObject("isMine",userId.intValue() == user.getId());
+        mv.addObject("isMine",isMine);
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
         mv.setViewName("/layout/my-page/index");
         mv.addObject("view", "content/my-page/my-page");
-        mv.addObject("name", "Dummy User"); // Dummy username
         mv.addObject("name",user.getUsername() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
+        String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user.getTierNo());
+        TblTierDTO tblTierDTO = tierService.findByTierNo(user.getTierNo());
+        mv.addObject("tierImgUrl", tierImgUrl);
+        mv.addObject("tierName", tblTierDTO.getTierContent());
         mv.addObject("userJoinDate",user.getJoinDate(String.class));
 //      현재 포지션 가치
-        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()));
+        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()).toString() +" P");
 //      한달 손익률
-        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user.getId()));
+        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user.getId()).toString() +" %");
 //      한달 거래 포인트
-        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()));
+        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()).toString() +" P");
 //      거래수
         mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
+        mv.addObject("Point",userManagementService.getUserPoint());
         return mv;
     }
 //탈퇴
     @GetMapping("/withdrawal")
-    public ModelAndView getWithdrawal(ModelAndView mv) {
+    public ModelAndView getWithdrawal(ModelAndView mv , @AuthenticationPrincipal CustomUserDetail user) {
         mv.setViewName("/layout/my-page/withdrawal");
         mv.addObject("view", "content/my-page/withdrawal");
+        mv.addObject("Point",userManagementService.getUserPoint());
+
         return mv;
     }
     @PostMapping("/withdrawal")
@@ -147,6 +155,8 @@ public class MyPageController {
         mv.addObject("name", user.getUsername());
         mv.addObject("password", user.getPassword());
         mv.addObject("view", "content/my-page/change-personal-information");
+        mv.addObject("Point",userManagementService.getUserPoint());
+
         return mv;
     }
 

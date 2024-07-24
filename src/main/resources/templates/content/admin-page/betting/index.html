@@ -23,9 +23,9 @@
         document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
     </script>
 
-    <link rel="stylesheet" th:href="@{/css/admin-page/betting/index.css}"/>
     <link rel="stylesheet" th:href="@{/css/admin-page/common.css}"/>
     <link rel="stylesheet" th:href="@{/css/admin-page/index.css}"/>
+    <link rel="stylesheet" th:href="@{/css/admin-page/betting/index.css}"/>
     <link rel="stylesheet" th:href="@{/css/admin-page/font.css}"/>
 </head>
 <body>
@@ -80,7 +80,10 @@
                                 <span class="timestamp" th:text="${item.getSubjectStatus()}"></span>
                         </div>
                         <div class="timestamp">
-                            <span class="timestamp" th:text="${item.getSubjectRegisterTimestamp()}"></span>
+                            <span class="timestamp" th:text="${#dates.format(item.getSubjectRegisterTimestamp(), 'yyyy-MM-dd HH:mm')}"></span>
+                        </div>
+                        <div class="betting-result">
+                            <a th:href="@{/admin-page/betting/result/{subjectNo}(subjectNo=${item.subjectNo})}"><p>결과발표</p></a>
                         </div>
                     </div>
                 </div>
