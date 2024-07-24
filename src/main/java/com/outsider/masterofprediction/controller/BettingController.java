@@ -37,7 +37,6 @@ public class BettingController {
     private final AttachmentMapper attachmentMapper;
     private final SubjectMapper subjectMapper;
 
-    private long subjectNo;
 
 
     @Autowired
@@ -55,7 +54,6 @@ public class BettingController {
 
     @GetMapping("/betting/{subjectNo}")
     public ModelAndView getBettingPage(ModelAndView mv, @PathVariable("subjectNo") long subjectNo) {
-        this.subjectNo = subjectNo;
         TblSubjectDTO subject = subjectService.getSubjectBySubjectNo(subjectNo);
         subject.setSubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
@@ -99,28 +97,28 @@ public class BettingController {
      * 활동내역조회 컨트롤러
      * @return
      */
-    @GetMapping(value = "/active",produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "/active/{subjectNo}",produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<ActiveDTO> getActives() {
+    public List<ActiveDTO> getActives( @PathVariable("subjectNo") long subjectNo) {
         return bettingOrderService.getBettingOrdersBySubjectNo(subjectNo);
     }
 
-    @GetMapping(value = "/ranking",produces = "application/json; charset=UTF-8")
+    @GetMapping(value = "/ranking/{subjectNo}",produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<RankingDTO> getRankings() {
+    public List<RankingDTO> getRankings(@PathVariable("subjectNo") long subjectNo) {
 
         return bettingOrderService.getRankingBySubjectNo(subjectNo);
     }
 
-    @GetMapping(value = "/comment",produces = "application/json; cahrset=UTF-8")
+    @GetMapping(value = "/comment/{subjectNo}",produces = "application/json; cahrset=UTF-8")
     @ResponseBody
-    public List<CommentReDTO> getComments(){
+    public List<CommentReDTO> getComments(@PathVariable("subjectNo") long subjectNo){
         return commentService.getCommentBySubjectNo(subjectNo);
     }
 
-    @PostMapping(value = "/comment", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/comment/{subjectNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public void addComment(@RequestBody TblCommentDTO commentDTO) {
+    public void addComment(@RequestBody TblCommentDTO commentDTO,@PathVariable("subjectNo") long subjectNo) {
 
         commentDTO.setCommentSubjectNo(subjectNo);
         commentDTO.setCommentUserNo(UserSession.getUserId());
@@ -128,15 +126,15 @@ public class BettingController {
     }
 
 
-    @PostMapping(value = "/comment/{commentNo}/reply", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/comment/{commentNo}/reply/{subjectNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addReply(@PathVariable long commentNo, @RequestBody TblReplyDTO replyDTO) {
         replyService.insertReply(replyDTO);
     }
 
-    @PostMapping(value = "/sellItem", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/sellItem/{subjectNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> sellItem(@RequestBody TblBettingOrderDTO bettingOrderDTO) {
+    public ResponseEntity<Map<String, String>> sellItem(@RequestBody TblBettingOrderDTO bettingOrderDTO ,@PathVariable("subjectNo") long subjectNo) {
         try {
             // 임시로 id를 90으로 설정
             bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
@@ -144,13 +142,13 @@ public class BettingController {
             sellItemService.sellItemByDTO(bettingOrderDTO);
             Map<String, String> response = new HashMap<>();
             response.put("message", "판매 성공");
-            response.put("redirectUrl", "/betting");
+            response.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", errorMessage);
-            responseBody.put("redirectUrl", "/betting");
+            responseBody.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(responseBody);
@@ -160,9 +158,9 @@ public class BettingController {
 
 
 
-    @PostMapping(value = "/buyItem", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/buyItem/{subjectNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public ResponseEntity<Map<String, String>> buyItem(@RequestBody TblBettingOrderDTO bettingOrderDTO) {
+    public ResponseEntity<Map<String, String>> buyItem(@RequestBody TblBettingOrderDTO bettingOrderDTO ,@PathVariable("subjectNo") long subjectNo) {
         try {
             //임시로 id를 90으로 설정
 //            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
@@ -171,13 +169,13 @@ public class BettingController {
             buyItemService.buyItemByDTO(bettingOrderDTO);
             Map<String, String> response = new HashMap<>();
             response.put("message", "구매 성공");
-            response.put("redirectUrl", "/betting");
+            response.put("redirectUrl","/betting/" + bettingOrderDTO.getOrderSubjectNo());
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", errorMessage);
-            responseBody.put("redirectUrl", "/betting");
+            responseBody.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(responseBody);
@@ -185,9 +183,9 @@ public class BettingController {
     }
 
 
-    @PostMapping(value = "/graph", produces = "application/json; charset=UTF-8")
+    @PostMapping(value = "/graph/{subjectNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
-    public List<GraphDTO> getGraph(@RequestBody GraphDTO graphDTO) {
+    public List<GraphDTO> getGraph(@RequestBody GraphDTO graphDTO ,@PathVariable("subjectNo") long subjectNo) {
         return bettingOrderService.getGraphByDTO(graphDTO);
     }
 }

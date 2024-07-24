@@ -6,6 +6,7 @@ var sumYPoint;
 var sumNPoint
 let chartInstance = null;
 var copyGraphDataList;
+var subjectNo= document.getElementById("subjectNo").value;
 
 // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
 const initBettingPage = function () {
@@ -78,7 +79,7 @@ function graphSettingButton(value) {
         subjectNo: loggedSubjectNo
     };
 
-    fetch('/graph', {
+    fetch(`/graph/${subjectNo}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -252,7 +253,7 @@ function addComment(value) {
         commentSubjectNo: loggedSubjectNo // 동적으로 주제 ID를 할당합니다.
     };
 
-    fetch('/comment', {
+    fetch(`/comment/${subjectNo}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -276,7 +277,6 @@ function addComment(value) {
 function userActivityComment(value) {
     const userActivityContent = document.querySelector('.user_active-content');
     let loginCheck = '';
-
     const buttons = document.querySelectorAll('.user-activity-button');
     buttons.forEach((button, index) => {
         button.classList.remove('active');
@@ -292,7 +292,7 @@ function userActivityComment(value) {
     }
 
     $.ajax({
-        url: '/comment',
+        url: `/comment/${subjectNo}`,
         type: 'GET',
         success: function(data) {
             userActivityContent.innerHTML = loginCheck + `
@@ -413,7 +413,7 @@ function addReply(commentNo) {
         replyCommentNo: commentNo // 연결된 댓글 ID
     };
 
-    fetch(`/comment/${commentNo}/reply`, {
+    fetch(`/comment/${commentNo}/reply/${subjectNo}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -444,7 +444,7 @@ function userActivityRanking(value) {
 
     buttons[value].classList.add('active');
     $.ajax({
-        url: '/ranking',
+        url: `/ranking/${subjectNo}`,
         type: 'GET',
         success: function (data) {
             // HTML 생성 함수
@@ -498,7 +498,7 @@ function userActivityActive(value){
     buttons[value].classList.add('active');
 
     $.ajax({
-        url: '/active',
+        url: `/active/${subjectNo}`,
         type: 'GET',
         success: function (data) {
             userActivityContent.innerHTML = '';
@@ -560,7 +560,7 @@ function submitPurchase() {
     const orderChoice = selectedChoice;
 
     $.ajax({
-        url: '/buyItem',
+        url: `/buyItem/${subjectNo}`,
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ orderAmount, orderChoice }),
@@ -584,13 +584,13 @@ function submitSale() {
     const orderChoice = selectedChoice;
 
     $.ajax({
-        url: '/sellItem',
+        url: `/sellItem/${subjectNo}`,
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({ orderAmount, orderChoice }),
         success: function(response) {
             alert(response.message);
-            window.location.href = '/betting';
+            window.location.href = `/betting/${subjectNo}`;
         },
         error: function(xhr) {
             const response = JSON.parse(xhr.responseText);
