@@ -61,6 +61,9 @@ public class BettingController {
 
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
+
+
+
         String returnYRate =  (int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100)+"% Chance";
         String returnNRate = (int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100)+"% Chance";
 
@@ -102,7 +105,7 @@ public class BettingController {
     @GetMapping(value = "/ranking",produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<RankingDTO> getRankings() {
-        List<RankingDTO> temp = bettingOrderService.getRankingBySubjectNo(subjectNo);
+
         return bettingOrderService.getRankingBySubjectNo(subjectNo);
     }
 

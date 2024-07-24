@@ -27,13 +27,18 @@ public class BettingOrderService {
     }
 
     public List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo) {
-        return bettingOrderMapper.getBettingOrdersBySubjectNo(subjectNo);
+        List<ActiveDTO> list =bettingOrderMapper.getBettingOrdersBySubjectNo(subjectNo);
+        for (ActiveDTO dto : list) {
+            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(dto.getUserNo()).getAttachmentFileAddress()));
+        }
+        return list;
+
     }
 
     public List<RankingDTO> getRankingBySubjectNo(Long subjectNo) {
         List<RankingDTO> list = bettingOrderMapper.getRankingBySubjectNo(subjectNo);
         for(RankingDTO dto :list){
-            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(dto.getNo()).getAttachmentFileAddress()));
+            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo((long)dto.getUserNo()).getAttachmentFileAddress()));
         }
         return list;
     }
