@@ -16,7 +16,7 @@
                 color: #6750a4;
               "
 >
-    <span style="height: 30px; font-size: xx-large" th:text="${Point}">123.00</span>
+    <span style="height: 30px; font-size: xx-large" th:text="${userPoint}">123.00</span>
     <span style="height: 10px">Point</span>
 </div>
 <a
@@ -29,8 +29,8 @@
                 text-decoration: none;
               "
 >
-    <img src="" width="40px" height="40px" />
-    <p style="padding-left: 10px; white-space: nowrap">닉네임</p>
+    <img src="" width="40px" height="40px" th:src="${userImage}"/>
+    <p style="padding-left: 10px; white-space: nowrap" th:text="${userName}">닉네임</p>
 </a>
 </div>
 
