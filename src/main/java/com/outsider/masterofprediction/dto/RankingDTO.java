@@ -10,14 +10,33 @@ public class RankingDTO {
     private String choice;
 
     private long sum;
+    private long no;
+    private String imgUrl;
 
     public RankingDTO() {
     }
 
-    public RankingDTO(String name, String choice, long sum) {
+    public RankingDTO(String name, String choice, long sum, long no) {
         this.name = name;
         this.choice = choice;
         this.sum = sum;
+        this.no = no;
+    }
+
+    public String getImgUrl() {
+        return imgUrl;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
+    }
+
+    public long getNo() {
+        return no;
+    }
+
+    public void setNo(long no) {
+        this.no = no;
     }
 
     public int getUserNo() {
@@ -59,6 +78,7 @@ public class RankingDTO {
                 ", name='" + name + '\'' +
                 ", choice='" + choice + '\'' +
                 ", sum=" + sum +
+                ", no=" + no +
                 '}';
     }
 }

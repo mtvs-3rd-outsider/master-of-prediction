@@ -12,11 +12,18 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PostExchange;
+
+
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
+
 
 @Controller
 public class BettingController {
@@ -51,6 +58,7 @@ public class BettingController {
     public String getBettingPage(Model model ,@PathVariable long subjectNo ,@AuthenticationPrincipal CustomUserDetail user) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
+        subject.setSubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
         TblBettingOrderDTO dto = new TblBettingOrderDTO();
         dto.setOrderSubjectNo(subjectNo);
@@ -58,6 +66,7 @@ public class BettingController {
 
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
+        System.out.println(sumNPoint);
         String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
         String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
@@ -164,10 +173,8 @@ public class BettingController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "구매 성공");
             response.put("redirectUrl", "/betting");
-            System.out.println("구매 성공");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            System.out.println("구매 실패");
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", errorMessage);
@@ -176,5 +183,12 @@ public class BettingController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(responseBody);
         }
+    }
+
+
+    @PostMapping(value = "/graph", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<GraphDTO> getGraph(@RequestBody GraphDTO graphDTO) {
+        return bettingOrderService.getGraphByDTO(graphDTO);
     }
 }

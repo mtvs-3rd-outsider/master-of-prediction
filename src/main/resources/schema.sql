@@ -164,9 +164,12 @@ CREATE TABLE `TBL_SUBJECT`
     `subject_finish_result`    VARCHAR(10) COMMENT '배팅승리결과',
     `subject_total_no_point`    INTEGER DEFAULT 0 NOT NULL COMMENT 'No 총 합계',
     `subject_settlement_timestamp`    TIMESTAMP NOT NULL COMMENT '배팅마감 일시',
+
     PRIMARY KEY ( `subject_no` )
 ) COMMENT = '베팅상품';
 
+ALTER TABLE TBL_SUBJECT
+    ADD FULLTEXT(subject_title);
 
 CREATE TABLE `TBL_TIER`
 (

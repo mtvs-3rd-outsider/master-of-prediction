@@ -76,6 +76,12 @@
         </collection>
     </resultMap>
 
+    <resultMap id="GraphResultMap" type="com.outsider.masterofprediction.dto.GraphDTO">
+        <result column="displayTime" property="displayTime" />
+        <result column="yesRate" property="yesRate" />
+        <result column="noRate" property="noRate" />
+    </resultMap>
+
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
         SELECT
@@ -337,6 +343,270 @@ WHERE
                 B.USER_AUTHORITY = 'ROLE_USER'
         ORDER BY
                 A.ORDER_TIMESTAMP DESC
+    </select>
+
+
+
+    <select id="getGraph1HByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+        <![CDATA[
+        WITH RECURSIVE TimeSeries AS (
+            -- 가장 늦게 주문한 시간을 기준으로 다음 시간을 계산
+            SELECT
+                DATE_FORMAT(DATE_ADD((SELECT MAX(order_timestamp) FROM TBL_BETTING_ORDER WHERE order_subject_no = #{subjectNo}), INTERVAL 1 HOUR), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS n
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 HOUR),
+                n + 1
+            FROM
+                TimeSeries
+            WHERE
+                n < 10
+        ),
+                       OrderSummary AS (
+                           -- 각 displayTime에 해당하는 주문 요약
+                           SELECT
+                               T.displayTime,
+                               SUM(CASE WHEN O.order_choice = 'Yes' THEN O.order_amount ELSE 0 END) AS yesAmount,
+                               SUM(CASE WHEN O.order_choice = 'No' THEN O.order_amount ELSE 0 END) AS noAmount,
+                               SUM(O.order_amount) AS totalAmount
+                           FROM
+                               TimeSeries T
+                                   LEFT JOIN
+                               TBL_BETTING_ORDER O ON O.order_timestamp < T.displayTime AND O.order_subject_no = ${subjectNo}
+                           GROUP BY
+                               T.displayTime
+                       )
+        SELECT
+            displayTime,
+            IFNULL((yesAmount / totalAmount) * 100, 0) AS yesRate,
+            IFNULL((noAmount / totalAmount) * 100, 0) AS noRate
+        FROM
+            OrderSummary
+        ORDER BY
+            displayTime DESC;
+        ]]>
+    </select>
+    <select id="getGraph6HByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+       <![CDATA[
+        WITH RECURSIVE TimeSeries AS (
+            -- 가장 늦게 주문한 시간을 기준으로 다음 시간을 계산
+            SELECT
+                DATE_FORMAT(DATE_ADD((SELECT MAX(order_timestamp) FROM TBL_BETTING_ORDER WHERE order_subject_no = #{subjectNo}), INTERVAL 6 HOUR), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS n
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 6 HOUR),
+                n + 1
+            FROM
+                TimeSeries
+            WHERE
+                n < 10
+        ),
+                       OrderSummary AS (
+                           -- 각 displayTime에 해당하는 주문 요약
+                           SELECT
+                               T.displayTime,
+                               SUM(CASE WHEN O.order_choice = 'Yes' THEN O.order_amount ELSE 0 END) AS yesAmount,
+                               SUM(CASE WHEN O.order_choice = 'No' THEN O.order_amount ELSE 0 END) AS noAmount,
+                               SUM(O.order_amount) AS totalAmount
+                           FROM
+                               TimeSeries T
+                                   LEFT JOIN
+                               TBL_BETTING_ORDER O ON O.order_timestamp < T.displayTime AND O.order_subject_no = ${subjectNo}
+                           GROUP BY
+                               T.displayTime
+                       )
+        SELECT
+            displayTime,
+            IFNULL((yesAmount / totalAmount) * 100, 0) AS yesRate,
+            IFNULL((noAmount / totalAmount) * 100, 0) AS noRate
+        FROM
+            OrderSummary
+        ORDER BY
+            displayTime DESC;
+        ]]>
+    </select>
+    <select id="getGraph1DByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+       <![CDATA[
+        WITH RECURSIVE TimeSeries AS (
+            -- 가장 늦게 주문한 시간을 기준으로 다음 시간을 계산
+            SELECT
+                DATE_FORMAT(DATE_ADD((SELECT MAX(order_timestamp) FROM TBL_BETTING_ORDER WHERE order_subject_no = #{subjectNo}), INTERVAL 1 DAY), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS n
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 DAY),
+                n + 1
+            FROM
+                TimeSeries
+            WHERE
+                n < 10
+        ),
+                       OrderSummary AS (
+                           -- 각 displayTime에 해당하는 주문 요약
+                           SELECT
+                               T.displayTime,
+                               SUM(CASE WHEN O.order_choice = 'Yes' THEN O.order_amount ELSE 0 END) AS yesAmount,
+                               SUM(CASE WHEN O.order_choice = 'No' THEN O.order_amount ELSE 0 END) AS noAmount,
+                               SUM(O.order_amount) AS totalAmount
+                           FROM
+                               TimeSeries T
+                                   LEFT JOIN
+                               TBL_BETTING_ORDER O ON O.order_timestamp < T.displayTime AND O.order_subject_no = ${subjectNo}
+                           GROUP BY
+                               T.displayTime
+                       )
+        SELECT
+            displayTime,
+            IFNULL((yesAmount / totalAmount) * 100, 0) AS yesRate,
+            IFNULL((noAmount / totalAmount) * 100, 0) AS noRate
+        FROM
+            OrderSummary
+        ORDER BY
+            displayTime DESC;
+        ]]>
+    </select>
+    <select id="getGraph1WByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+      <![CDATA[
+        WITH RECURSIVE TimeSeries AS (
+            -- 가장 늦게 주문한 시간을 기준으로 다음 시간을 계산
+            SELECT
+                DATE_FORMAT(DATE_ADD((SELECT MAX(order_timestamp) FROM TBL_BETTING_ORDER WHERE order_subject_no = #{subjectNo}), INTERVAL 7 DAY), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS n
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 7 DAY),
+                n + 1
+            FROM
+                TimeSeries
+            WHERE
+                n < 10
+        ),
+                       OrderSummary AS (
+                           -- 각 displayTime에 해당하는 주문 요약
+                           SELECT
+                               T.displayTime,
+                               SUM(CASE WHEN O.order_choice = 'Yes' THEN O.order_amount ELSE 0 END) AS yesAmount,
+                               SUM(CASE WHEN O.order_choice = 'No' THEN O.order_amount ELSE 0 END) AS noAmount,
+                               SUM(O.order_amount) AS totalAmount
+                           FROM
+                               TimeSeries T
+                                   LEFT JOIN
+                               TBL_BETTING_ORDER O ON O.order_timestamp < T.displayTime AND O.order_subject_no = ${subjectNo}
+                           GROUP BY
+                               T.displayTime
+                       )
+        SELECT
+            displayTime,
+            IFNULL((yesAmount / totalAmount) * 100, 0) AS yesRate,
+            IFNULL((noAmount / totalAmount) * 100, 0) AS noRate
+        FROM
+            OrderSummary
+        ORDER BY
+            displayTime DESC
+        ]]>
+    </select>
+    <select id="getGraph1MByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+        <![CDATA[
+        WITH RECURSIVE TimeSeries AS (
+            -- 가장 늦게 주문한 시간을 기준으로 다음 시간을 계산
+            SELECT
+                DATE_FORMAT(DATE_ADD((SELECT MAX(order_timestamp) FROM TBL_BETTING_ORDER WHERE order_subject_no = #{subjectNo}), INTERVAL 1 MONTH), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS n
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 MONTH),
+                n + 1
+            FROM
+                TimeSeries
+            WHERE
+                n < 10
+        ),
+                       OrderSummary AS (
+                           -- 각 displayTime에 해당하는 주문 요약
+                           SELECT
+                               T.displayTime,
+                               SUM(CASE WHEN O.order_choice = 'Yes' THEN O.order_amount ELSE 0 END) AS yesAmount,
+                               SUM(CASE WHEN O.order_choice = 'No' THEN O.order_amount ELSE 0 END) AS noAmount,
+                               SUM(O.order_amount) AS totalAmount
+                           FROM
+                               TimeSeries T
+                                   LEFT JOIN
+                               TBL_BETTING_ORDER O ON O.order_timestamp < T.displayTime AND O.order_subject_no = ${subjectNo}
+                           GROUP BY
+                               T.displayTime
+                       )
+        SELECT
+            displayTime,
+            IFNULL((yesAmount / totalAmount) * 100, 0) AS yesRate,
+            IFNULL((noAmount / totalAmount) * 100, 0) AS noRate
+        FROM
+            OrderSummary
+        ORDER BY
+            displayTime DESC
+        ]]>
+    </select>
+    <select id="getGraphAllByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+        <![CDATA[
+        WITH OrderedTimes AS (
+            SELECT
+                order_timestamp
+            FROM
+                TBL_BETTING_ORDER
+            WHERE
+                order_subject_no = #{subjectNo}
+            ORDER BY
+                order_timestamp
+        ),
+             TimeSeries AS (
+                 SELECT
+                     order_timestamp,
+                     ROW_NUMBER() OVER (ORDER BY order_timestamp) AS row_num,
+                     COUNT(*) OVER () AS total_rows
+                 FROM
+                     OrderedTimes
+             ),
+             DividedTimes AS (
+                 SELECT
+                     order_timestamp,
+                     row_num,
+                     total_rows,
+                     NTILE(10) OVER (ORDER BY row_num) AS tile
+                 FROM
+                     TimeSeries
+             ),
+             FinalTimes AS (
+                 SELECT
+                     MAX(order_timestamp) AS displayTime
+                 FROM
+                     DividedTimes
+                 GROUP BY
+                     tile
+             ),
+             OrderSummary AS (
+                 SELECT
+                     F.displayTime,
+                     SUM(CASE WHEN O.order_choice = 'Yes' THEN O.order_amount ELSE 0 END) AS yesAmount,
+                     SUM(CASE WHEN O.order_choice = 'No' THEN O.order_amount ELSE 0 END) AS noAmount,
+                     SUM(O.order_amount) AS totalAmount
+                 FROM
+                     FinalTimes F
+                         LEFT JOIN
+                     TBL_BETTING_ORDER O ON O.order_timestamp <= F.displayTime AND O.order_subject_no = #{subjectNo}
+                 GROUP BY
+                     F.displayTime
+             )
+        SELECT
+            displayTime,
+            IFNULL((yesAmount / totalAmount) * 100, 0) AS yesRate,
+            IFNULL((noAmount / totalAmount) * 100, 0) AS noRate
+        FROM
+            OrderSummary
+        ORDER BY
+            displayTime DESC;
+
+]]>
     </select>
 
     <select id="findActivityCount" resultMap="ActivityUserSubjectResultMap" parameterType="int">
