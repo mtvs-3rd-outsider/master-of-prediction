@@ -17,7 +17,11 @@ public class UserSession {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object userDetails =  authentication.getPrincipal();
         if (userDetails instanceof CustomUserDetail){
-            return ((CustomUserDetail) userDetails).getUser().getId();
+            CustomUserDetail customUserDetail = (CustomUserDetail) userDetails;
+            if (customUserDetail.getUser() == null) {
+                return 0L;
+            }
+            return customUserDetail.getUser().getId();
         }
         return 0L;
     }

@@ -15,7 +15,11 @@ const initBettingPage = function () {
     graphSettingButton(5);
     sumYPoint = document.getElementById("sumYPoint").value;
     sumNPoint=document.getElementById("sumNPoint").value;
-
+    if(document.getElementById("loggedInUserId").value===0){
+        login=false;
+    }else{
+        login=true;
+    }
     // batting_modal-container 숨기기
     const bettingModalContainer = document.querySelector('.batting_modal-container');
     bettingModalContainer.style.display = 'none';
