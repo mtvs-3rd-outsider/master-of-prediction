@@ -32,7 +32,7 @@ public class SubjectService {
     public boolean isSubjectSubjectSettlementTimestampAfterCurrentTime(TblSubjectDTO tblSubjectDTO) {
         Timestamp subjectSettlementTimestamp = tblSubjectDTO.getSubjectSettlementTimestamp();
         Timestamp currentTime = new Timestamp(System.currentTimeMillis());
-        return subjectSettlementTimestamp.after(currentTime);
+        return subjectSettlementTimestamp.before(currentTime);
     }
     public TblSubjectDTO getSubjectBySubjectNo(long subjectNo) {
         return subjectMapper.getSubjectBySubjectNo(subjectNo);
