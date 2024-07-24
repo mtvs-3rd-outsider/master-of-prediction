@@ -1,11 +1,6 @@
 package com.outsider.masterofprediction.controller;
 
-import com.outsider.masterofprediction.dto.ActivityUserSubjectDTO;
-
-import com.outsider.masterofprediction.dto.CustomUserDetail;
-
-import com.outsider.masterofprediction.dto.TblUserDTO;
-import com.outsider.masterofprediction.dto.UserAttachmentDTO;
+import com.outsider.masterofprediction.dto.*;
 
 import com.outsider.masterofprediction.dto.constatnt.IntConstants;
 import com.outsider.masterofprediction.dto.response.MainPageSubjectDTO;
@@ -16,6 +11,7 @@ import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.MainPageService;
 import com.outsider.masterofprediction.service.UserManagementService;
 import com.outsider.masterofprediction.utils.ConvertImageUrl;
+import com.outsider.masterofprediction.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -87,8 +83,12 @@ public class MainPageController {
         List<UserAndAttachmentDTO> rightUsers = splitAndRemoveHalf(leftUsers);
 
         ConvertImageUrl.convert(mainPageSubjectDTOS);
+        for (ActivityUserSubjectDTO tblAttachmentDTO: activityUserSubjectDTO) {
+            tblAttachmentDTO.getAttachmentUser().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentUser().getAttachmentFileAddress()));
+            tblAttachmentDTO.getAttachmentSubject().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentSubject().getAttachmentFileAddress()));
+        }
 
-        mv.setViewName("layout/index");
+        mv.setViewName("layout/index"); // layout/index.html
         mv.addObject("subjects", mainPageSubjectDTOS);
             mv.addObject("title", "Master Of Prediction");
         mv.addObject("activity", activityUserSubjectDTO);
