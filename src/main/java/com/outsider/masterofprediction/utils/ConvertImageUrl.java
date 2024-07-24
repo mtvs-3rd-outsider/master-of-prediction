@@ -11,11 +11,9 @@ public class ConvertImageUrl {
         for (T item : items){
             if (item.getAttachmentFileAddress() == null){
                 item.setAttachmentFileAddress("logo2.png");
-                System.out.println(item);
             }
             item.setAttachmentFileAddress(
                     FileUtil.checkFileOrigin(item.getAttachmentFileAddress()));
-            System.out.println(item);
         }
     }
 
