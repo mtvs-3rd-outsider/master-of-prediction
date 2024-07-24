@@ -6,8 +6,10 @@ var sumYPoint;
 var sumNPoint
 let chartInstance = null;
 var copyGraphDataList;
+
 // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
 const initBettingPage = function () {
+
     sideSelectBuy();
     graphSettingButton(5);
     sumYPoint = document.getElementById("sumYPoint").value;
