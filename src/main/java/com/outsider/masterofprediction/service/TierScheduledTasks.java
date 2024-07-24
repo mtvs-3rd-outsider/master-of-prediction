@@ -27,6 +27,10 @@ public class TierScheduledTasks {
         List<TblUserDTO> users = userMapper.findAllReturnTblUserDTO();
 
         int totalUsers = users.size();
+        if(totalUsers==0)
+        {
+            return;
+        }
 
         for (int i = 0; i < totalUsers; i++) {
             TblUserDTO user = users.get(i);
