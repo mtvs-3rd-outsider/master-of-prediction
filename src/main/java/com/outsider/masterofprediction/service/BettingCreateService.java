@@ -60,7 +60,6 @@ public class BettingCreateService {
             tblAttachmentDTO.setAttachmentFileAddress(uploadFile.getName());
             attachmentMapper.setAttachmentsBySubjectNo(tblAttachmentDTO);
         }catch (IllegalStateException e){
-            System.out.println("종료");
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data provided");
         }
     }

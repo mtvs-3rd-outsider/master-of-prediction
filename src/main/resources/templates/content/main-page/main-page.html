@@ -13,7 +13,7 @@
                         <div class="main-surface-title" >
                             <div class="main-surface-img-box">
 <!--                                <img src="../images/logo.png"/>-->
-                                <img th:src="'/images/upload/' + ${subject.attachmentFileAddress}"/>
+                                <img th:src="${subject.attachmentFileAddress}"/>
                             </div>
                             <p class="main-surface-title-text" th:text="${subject.subjectTitle}">8월 19일 날 비가 내릴까?asdfaskldjfhklasdjlasdfhs</p>
                         </div>

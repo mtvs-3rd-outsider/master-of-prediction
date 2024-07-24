@@ -1,0 +1,128 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<div class="main-content" th:fragment="content">
+    <link rel="stylesheet" th:href="@{/css/rank-page/rankpage.css}" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+
+    <div class="rank-main">
+        <div class="rank-title">
+            <div>
+                <span><i class="fa-solid fa-crown" style="color: #FFD43B;"></i></span>
+                <span>Top Rankings</span>
+            </div>
+        </div>
+        <div class="rank-notice">랭킹은 매일 자정에 초기화됩니다!</div>
+
+        <div th:each="user, userStat : ${userRank}" class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span th:text="${userStat.count}"></span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img th:src="${user.getAttachmentFileAddress()}">
+                    </div>
+                    <div class="rank-user-name">
+                        <span th:text="${user.userName}"></span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span th:text="${user.userPoint} + 포인트"></span>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span>1</span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img src="../images/character01.png">
+                    </div>
+                    <div class="rank-user-name">
+                        <span>강백호1</span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span>30,000 포인트</span>
+                </div>
+            </div>
+        </div>
+        <div class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span>2</span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img src="../images/character01.png">
+                    </div>
+                    <div class="rank-user-name">
+                        <span>사백호2</span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span>25,000 포인트</span>
+                </div>
+            </div>
+        </div>
+        <div class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span>3</span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img src="../images/character01.png">
+                    </div>
+                    <div class="rank-user-name">
+                        <span>삼백호3</span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span>20,000 포인트</span>
+                </div>
+            </div>
+        </div>
+        <div class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span>4</span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img src="../images/character01.png">
+                    </div>
+                    <div class="rank-user-name">
+                        <span>이백호</span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span>15,000 포인트</span>
+                </div>
+            </div>
+        </div>
+        <div class="rank-content">
+            <div class="rank-content-box">
+                <div class="rank-user-info">
+                    <div class="rank-user-ranking">
+                        <span>5</span>
+                    </div>
+                    <div class="rank-user-image">
+                        <img src="../images/character01.png">
+                    </div>
+                    <div class="rank-user-name">
+                        <span>일백호</span>
+                    </div>
+                </div>
+                <div class="rank-user-point">
+                    <span>10,000 포인트</span>
+                </div>
+            </div>
+        </div>-->
+    </div>
+</div>
+</html>
+

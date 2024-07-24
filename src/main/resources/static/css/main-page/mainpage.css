@@ -180,7 +180,7 @@
     align-items: center;
 }
 
-.material-symbols-outlined{
+.paid{
     color:#daaf21;
     margin-right: 7px;
 }
@@ -534,4 +534,8 @@
 
 .hidden {
     display: none;
+}
+
+.see-all{
+    padding: 10px;
 }
