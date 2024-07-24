@@ -42,8 +42,8 @@
 
 <div th:replace="~{${view} :: content}">Right Content</div>
 <!-- 이곳 -->
-<div class="bottom-right-button-container">
-    <div class="bounding-betting-add-page-entry">
+<div   class="bottom-right-button-container">
+    <div sec:authorize="isAuthenticated()" class="bounding-betting-add-page-entry">
         <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="none"
              viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
