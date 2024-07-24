@@ -15,7 +15,7 @@
                             <div class="badge-text" th:text="${iter.count}"><span>1</span>
                             </div>
                         </div>
-                            <img class="main-active-item-img" th:src="'/images/upload/' + ${item.attachmentFileAddress}"/>
+                            <img class="main-active-item-img" th:src="${item.attachmentFileAddress}"/>
                         </div>
                     </div>
                     <div>
@@ -33,7 +33,7 @@
                                 <div class="badge-text" th:text="${iter.count} + 5"><span>6</span>
                                 </div>
                             </div>
-                            <img class="main-active-item-img" th:src="'/images/upload/' + ${item.attachmentFileAddress}"/>
+                            <img class="main-active-item-img" th:src="${item.attachmentFileAddress}"/>
                         </div>
                     </div>
                     <div>

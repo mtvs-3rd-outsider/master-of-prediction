@@ -20,7 +20,6 @@ public class AdminNoticeDeleteByIdController {
 
     @PostMapping("/admin-page/notification/delete")
     public String notificationDeleteById(@RequestParam("ids") List<Long> ids){
-        System.out.println("ids: " + ids);
         noticeDeleteByIdService.deleteByIds(ids);
 
         return "redirect:/admin-page/notification";

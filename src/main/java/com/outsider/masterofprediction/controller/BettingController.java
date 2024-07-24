@@ -8,10 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+        import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 
 
@@ -19,11 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 import java.sql.Timestamp;
-import java.time.LocalDateTime;
-import java.util.*;
-
 
 @Controller
 public class BettingController {
@@ -55,7 +50,7 @@ public class BettingController {
 
 
     @GetMapping("/betting/{subjectNo}")
-    public String getBettingPage(Model model ,@PathVariable long subjectNo ,@AuthenticationPrincipal CustomUserDetail user) {
+    public ModelAndView getBettingPage(ModelAndView mv , @PathVariable long subjectNo) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
         subject.setSubjectNo(subjectNo);
@@ -67,31 +62,34 @@ public class BettingController {
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
 
-        String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
-        String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
+
+
+        String returnYRate =  (int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100)+"% Chance";
+        String returnNRate = (int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100)+"% Chance";
 
         String attachment_file_address = attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress();
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 
 
-        model.addAttribute("sumYPoint", sumYPoint);
-        model.addAttribute("sumNPoint", sumNPoint);
-        model.addAttribute("subjectImage", attachment_file_address);
-        model.addAttribute("loggedInUserId", UserSession.getUserId());
-        model.addAttribute("returnYRate", returnYRate);
-        model.addAttribute("returnNRate", returnNRate);
-        model.addAttribute("subject", subject);
-        model.addAttribute("userAuthority", userAuthority);
+        mv.setViewName("/layout/index");
+        mv.addObject("sumYPoint", sumYPoint);
+        mv.addObject("sumNPoint", sumNPoint);
+        mv.addObject("subjectImage", attachment_file_address);
+        mv.addObject("loggedInUserId", UserSession.getUserId());
+        mv.addObject("returnYRate", returnYRate);
+        mv.addObject("returnNRate", returnNRate);
+        mv.addObject("subject", subject);
+        mv.addObject("userAuthority", userAuthority);
 
 
         Timestamp settleTime = subject.getSubjectSettlementTimestamp();
         Timestamp now = new Timestamp(System.currentTimeMillis());
 
-        model.addAttribute("isAccountBtnOn",
+        mv.addObject("isAccountBtnOn",
                 UserSession.getUserId().
                         equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime));
-        return "content/betting-page/betting-page";
-
+        mv.addObject("view", "content/betting-page");
+        return mv;
     }
 
     /**
@@ -107,6 +105,7 @@ public class BettingController {
     @GetMapping(value = "/ranking",produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<RankingDTO> getRankings() {
+
         return bettingOrderService.getRankingBySubjectNo(subjectNo);
     }
 
@@ -119,6 +118,7 @@ public class BettingController {
     @PostMapping(value = "/comment", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addComment(@RequestBody TblCommentDTO commentDTO) {
+
         commentDTO.setCommentSubjectNo(subjectNo);
         commentDTO.setCommentUserNo(UserSession.getUserId());
         commentService.insertComment(commentDTO);

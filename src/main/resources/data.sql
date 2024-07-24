@@ -151,3 +151,40 @@ INSERT INTO TBL_INQUIRY_REPLY (answer_title, answer_content, answer_user_no, ans
 values ('[답변]포인트가 안올라감','문제 시정했습니다. 확인해주세요', @user_no2, @inquiry_no  );
 
 UPDATE TBL_INQUIRY SET inquiry_reply_status = 1 WHERE inquiry_user_no  = @user_no AND inquiry_no = @inquiry_no ;
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject1', 1, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject11', 1, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject111', 1, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject2', 2, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject22', 2, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject222', 2, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject3', 3, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject33', 3, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+
+insert into tbl_subject (subject_title, subject_category_no,
+                         subject_register_user_no, subject_settlement_timestamp ,subject_register_timestamp)
+values ('subject333', 3, 1, DATE_ADD(CURRENT_TIMESTAMP, INTERVAL 5 DAY), current_timestamp);
+

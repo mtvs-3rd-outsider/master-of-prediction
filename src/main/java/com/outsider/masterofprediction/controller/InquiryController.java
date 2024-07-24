@@ -20,11 +20,9 @@ public class InquiryController {
 
 
     private final UserInquiryService userInquiryService;
-    private final UserManagementService userManagementService;
 
-    public InquiryController(UserInquiryService userInquiryService, UserManagementService userManagementService) {
+    public InquiryController(UserInquiryService userInquiryService) {
         this.userInquiryService = userInquiryService;
-        this.userManagementService = userManagementService;
     }
 
 
