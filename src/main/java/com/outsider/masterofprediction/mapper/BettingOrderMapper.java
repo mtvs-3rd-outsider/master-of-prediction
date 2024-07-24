@@ -87,5 +87,18 @@ public interface BettingOrderMapper {
 
     List<ActivityUserSubjectDTO> findActivity();
 
+    List<GraphDTO> getGraph1HByDTO(GraphDTO graphDTO);
+
+    List<GraphDTO> getGraph6HByDTO(GraphDTO graphDTO);
+
+    List<GraphDTO> getGraph1DByDTO(GraphDTO graphDTO);
+
+    List<GraphDTO> getGraph1WByDTO(GraphDTO graphDTO);
+
+    List<GraphDTO> getGraph1MByDTO(GraphDTO graphDTO);
+
+    List<GraphDTO> getGraphAllByDTO(GraphDTO graphDTO);
+
     List<ActivityUserSubjectDTO> findActivityCount(int count);
+
 }

@@ -4,10 +4,11 @@ var activeSelect = 0;
 let selectedChoice = null;
 var sumYPoint;
 var sumNPoint
+let chartInstance = null;
+var copyGraphDataList;
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
-    graphChart();
     sumYPoint = document.getElementById("sumYPoint").value;
     sumNPoint=document.getElementById("sumNPoint").value;
     // batting_modal-container 숨기기
@@ -25,9 +26,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const userAuthority = '{{ userAuthority }}';
 
     if (userAuthority === 'ROLE_ADMIN') {
-        bettingWarningElement.classList.remove('hidden');
-    } else {
         bettingWarningElement.classList.add('hidden');
+    } else {
+        bettingWarningElement.classList.remove('hidden');
     }
 });
 function sideSelectBuy() {
@@ -57,14 +58,37 @@ function sideSelectSell() {
 
 }
 
-function graphSettingButton(value){
-    const buttons= document.querySelectorAll('.graph_setting-content-button');
+function graphSettingButton(value) {
+    const buttons = document.querySelectorAll('.graph_setting-content-button');
+    const loggedSubjectNo = document.getElementById('loggedSubjectNo').value;
     buttons.forEach(button => {
         button.style.backgroundColor = 'white';
         button.style.setProperty('--md-sys-color-primary', '#6750a4');
-
     });
-    buttons[value].style.backgroundColor='#F0C8D0';
+
+    const graphTime = buttons[value].textContent.trim();
+    const GraphDTO = {
+        graphTime: graphTime,
+        subjectNo: loggedSubjectNo
+    };
+
+    fetch('/graph', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(GraphDTO)
+    })
+        .then(response => response.json())
+        .then(graphDTOList => {
+            // graphDTOList 데이터 처리
+            graphChart(graphDTOList);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    buttons[value].style.backgroundColor = '#F0C8D0';
     buttons[value].style.setProperty('--md-sys-color-primary', 'white');
 }
 
@@ -76,7 +100,21 @@ function graphSetting() {
         popupSetting.style.display = 'block';
     }
 }
-
+function changeSetting(){
+    const yesSwich=document.getElementById("yes-Switch");
+    const noSwich =document.getElementById("no-Switch");
+    if (yesSwich.checked===true){
+        yesSwich.checked=false;
+    }else{
+        yesSwich.checked=true;
+    }
+    if (noSwich.checked===true){
+        noSwich.checked=false;
+    }else{
+        noSwich.checked=true;
+    }
+    updateChart();
+}
 function popupCancle() {
     const popupSetting = document.querySelector('.popup_setting-content');
     popupSetting.style.display = 'none';
@@ -417,7 +455,7 @@ function userActivityRanking(value) {
                         html += `
               <ul>
                 <li>
-                  <img src="../images/me.jpg">
+                  <img src="${ranking.imgUrl}">
                   ${ranking.name}
                 </li>
                 <li class="${className}-amount">${ranking.sum}</li>
@@ -580,38 +618,80 @@ function battingModalCancle(){
 }
 
 
-function graphChart() {
-    new Chart(document.getElementById("line-chart"), {
+function updateChart() {
+    graphChart(copyGraphDataList);
+}
+
+function graphChart(graphDTOList) {
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+    copyGraphDataList=graphDTOList;
+    const labels = graphDTOList.map(item => {
+        const [date, time] = item.displayTime.split(' ');
+        const [hour, minute] = time.split(':');
+        return `${date.slice(5)}\n${hour}:${minute}`;
+    }).reverse();
+
+    const yesData = graphDTOList.map(item => item.yesRate).reverse();
+    const noData = graphDTOList.map(item => item.noRate).reverse();
+
+    const canvas = document.getElementById("line-chart");
+    const ctx = canvas.getContext("2d");
+
+    // Set the canvas width to 100% before creating the chart instance
+    canvas.style.width = '100%';
+    canvas.width = canvas.offsetWidth; // Ensure the canvas width is set properly
+
+    // Get the state of the checkboxes
+    const yesSwitchChecked = document.getElementById("yes-Switch").checked;
+    const noSwitchChecked = document.getElementById("no-Switch").checked;
+
+    // Construct datasets based on checkbox states
+    const datasets = [];
+    if (yesSwitchChecked) {
+        datasets.push({
+            data: yesData,
+            label: "YES",
+            borderColor: "#3cba9f",
+            fill: false,
+            hidden: !yesSwitchChecked // Hide the dataset if the checkbox is unchecked
+        });
+    }
+    if (noSwitchChecked) {
+        datasets.push({
+            data: noData,
+            label: "NO",
+            borderColor: "#c45850",
+            fill: false,
+            hidden: !noSwitchChecked // Hide the dataset if the checkbox is unchecked
+        });
+    }
+
+    chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
-            datasets: [
-                {
-                    data: [168,170,178,190,203,276,408,547,675,734],
-                    label: "YES",
-                    borderColor: "#3cba9f",
-                    fill: false
-                },
-                {
-                    data: [6,3,2,2,7,26,82,172,312,433],
-                    label: "NO",
-                    borderColor: "#c45850",
-                    fill: false
-                }
-            ]
+            labels: labels,
+            datasets: datasets
         },
         options: {
-            responsive: false,
-            maintainAspectRatio:true,
+            responsive: true,
+            maintainAspectRatio: true,
             title: {
                 display: true,
-                text: 'World population per region (in millions)'
+                text: 'Betting Order Data'
             },
             scales: {
+                y: {
+                    min: 0, // y축 최소값 설정
+                    max: 100, // y축 최대값 설정
+                    ticks: {
+                        stepSize: 25 // y축 눈금 간격 설정
+                    }
+                },
                 x: {
                     grid: {
-                        display: false,
-
+                        display: false
                     }
                 }
             },
