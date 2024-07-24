@@ -5,6 +5,7 @@ let selectedChoice = null;
 var sumYPoint;
 var sumNPoint
 let chartInstance = null;
+var copyGraphDataList;
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
@@ -70,7 +71,6 @@ function graphSettingButton(value) {
         graphTime: graphTime,
         subjectNo: loggedSubjectNo
     };
-    console.log(loggedSubjectNo);
 
     fetch('/graph', {
         method: 'POST',
@@ -82,7 +82,6 @@ function graphSettingButton(value) {
         .then(response => response.json())
         .then(graphDTOList => {
             // graphDTOList 데이터 처리
-            console.log(graphDTOList);
             graphChart(graphDTOList);
         })
         .catch(error => {
@@ -101,7 +100,21 @@ function graphSetting() {
         popupSetting.style.display = 'block';
     }
 }
-
+function changeSetting(){
+    const yesSwich=document.getElementById("yes-Switch");
+    const noSwich =document.getElementById("no-Switch");
+    if (yesSwich.checked===true){
+        yesSwich.checked=false;
+    }else{
+        yesSwich.checked=true;
+    }
+    if (noSwich.checked===true){
+        noSwich.checked=false;
+    }else{
+        noSwich.checked=true;
+    }
+    updateChart();
+}
 function popupCancle() {
     const popupSetting = document.querySelector('.popup_setting-content');
     popupSetting.style.display = 'none';
@@ -442,7 +455,7 @@ function userActivityRanking(value) {
                         html += `
               <ul>
                 <li>
-                  <img src="../images/me.jpg">
+                  <img src="${ranking.imgUrl}">
                   ${ranking.name}
                 </li>
                 <li class="${className}-amount">${ranking.sum}</li>
@@ -605,43 +618,64 @@ function battingModalCancle(){
 }
 
 
+function updateChart() {
+    graphChart(copyGraphDataList);
+}
+
 function graphChart(graphDTOList) {
     if (chartInstance) {
         chartInstance.destroy();
     }
-
+    copyGraphDataList=graphDTOList;
     const labels = graphDTOList.map(item => {
         const [date, time] = item.displayTime.split(' ');
         const [hour, minute] = time.split(':');
         return `${date.slice(5)}\n${hour}:${minute}`;
     }).reverse();
-    // const labels = graphDTOList.map(item => item.displayTime).reverse();
+
     const yesData = graphDTOList.map(item => item.yesRate).reverse();
     const noData = graphDTOList.map(item => item.noRate).reverse();
 
-    const ctx = document.getElementById("line-chart").getContext("2d");
+    const canvas = document.getElementById("line-chart");
+    const ctx = canvas.getContext("2d");
+
+    // Set the canvas width to 100% before creating the chart instance
+    canvas.style.width = '100%';
+    canvas.width = canvas.offsetWidth; // Ensure the canvas width is set properly
+
+    // Get the state of the checkboxes
+    const yesSwitchChecked = document.getElementById("yes-Switch").checked;
+    const noSwitchChecked = document.getElementById("no-Switch").checked;
+
+    // Construct datasets based on checkbox states
+    const datasets = [];
+    if (yesSwitchChecked) {
+        datasets.push({
+            data: yesData,
+            label: "YES",
+            borderColor: "#3cba9f",
+            fill: false,
+            hidden: !yesSwitchChecked // Hide the dataset if the checkbox is unchecked
+        });
+    }
+    if (noSwitchChecked) {
+        datasets.push({
+            data: noData,
+            label: "NO",
+            borderColor: "#c45850",
+            fill: false,
+            hidden: !noSwitchChecked // Hide the dataset if the checkbox is unchecked
+        });
+    }
 
     chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
             labels: labels,
-            datasets: [
-                {
-                    data: yesData,
-                    label: "YES",
-                    borderColor: "#3cba9f",
-                    fill: false
-                },
-                {
-                    data: noData,
-                    label: "NO",
-                    borderColor: "#c45850",
-                    fill: false
-                }
-            ]
+            datasets: datasets
         },
         options: {
-            responsive: false,
+            responsive: true,
             maintainAspectRatio: true,
             title: {
                 display: true,

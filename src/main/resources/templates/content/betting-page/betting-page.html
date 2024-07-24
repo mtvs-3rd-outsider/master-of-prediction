@@ -67,11 +67,11 @@
                     <p id="popup-title">Chart Settings<span id="popup-cancle" onclick="popupCancle()"
                                                             class="material-symbols-outlined">close</span></p>
                     <p>YES<label class="switch">
-                        <input type="checkbox">
+                        <input id="yes-Switch"  type="checkbox" checked="checked" onchange="updateChart()">
                         <span class="slider round"></span>
                     </label></p>
                     <p>NO<label class="switch">
-                        <input type="checkbox">
+                        <input id="no-Switch" type="checkbox" checked="checked" onchange="updateChart()">
                         <span class="slider round"></span>
                     </label></p>
 
@@ -118,7 +118,7 @@
                         </ul>
                     </div>
                     <div class="graph_setting-content">
-                        <md-icon-button onclick="graphSetting()">
+                        <md-icon-button onclick="changeSetting()">
                            <span class="material-symbols-outlined">cached</span>
                         </md-icon-button>
                         <md-icon-button onclick="graphSetting()">

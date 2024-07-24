@@ -151,10 +151,8 @@ public class BettingController {
             Map<String, String> response = new HashMap<>();
             response.put("message", "구매 성공");
             response.put("redirectUrl", "/betting");
-            System.out.println("구매 성공");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-            System.out.println("구매 실패");
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();
             responseBody.put("message", errorMessage);
