@@ -4,10 +4,10 @@ var activeSelect = 0;
 let selectedChoice = null;
 var sumYPoint;
 var sumNPoint
+let chartInstance = null;
 window.onload = function () {
     createSideMain();
     sideSelectBuy();
-    graphChart();
     sumYPoint = document.getElementById("sumYPoint").value;
     sumNPoint=document.getElementById("sumNPoint").value;
     // batting_modal-container 숨기기
@@ -25,9 +25,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const userAuthority = '{{ userAuthority }}';
 
     if (userAuthority === 'ROLE_ADMIN') {
-        bettingWarningElement.classList.remove('hidden');
-    } else {
         bettingWarningElement.classList.add('hidden');
+    } else {
+        bettingWarningElement.classList.remove('hidden');
     }
 });
 function sideSelectBuy() {
@@ -57,14 +57,39 @@ function sideSelectSell() {
 
 }
 
-function graphSettingButton(value){
-    const buttons= document.querySelectorAll('.graph_setting-content-button');
+function graphSettingButton(value) {
+    const buttons = document.querySelectorAll('.graph_setting-content-button');
+    const loggedSubjectNo = document.getElementById('loggedSubjectNo').value;
     buttons.forEach(button => {
         button.style.backgroundColor = 'white';
         button.style.setProperty('--md-sys-color-primary', '#6750a4');
-
     });
-    buttons[value].style.backgroundColor='#F0C8D0';
+
+    const graphTime = buttons[value].textContent.trim();
+    const GraphDTO = {
+        graphTime: graphTime,
+        subjectNo: loggedSubjectNo
+    };
+    console.log(loggedSubjectNo);
+
+    fetch('/graph', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(GraphDTO)
+    })
+        .then(response => response.json())
+        .then(graphDTOList => {
+            // graphDTOList 데이터 처리
+            console.log(graphDTOList);
+            graphChart(graphDTOList);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+
+    buttons[value].style.backgroundColor = '#F0C8D0';
     buttons[value].style.setProperty('--md-sys-color-primary', 'white');
 }
 
@@ -580,20 +605,35 @@ function battingModalCancle(){
 }
 
 
-function graphChart() {
-    new Chart(document.getElementById("line-chart"), {
+function graphChart(graphDTOList) {
+    if (chartInstance) {
+        chartInstance.destroy();
+    }
+
+    const labels = graphDTOList.map(item => {
+        const [date, time] = item.displayTime.split(' ');
+        const [hour, minute] = time.split(':');
+        return `${date.slice(5)}\n${hour}:${minute}`;
+    }).reverse();
+    // const labels = graphDTOList.map(item => item.displayTime).reverse();
+    const yesData = graphDTOList.map(item => item.yesRate).reverse();
+    const noData = graphDTOList.map(item => item.noRate).reverse();
+
+    const ctx = document.getElementById("line-chart").getContext("2d");
+
+    chartInstance = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: [1500,1600,1700,1750,1800,1850,1900,1950,1999,2050],
+            labels: labels,
             datasets: [
                 {
-                    data: [168,170,178,190,203,276,408,547,675,734],
+                    data: yesData,
                     label: "YES",
                     borderColor: "#3cba9f",
                     fill: false
                 },
                 {
-                    data: [6,3,2,2,7,26,82,172,312,433],
+                    data: noData,
                     label: "NO",
                     borderColor: "#c45850",
                     fill: false
@@ -602,16 +642,22 @@ function graphChart() {
         },
         options: {
             responsive: false,
-            maintainAspectRatio:true,
+            maintainAspectRatio: true,
             title: {
                 display: true,
-                text: 'World population per region (in millions)'
+                text: 'Betting Order Data'
             },
             scales: {
+                y: {
+                    min: 0, // y축 최소값 설정
+                    max: 100, // y축 최대값 설정
+                    ticks: {
+                        stepSize: 25 // y축 눈금 간격 설정
+                    }
+                },
                 x: {
                     grid: {
-                        display: false,
-
+                        display: false
                     }
                 }
             },

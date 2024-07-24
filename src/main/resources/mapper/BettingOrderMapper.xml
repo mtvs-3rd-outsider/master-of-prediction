@@ -68,6 +68,12 @@
         </collection>
     </resultMap>
 
+    <resultMap id="GraphResultMap" type="com.outsider.masterofprediction.dto.GraphDTO">
+        <result column="displayTime" property="displayTime" />
+        <result column="yesRate" property="yesRate" />
+        <result column="noRate" property="noRate" />
+    </resultMap>
+
     <!-- 종목 수 조회 -->
     <select id="getOrderCountByUserId" resultType="int">
         SELECT
@@ -334,4 +340,201 @@ WHERE
                 A.ORDER_TIMESTAMP DESC
     </select>
 
+
+    <select id="getGraph1HByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+        <![CDATA[
+        WITH RECURSIVE time_intervals AS (
+            SELECT
+                DATE_FORMAT(DATE_SUB(MAX(order_timestamp), INTERVAL MINUTE(MAX(order_timestamp)) MINUTE), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS step
+            FROM TBL_BETTING_ORDER
+            WHERE order_subject_no = #{subjectNo}
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 HOUR),
+                step + 1
+            FROM time_intervals
+            WHERE step < 10
+        ),
+                       order_sums AS (
+                           SELECT
+                               order_timestamp,
+                               SUM(order_amount) OVER (ORDER BY order_timestamp) AS total_amount,
+                               SUM(CASE WHEN order_choice = 'Yes' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_yes_amount,
+                               SUM(CASE WHEN order_choice = 'No' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_no_amount
+                           FROM TBL_BETTING_ORDER
+                           WHERE order_subject_no = #{subjectNo}
+                       ),
+                       aggregated_orders AS (
+                           SELECT
+                               DATE_FORMAT(order_timestamp, '%Y-%m-%d %H:00:00') AS hourly_timestamp,
+                               MAX(total_amount) AS total_amount,
+                               MAX(total_yes_amount) AS total_yes_amount,
+                               MAX(total_no_amount) AS total_no_amount
+                           FROM order_sums
+                           GROUP BY DATE_FORMAT(order_timestamp, '%Y-%m-%d %H:00:00')
+                       )
+        SELECT
+            ti.displayTime,
+            ROUND(COALESCE(ao.total_yes_amount / ao.total_amount * 100, 0), 2) AS yesRate,
+            ROUND(COALESCE(ao.total_no_amount / ao.total_amount * 100, 0),2) AS noRate
+        FROM time_intervals ti
+                 LEFT JOIN aggregated_orders ao ON ao.hourly_timestamp = ti.displayTime
+        ORDER BY ti.displayTime DESC
+        ]]>
+    </select>
+    <select id="getGraph6HByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+       <![CDATA[
+        WITH RECURSIVE time_intervals AS (
+            SELECT
+                DATE_FORMAT(DATE_SUB(MAX(order_timestamp), INTERVAL MINUTE(MAX(order_timestamp)) MINUTE), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS step
+            FROM TBL_BETTING_ORDER
+            WHERE order_subject_no =  #{subjectNo}
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 6 HOUR),
+                step + 1
+            FROM time_intervals
+            WHERE step < 10
+        ),
+                       order_sums AS (
+                           SELECT
+                               order_timestamp,
+                               SUM(order_amount) OVER (ORDER BY order_timestamp) AS total_amount,
+                               SUM(CASE WHEN order_choice = 'Yes' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_yes_amount,
+                               SUM(CASE WHEN order_choice = 'No' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_no_amount
+                           FROM TBL_BETTING_ORDER
+                           WHERE order_subject_no = #{subjectNo}
+                       ),
+                       aggregated_orders AS (
+                           SELECT
+                               DATE_FORMAT(order_timestamp, '%Y-%m-%d %H:00:00') AS hourly_timestamp,
+                               MAX(total_amount) AS total_amount,
+                               MAX(total_yes_amount) AS total_yes_amount,
+                               MAX(total_no_amount) AS total_no_amount
+                           FROM order_sums
+                           GROUP BY DATE_FORMAT(order_timestamp, '%Y-%m-%d %H:00:00')
+                       )
+        SELECT
+            ti.displayTime,
+            ROUND(COALESCE(ao.total_yes_amount / ao.total_amount * 100, 0), 2) AS yesRate,
+            ROUND(COALESCE(ao.total_no_amount / ao.total_amount * 100, 0),2) AS noRate
+        FROM time_intervals ti
+                 LEFT JOIN aggregated_orders ao ON ao.hourly_timestamp = ti.displayTime
+        ORDER BY ti.displayTime DESC
+
+        ]]>
+    </select>
+    <select id="getGraph1DByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+       <![CDATA[
+        WITH RECURSIVE time_intervals AS (
+            SELECT
+                DATE_FORMAT(DATE_SUB(MAX(order_timestamp), INTERVAL HOUR (MAX(order_timestamp)) HOUR), '%Y-%m-%d %H:00:00') AS displayTime,
+                1 AS step
+            FROM TBL_BETTING_ORDER
+            WHERE order_subject_no =  #{subjectNo}
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 DAY),
+                step + 1
+            FROM time_intervals
+            WHERE step < 10
+        ),
+                       order_sums AS (
+                           SELECT
+                               order_timestamp,
+                               SUM(order_amount) OVER (ORDER BY order_timestamp) AS total_amount,
+                               SUM(CASE WHEN order_choice = 'Yes' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_yes_amount,
+                               SUM(CASE WHEN order_choice = 'No' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_no_amount
+                           FROM TBL_BETTING_ORDER
+                           WHERE order_subject_no = #{subjectNo}
+                       ),
+                       aggregated_orders AS (
+                           SELECT
+                               DATE_FORMAT(order_timestamp, '%Y-%m-%d %H:00:00') AS hourly_timestamp,
+                               MAX(total_amount) AS total_amount,
+                               MAX(total_yes_amount) AS total_yes_amount,
+                               MAX(total_no_amount) AS total_no_amount
+                           FROM order_sums
+                           GROUP BY DATE_FORMAT(order_timestamp, '%Y-%m-%d %H:00:00')
+                       )
+        SELECT
+            ti.displayTime,
+            ROUND(COALESCE(ao.total_yes_amount / ao.total_amount * 100, 0), 2) AS yesRate,
+            ROUND(COALESCE(ao.total_no_amount / ao.total_amount * 100, 0),2) AS noRate
+        FROM time_intervals ti
+                 LEFT JOIN aggregated_orders ao ON ao.hourly_timestamp = ti.displayTime
+        ORDER BY ti.displayTime DESC
+
+        ]]>
+    </select>
+    <select id="getGraph1WByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+      <![CDATA[
+        WITH RECURSIVE time_intervals AS (
+            SELECT
+                DATE_FORMAT(DATE_SUB(MAX(order_timestamp), INTERVAL HOUR(MAX(order_timestamp)) HOUR), '%Y-%m-%d 00:00:00') AS displayTime,
+                1 AS step
+            FROM TBL_BETTING_ORDER
+            WHERE order_subject_no = #{subjectNo}
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 WEEK),
+                step + 1
+            FROM time_intervals
+            WHERE step < 10
+        ),
+                       order_sums AS (
+                           SELECT
+                               order_timestamp,
+                               SUM(order_amount) OVER (ORDER BY order_timestamp) AS total_amount,
+                               SUM(CASE WHEN order_choice = 'Yes' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_yes_amount,
+                               SUM(CASE WHEN order_choice = 'No' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_no_amount
+                           FROM TBL_BETTING_ORDER
+                           WHERE order_subject_no = #{subjectNo}
+                       )
+        SELECT
+            ti.displayTime,
+            ROUND(COALESCE(os.total_yes_amount / os.total_amount * 100, 0), 2) AS yesRate,
+            ROUND(COALESCE(os.total_no_amount / os.total_amount * 100, 0), 2) AS noRate
+        FROM time_intervals ti
+                 LEFT JOIN order_sums os ON os.order_timestamp BETWEEN ti.displayTime AND DATE_ADD(ti.displayTime, INTERVAL 1 WEEK) -- 1주일로 수정
+        ORDER BY ti.displayTime DESC
+        ]]>
+    </select>
+    <select id="getGraph1MByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+        <![CDATA[
+        WITH RECURSIVE time_intervals AS (
+            SELECT
+                DATE_FORMAT(DATE_SUB(MAX(order_timestamp), INTERVAL HOUR(MAX(order_timestamp)) HOUR), '%Y-%m-01 00:00:00') AS displayTime,
+                1 AS step
+            FROM TBL_BETTING_ORDER
+            WHERE order_subject_no = #{subjectNo}
+            UNION ALL
+            SELECT
+                DATE_SUB(displayTime, INTERVAL 1 MONTH),
+                step + 1
+            FROM time_intervals
+            WHERE step < 10
+        ),
+                       order_sums AS (
+                           SELECT
+                               order_timestamp,
+                               SUM(order_amount) OVER (ORDER BY order_timestamp) AS total_amount,
+                               SUM(CASE WHEN order_choice = 'Yes' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_yes_amount,
+                               SUM(CASE WHEN order_choice = 'No' THEN order_amount ELSE 0 END) OVER (ORDER BY order_timestamp) AS total_no_amount
+                           FROM TBL_BETTING_ORDER
+                           WHERE order_subject_no = #{subjectNo}
+                       )
+        SELECT
+            ti.displayTime,
+            ROUND(COALESCE(os.total_yes_amount / os.total_amount * 100, 0), 2) AS yesRate,
+            ROUND(COALESCE(os.total_no_amount / os.total_amount * 100, 0), 2) AS noRate
+        FROM time_intervals ti
+                 LEFT JOIN order_sums os ON os.order_timestamp BETWEEN ti.displayTime AND DATE_ADD(ti.displayTime, INTERVAL 1 MONTH) -- 1달로 수정
+        ORDER BY ti.displayTime DESC
+        ]]>
+    </select>
+    <select id="getGraphAllByDTO" parameterType="com.outsider.masterofprediction.dto.GraphDTO" resultMap="GraphResultMap">
+    </select>
 </mapper>

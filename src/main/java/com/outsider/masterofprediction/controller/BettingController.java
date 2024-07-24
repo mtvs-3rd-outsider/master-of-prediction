@@ -10,13 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.service.annotation.PostExchange;
 
-import java.util.Collections;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ServiceLoader;
+
 
 @Controller
 public class BettingController {
@@ -49,6 +48,7 @@ public class BettingController {
     public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
+        subject.setSubjectNo(subjectNo);
         String userAuthority = userManagementService.getAuthorityBySubjectNo(subjectNo);
         TblBettingOrderDTO dto = new TblBettingOrderDTO();
         dto.setOrderSubjectNo(subjectNo);
@@ -56,6 +56,7 @@ public class BettingController {
 
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
+        System.out.println(sumNPoint);
         String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
         String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
@@ -162,5 +163,12 @@ public class BettingController {
                     .contentType(MediaType.APPLICATION_JSON)
                     .body(responseBody);
         }
+    }
+
+
+    @PostMapping(value = "/graph", produces = "application/json; charset=UTF-8")
+    @ResponseBody
+    public List<GraphDTO> getGraph(@RequestBody GraphDTO graphDTO) {
+        return bettingOrderService.getGraphByDTO(graphDTO);
     }
 }

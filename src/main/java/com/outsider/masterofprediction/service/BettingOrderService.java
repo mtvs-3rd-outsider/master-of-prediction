@@ -66,4 +66,14 @@ public class BettingOrderService {
     }
 
 
+    public List<GraphDTO> getGraphByDTO(GraphDTO graphDTO) {
+        return switch (graphDTO.getGraphTime()) {
+            case "1H" -> bettingOrderMapper.getGraph1HByDTO(graphDTO);
+            case "6H" -> bettingOrderMapper.getGraph6HByDTO(graphDTO);
+            case "1D" -> bettingOrderMapper.getGraph1DByDTO(graphDTO);
+            case "1W" -> bettingOrderMapper.getGraph1WByDTO(graphDTO);
+            case "1M" -> bettingOrderMapper.getGraph1MByDTO(graphDTO);
+            default -> bettingOrderMapper.getGraphAllByDTO(graphDTO);
+        };
+    }
 }
