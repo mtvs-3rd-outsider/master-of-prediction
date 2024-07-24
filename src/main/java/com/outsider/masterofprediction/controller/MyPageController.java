@@ -100,11 +100,10 @@ public class MyPageController {
 //페이지
     @GetMapping(value = {"", "{userId}"})
     public ModelAndView getMyPage( @PathVariable(required = false) Long  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
-        boolean isMine =  userManagementService.isUserSessionValid(userId,user.getId());
-        System.out.println(isMine);
-        if (isMine) {
+        if (userId ==null) {
             return new ModelAndView("redirect:/mypage/" + user.getId());
         }
+        boolean isMine =  userManagementService.isUserSessionValid(userId,user.getId());
         mv.addObject("isMine",isMine);
         TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
 
