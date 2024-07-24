@@ -601,7 +601,7 @@ function submitSale() {
 function sellModal() {
     const totalPoints = document.getElementById('totalPoint').innerText;
     const battingModalContainer = document.querySelector('.batting_modal-container');
-    battingModalContainer.style.display = 'block';
+    battingModalContainer.style.display = 'flex';
     battingModalContainer.innerHTML = `
         <div class="sell_modal-content">
             <p class="modal-title">제목</p>
