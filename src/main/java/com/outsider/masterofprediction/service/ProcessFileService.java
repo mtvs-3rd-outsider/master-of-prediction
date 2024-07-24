@@ -40,7 +40,6 @@ public class ProcessFileService {
         File uploadFile = null;
         try {
             // 이전 파일 객체 생성
-
             // 유니크한 파일 이름 생성 및 저장
             uploadFile = fileStorageService.storeFile(profileImage);
             File previousFile = previousFileUtils.create(tblAttachmentDTO);

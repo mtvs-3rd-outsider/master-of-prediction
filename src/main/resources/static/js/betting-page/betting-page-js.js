@@ -558,7 +558,7 @@ function submitPurchase() {
         data: JSON.stringify({ orderAmount, orderChoice }),
         success: function(response) {
             alert(response.message);
-            // window.location.href = '/betting?subjectNo=' + urlParams.get('subjectNo');
+            // window.location.href = '/betting/' + urlParams.get('subjectNo');
             location.reload(true);
 
         },

@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -112,6 +113,17 @@ public class CustomUserDetail implements UserDetails , OAuth2User {
         } else {
             throw new IllegalArgumentException("Invalid type: " + type.getName());
         }
+    }
+
+    public Long getTierNo() {
+        return this.user.getTierNo();
+    }
+    public BigDecimal getPoint() {
+        if (this.user == null) {
+            // Handle the null case, return a default value or handle it accordingly
+            return BigDecimal.ZERO; // or any other default value
+        }
+        return this.user.getPoint();
     }
 
 }

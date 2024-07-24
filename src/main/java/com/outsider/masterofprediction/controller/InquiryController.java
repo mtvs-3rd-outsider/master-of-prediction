@@ -4,6 +4,7 @@ import com.outsider.masterofprediction.dto.CustomUserDetail;
 import com.outsider.masterofprediction.dto.InquiryDetailDTO;
 import com.outsider.masterofprediction.dto.TblInquiryDTO;
 import com.outsider.masterofprediction.service.UserInquiryService;
+import com.outsider.masterofprediction.service.UserManagementService;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,9 +20,11 @@ public class InquiryController {
 
 
     private final UserInquiryService userInquiryService;
+    private final UserManagementService userManagementService;
 
-    public InquiryController(UserInquiryService userInquiryService) {
+    public InquiryController(UserInquiryService userInquiryService, UserManagementService userManagementService) {
         this.userInquiryService = userInquiryService;
+        this.userManagementService = userManagementService;
     }
 
 
@@ -48,16 +51,20 @@ public class InquiryController {
     public ModelAndView getInquiryRegister(ModelAndView mv) {
         mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-register2");
+        
+
         return mv;
     }
 
     @GetMapping("inquiry/detail/{inquiryNo}")
-    public ModelAndView getInquiryDetail(@AuthenticationPrincipal CustomUserDetail user, @PathVariable int inquiryNo, @RequestParam int replyStatus , ModelAndView mv) {
+    public ModelAndView getInquiryDetail(@AuthenticationPrincipal CustomUserDetail user, @PathVariable int inquiryNo, ModelAndView mv) {
         TblInquiryDTO tblInquiryDTO = new TblInquiryDTO();
         tblInquiryDTO.setInquiryUserNo(user.getId());
         tblInquiryDTO.setInquiryNo(inquiryNo);
+        int replyStatus = userInquiryService.getReplyStatus(tblInquiryDTO);
         tblInquiryDTO.setInquiryReplyStatus(replyStatus);
         InquiryDetailDTO inquiryDetailDTO = userInquiryService.getInquiryDetail(tblInquiryDTO);
+        System.out.println(inquiryDetailDTO);
         mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-detail");
         mv.addObject("inquiryDetail", inquiryDetailDTO);

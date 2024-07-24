@@ -89,4 +89,5 @@ public interface AttachmentMapper {
     void deleteAttachmentsByNoticeNo(long noticeNo);
 
 
+    String getImgById(Long tierNo);
 }

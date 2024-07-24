@@ -11,6 +11,30 @@ public class InquiryDetailDTO {
     private String answerTitle;
     private Timestamp answerTimestamp;
 
+    public InquiryDetailDTO() {
+    }
+
+    public InquiryDetailDTO(String inquiryTitle, String inquiryContent, Timestamp inquiryTimestamp, String answerContent, String answerTitle, Timestamp answerTimestamp) {
+        this.inquiryTitle = inquiryTitle;
+        this.inquiryContent = inquiryContent;
+        this.inquiryTimestamp = inquiryTimestamp;
+        this.answerContent = answerContent;
+        this.answerTitle = answerTitle;
+        this.answerTimestamp = answerTimestamp;
+    }
+
+    @Override
+    public String toString() {
+        return "InquiryDetailDTO{" +
+                "inquiryTitle='" + inquiryTitle + '\'' +
+                ", inquiryContent='" + inquiryContent + '\'' +
+                ", inquiryTimestamp=" + inquiryTimestamp +
+                ", answerContent='" + answerContent + '\'' +
+                ", answerTitle='" + answerTitle + '\'' +
+                ", answerTimestamp=" + answerTimestamp +
+                '}';
+    }
+
     // Getters and Setters
     public String getInquiryTitle() {
         return inquiryTitle;

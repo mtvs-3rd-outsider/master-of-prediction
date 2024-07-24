@@ -32,7 +32,7 @@ public class    DevSecurityConfig{
     private final String password="1";
     private final String role="ROLE_ADMIN";
     private final String name="admin";
-    private final double point = 30000L;
+    private final BigDecimal point = BigDecimal.valueOf(30000L);
 
     @Autowired
     private UserMapper userMapper;

@@ -2,19 +2,27 @@ package com.outsider.masterofprediction.controller;
 
 import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
+import com.outsider.masterofprediction.mapper.SubjectMapper;
 import com.outsider.masterofprediction.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 @Controller
@@ -27,12 +35,13 @@ public class BettingController {
     private final BuyItemService buyItemService;
     private final SellItemService sellItemService;
     private final AttachmentMapper attachmentMapper;
+    private final SubjectMapper subjectMapper;
 
     private long subjectNo;
 
 
     @Autowired
-    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService, SellItemService sellItemService, AttachmentMapper attachmentMapper) {
+    public BettingController(BettingOrderService bettingOrderService, SubjectService subjectService, UserManagementService userManagementService, CommentService commentService, ReplyService replyService, BuyItemService buyItemService, SellItemService sellItemService, AttachmentMapper attachmentMapper, SubjectMapper subjectMapper) {
         this.bettingOrderService = bettingOrderService;
         this.subjectService = subjectService;
         this.userManagementService = userManagementService;
@@ -41,11 +50,12 @@ public class BettingController {
         this.buyItemService = buyItemService;
         this.sellItemService = sellItemService;
         this.attachmentMapper = attachmentMapper;
+        this.subjectMapper = subjectMapper;
     }
 
 
-    @GetMapping("/betting")
-    public String getBettingPage(Model model ,@RequestParam("subjectNo") long subjectNo) {
+    @GetMapping("/betting/{subjectNo}")
+    public String getBettingPage(Model model ,@PathVariable long subjectNo ,@AuthenticationPrincipal CustomUserDetail user) {
         this.subjectNo = subjectNo;
         TblSubjectDTO subject= subjectService.getSubjectBySubjectNo(subjectNo);
         subject.setSubjectNo(subjectNo);
@@ -61,6 +71,7 @@ public class BettingController {
         String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
         String attachment_file_address = attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress();
+        subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 
 
         model.addAttribute("sumYPoint", sumYPoint);
@@ -71,7 +82,16 @@ public class BettingController {
         model.addAttribute("returnNRate", returnNRate);
         model.addAttribute("subject", subject);
         model.addAttribute("userAuthority", userAuthority);
-        return "/content/betting-page/betting-page";
+
+
+        Timestamp settleTime = subject.getSubjectSettlementTimestamp();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+
+        model.addAttribute("isAccountBtnOn",
+                UserSession.getUserId().
+                        equals(subject.getSubjectRegisterUserNo()) && now.after(settleTime));
+        return "content/betting-page/betting-page";
+
     }
 
     /**
@@ -87,6 +107,8 @@ public class BettingController {
     @GetMapping(value = "/ranking",produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<RankingDTO> getRankings() {
+        List<RankingDTO> temp = bettingOrderService.getRankingBySubjectNo(subjectNo);
+        System.out.println(temp);
         return bettingOrderService.getRankingBySubjectNo(subjectNo);
     }
 

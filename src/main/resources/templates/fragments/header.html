@@ -3,8 +3,9 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <body>
 <header id="DeskHeader" class="header" th:fragment="content">
-    <link rel="stylesheet" th:href="@{css/header/styles.css}"/>
-    <link rel="stylesheet" th:href="@{css/login-page/common.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header/styles.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login-page/common.css}"/>
+
     <div style="box-shadow: 0 2px 2px -2px gray;">
         <div style="display: flex;align-items: center;">
             <div class="logo" style="display: flex;">
@@ -25,7 +26,7 @@
                 </form>
             </div>
             <div class="menu" style="display: flex;">
-                <a class="header-menu-hover" href=""
+                <a class="header-menu-hover" href="/activitypage"
                    style="display: flex; flex-direction: column; align-items: center; text-decoration: none;">
                     <md-icon class="header-md-icon child" style="width: 20px; height: 20px; padding-left: 12px;
     padding-right: 12px;">vital_signs
@@ -65,14 +66,18 @@
                     <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
                         <div>Log Out</div>
                     </md-menu-item>
+                    <md-menu-item th:href="@{/tier}">
+                        <div>Tier</div>
+                    </md-menu-item>
                 </md-menu>
             </div>
         </div>
         <div class="category">
             <ul id="header-ul">
-                <li><a href="">전체</a></li>
+                <li><a href="/category/all">전체</a></li>
+                <li><a href="/category/recent">최신순</a></li>
                 <li th:each="category : ${categories}">
-                    <a th:href="'/?categoryNo=' + ${category.categoryNo}"
+                    <a th:href="'/category/' + ${category.categoryNo}"
                         th:text="${category.categoryName}"></a>
                 </li>
 <!--                    <li><a href="">인기</a></li>-->
@@ -105,8 +110,6 @@
             </div>
         </div>
     </md-dialog>
-
-
 </header>
 </body>
 </html>
