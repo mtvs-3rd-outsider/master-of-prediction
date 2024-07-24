@@ -7,7 +7,6 @@ var sumNPoint
 let chartInstance = null;
 var copyGraphDataList;
 window.onload = function () {
-    createSideMain();
     sideSelectBuy();
     graphSettingButton(5);
     sumYPoint = document.getElementById("sumYPoint").value;
