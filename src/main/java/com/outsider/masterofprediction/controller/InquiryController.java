@@ -64,7 +64,6 @@ public class InquiryController {
         int replyStatus = userInquiryService.getReplyStatus(tblInquiryDTO);
         tblInquiryDTO.setInquiryReplyStatus(replyStatus);
         InquiryDetailDTO inquiryDetailDTO = userInquiryService.getInquiryDetail(tblInquiryDTO);
-        System.out.println(inquiryDetailDTO);
         mv.setViewName("layout/my-page/nofab");
         mv.addObject("view", "content/my-page/inquiry-detail");
         mv.addObject("inquiryDetail", inquiryDetailDTO);

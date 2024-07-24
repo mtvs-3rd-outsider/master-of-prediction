@@ -18,6 +18,10 @@ public class CommentReDTO {
     private String replyContent;
     private Timestamp replyTimestamp;
     private String replyUserName;
+    private long replyUserNo;
+    private String replyImgUrl;
+    private String imgUrl;
+    private long userNo;
 
     public CommentReDTO() {
     }

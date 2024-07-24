@@ -17,6 +17,7 @@
         <result property="amount" column="order_amount"/>
         <result property="choice" column="order_choice"/>
         <result property="activeTimestamp" column="order_timestamp"/>
+        <result property="userNo" column="user_no"/>
     </resultMap>
     <resultMap id="RankingResultMap" type="com.outsider.masterofprediction.dto.RankingDTO">
         <result property="userNo" column="userNo"/>
@@ -115,7 +116,7 @@
     </select>
 
     <select id="getBettingOrdersBySubjectNo" parameterType="long" resultMap="ActiveResultMap">
-        SELECT user_name,order_amount,order_choice,order_timestamp
+        SELECT user_name,order_amount,order_choice,order_timestamp,user_no
         FROM TBL_BETTING_ORDER
         join tbl_user
           on order_user_no=user_no

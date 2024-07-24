@@ -40,8 +40,7 @@ public class ActivityPageController {
 
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();
         mv.addObject("userActivity", userActivity);
-        
-        System.out.println(userActivity);
+
 
         return mv;
     }

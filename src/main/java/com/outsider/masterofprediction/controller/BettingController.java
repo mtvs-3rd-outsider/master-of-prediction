@@ -66,7 +66,7 @@ public class BettingController {
 
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
-        System.out.println(sumNPoint);
+
         String returnYRate =  String.valueOf((int)((float)subject.getSubjectTotalNoPoint()/subject.getSubjectTotalYesPoint()*100))+"% Chance";
         String returnNRate = String.valueOf((int)((float)subject.getSubjectTotalYesPoint()/subject.getSubjectTotalNoPoint()*100))+"% Chance";
 
@@ -107,8 +107,6 @@ public class BettingController {
     @GetMapping(value = "/ranking",produces = "application/json; charset=UTF-8")
     @ResponseBody
     public List<RankingDTO> getRankings() {
-        List<RankingDTO> temp = bettingOrderService.getRankingBySubjectNo(subjectNo);
-        System.out.println(temp);
         return bettingOrderService.getRankingBySubjectNo(subjectNo);
     }
 
@@ -121,8 +119,6 @@ public class BettingController {
     @PostMapping(value = "/comment", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addComment(@RequestBody TblCommentDTO commentDTO) {
-        System.out.println(subjectNo);
-
         commentDTO.setCommentSubjectNo(subjectNo);
         commentDTO.setCommentUserNo(UserSession.getUserId());
         commentService.insertComment(commentDTO);

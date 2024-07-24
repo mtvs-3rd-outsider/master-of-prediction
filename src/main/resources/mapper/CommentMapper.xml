@@ -27,6 +27,8 @@
         <result property="replyNo" column="reply_no" />
         <result property="replyTimestamp" column="reply_timestamp" />
         <result property="replyUserName" column="reply_user_name" />
+        <result property="userNo" column="userNo"/>
+        <result property="replyUserNo" column="replyUserNo"/>
     </resultMap>
 
     <!-- 댓글 수 조회 -->
@@ -64,7 +66,9 @@
             r.reply_no,
             r.reply_content,
             r.reply_timestamp,
-            u2.user_name AS reply_user_name
+            u2.user_name AS reply_user_name,
+            u1.user_no AS userNO,
+            r.reply_user_no AS replyUserNo
         FROM TBL_COMMENT c
                  LEFT JOIN TBL_COMMENT_REPLY r ON c.comment_no = r.reply_comment_no
                  LEFT JOIN TBL_USER u1 ON c.comment_user_no = u1.user_no

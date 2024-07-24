@@ -27,7 +27,12 @@ public class BettingOrderService {
     }
 
     public List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo) {
-        return bettingOrderMapper.getBettingOrdersBySubjectNo(subjectNo);
+        List<ActiveDTO> list =bettingOrderMapper.getBettingOrdersBySubjectNo(subjectNo);
+        for (ActiveDTO dto : list) {
+            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(dto.getUserNo()).getAttachmentFileAddress()));
+        }
+        return list;
+
     }
 
     public List<RankingDTO> getRankingBySubjectNo(Long subjectNo) {
