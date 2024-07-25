@@ -1,4 +1,4 @@
-var login = true;
+let login = true;
 var sideSelect = true;
 var activeSelect = 0;
 let selectedChoice = null;
@@ -10,16 +10,18 @@ var subjectNo= document.getElementById("subjectNo").value;
 
 // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
 const initBettingPage = function () {
+    if(document.getElementById("loggedInUserId").value==0){
+        login=false;
+    }else{
+        login=true;
+    }
+
 
     sideSelectBuy();
     graphSettingButton(5);
     sumYPoint = document.getElementById("sumYPoint").value;
     sumNPoint=document.getElementById("sumNPoint").value;
-    if(document.getElementById("loggedInUserId").value===0){
-        login=false;
-    }else{
-        login=true;
-    }
+
     // batting_modal-container 숨기기
     const bettingModalContainer = document.querySelector('.batting_modal-container');
     bettingModalContainer.style.display = 'none';
@@ -136,12 +138,16 @@ function createSideMain() {
     let battingModalStr;
     if (login === true) {
         if (sideSelect === true) {
-            battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" disabled>구매</button>`;
+            battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" >구매</button>`;
         } else {
             battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
         }
     } else {
-        battingModalStr = `<button class="batting-login-modal" onclick="loginModal()">로그인</button>`;
+        if (sideSelect === true) {
+            battingModalStr = `<button class="batting-buy-modal" >구매</button>`;
+        } else {
+            battingModalStr = `<button class="batting-sell-modal" >판매</button>`;
+        }
     }
     const sideHtml = `
     <div class="${sideSelect ? 'side_buy-content' : 'side_sell-content'}">
@@ -180,7 +186,6 @@ function createSideMain() {
     sideMainContent.innerHTML = sideHtml;
     document.getElementById('inputPoint').disabled = true;
     document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = true;
-
 
 }
 
@@ -281,6 +286,7 @@ function addComment(value) {
 function userActivityComment(value) {
     const userActivityContent = document.querySelector('.user_active-content');
     let loginCheck = '';
+    let replyCheck='';
     const buttons = document.querySelectorAll('.user-activity-button');
     buttons.forEach((button, index) => {
         button.classList.remove('active');
@@ -293,6 +299,10 @@ function userActivityComment(value) {
                     <input type="text" id="new-comment" placeholder="  Add a comment">
                     <button onclick="addComment(${value})">입력</button>
                 </div>`;
+        replyCheck=` <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>`;
+    }else{
+        loginCheck = '';
+        replyCheck=`<button class="comment-recomment-btn">답글</button>`;
     }
 
     $.ajax({
@@ -362,7 +372,7 @@ function userActivityComment(value) {
                                 <p class="info-name">${comment.commentUserName}&nbsp;<span class="comment_input-time">${comment.commentTimestamp}</span></p>
                                 <p class="info-content">${comment.commentContent}</p>
                                 <div class="info-buttons">
-                                    <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>
+                                   `+replyCheck+`
                                 </div>
                                 <div class="recomment_input-content" id="reply-input-${comment.commentNo}" style="display:none;">
                                     <input type="text" placeholder="  Add a comment">
