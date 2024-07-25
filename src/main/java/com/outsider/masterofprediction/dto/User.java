@@ -7,6 +7,9 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 
 @Setter
@@ -47,5 +50,18 @@ public class User {
         this.provider = provider;
         this.provideId = provideId;
         this.tierNo = tierNo;
+    }
+
+    public <T> T getJoinDate(Class<T> type) {
+
+        if (type.isAssignableFrom(Date.class)) {
+            Date date = Date.from(joinDate.atZone(ZoneId.systemDefault()).toInstant());
+            return type.cast(date);
+        } else if (type.isAssignableFrom(String.class)) {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            return type.cast(joinDate.format(formatter));
+        } else {
+            throw new IllegalArgumentException("Invalid type: " + type.getName());
+        }
     }
 }

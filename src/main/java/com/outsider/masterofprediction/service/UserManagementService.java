@@ -37,6 +37,9 @@ public class UserManagementService {
     public String getUserNameById(Long userId) {
         return userMapper.getUserById(userId).getName();
     }
+    public User getUser(Long userId) {
+        return userMapper.getUserById(userId);
+    }
 
     public void updateUserProfile(UserProfileDTO userProfileDTO) {
         User user = convertToUser(userProfileDTO);

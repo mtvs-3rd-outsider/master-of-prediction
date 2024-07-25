@@ -31,7 +31,8 @@ public class LogOutConfig{
                 .authorizeRequests(auth -> auth
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
-                );
+                )
+                .csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
 
         return http.build();
 
