@@ -7,7 +7,7 @@ var sumNPoint
 let chartInstance = null;
 var copyGraphDataList;
 var subjectNo= document.getElementById("subjectNo").value;
-
+let bettingState = document.getElementById("betting-state").textContent;
 // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
 const initBettingPage = function () {
     if(document.getElementById("loggedInUserId").value==0){
@@ -138,9 +138,17 @@ function createSideMain() {
     let battingModalStr;
     if (login === true) {
         if (sideSelect === true) {
-            battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" >구매</button>`;
+            if (bettingState==="진행중"){
+                battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" >구매</button>`;
+            }else {
+                battingModalStr = `<button class="batting-buy-modal">구매</button>`;
+            }
         } else {
-            battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
+            if (bettingState==="진행중"){
+                battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
+            }else{
+                battingModalStr = `<button class="batting-sell-modal"">판매</button>`;
+            }
         }
     } else {
         if (sideSelect === true) {
