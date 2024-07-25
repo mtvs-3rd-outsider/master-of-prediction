@@ -93,6 +93,12 @@ public class BettingController {
         return mv;
     }
 
+    @PostMapping("/accountResult")
+    public void handleYes(@RequestBody Map<String, String> payload) {
+        String result = payload.get("result");
+        System.out.println("Received result: " + result);
+    }
+
     /**
      * 활동내역조회 컨트롤러
      * @return
