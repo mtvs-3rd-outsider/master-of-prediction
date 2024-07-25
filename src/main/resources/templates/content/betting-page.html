@@ -36,6 +36,7 @@
                                     th:text="'정산하기'"
                                     th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}"
                                     id="openModalBtn">aaa</button></li>
+                        <li th:text="${subject.subjectFinishResult}" th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}"></li>
                     </ul>
                     <h2 th:text="${subject.subjectTitle}"></h2>
                 </div>
@@ -50,7 +51,7 @@
                     <canvas id="line-chart"></canvas>
                 </div>
 
-                <div class="popup_setting-content">
+                <div class="popup_setting-content" style="display: none;">
                     <md-elevation></md-elevation>
                     <p id="popup-title">Chart Settings<span id="popup-cancle" onclick="popupCancle()"
                                                             class="material-symbols-outlined">close</span></p>
@@ -166,7 +167,7 @@
         </div>
     </div>
 </div>
-<div class="batting_modal-container">
+<div class="batting_modal-container" style="display: none;">
 
 </div>
 <div id="myModal" class="modal">

@@ -792,7 +792,7 @@ yesBtn.onclick = function() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ result: 'YES',subNo:subjectNo
+        body: JSON.stringify({ result: 'Yes',subNo:subjectNo
         })
     })
         .then(response => response.json())
@@ -810,7 +810,7 @@ noBtn.onclick = function() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ result: 'NO',subNo:subjectNo })
+        body: JSON.stringify({ result: 'No',subNo:subjectNo })
     })
         .then(response => response.json())
         .then(data => {

@@ -281,8 +281,6 @@ WHERE
             TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
                 JOIN
             TBL_Subject c ON bo.order_subject_no = c.subject_no
-        WHERE
-            c.subject_status = '진행중';
     </select>
     <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         INSERT INTO tbl_betting_order (
@@ -643,7 +641,7 @@ WHERE
         FROM
             TBL_BETTING_ORDER
         WHERE
-            order_user_no = #{userId} AND order_subject_no = #{orderSubjectNo} AND order_choice = #{orderChoice}
+            order_user_no = #{userNo} AND order_subject_no = #{orderSubjectNo} AND order_choice = #{orderChoice}
     </select>
     <select id="getUsersBySubjectNo"
             resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
