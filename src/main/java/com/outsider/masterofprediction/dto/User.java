@@ -13,13 +13,56 @@ import java.util.Date;
 
 
 @Setter
-@Getter
 @ToString
 @Builder
 public class User {
     private Long id;
 
     private String name;
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public LocalDateTime getJoinDate() {
+        return joinDate;
+    }
+
+    public String getAuthority() {
+        return authority;
+    }
+
+    public BigDecimal getPoint() {
+        return point;
+    }
+
+    public boolean isWithdrawalStatus() {
+        return withdrawalStatus;
+    }
+
+    public String getProvider() {
+        return provider;
+    }
+
+    public String getProvideId() {
+        return provideId;
+    }
+
+    public Long getTierNo() {
+        return tierNo;
+    }
 
     private String email;
 
@@ -37,6 +80,9 @@ public class User {
     private Long tierNo;
     public User() {
     }
+
+    public boolean getWithdrawalStatus() {
+        return this.withdrawalStatus;}
 
     public User(Long id, String name, String email, String password, LocalDateTime joinDate, String authority, BigDecimal point, boolean withdrawalStatus, String provider, String provideId,Long tierNo) {
         this.id = id;
