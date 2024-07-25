@@ -31,6 +31,10 @@ public class ActivityPageController {
         mv.addObject("title", "Recent Activity");
         mv.addObject("view", "content/activity-page");
         List<ActivityUserSubjectDTO> userActivity = activityFindService.findActivity();
+        for (ActivityUserSubjectDTO tblAttachmentDTO: userActivity) {
+            tblAttachmentDTO.getAttachmentUser().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentUser().getAttachmentFileAddress()));
+            tblAttachmentDTO.getAttachmentSubject().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentSubject().getAttachmentFileAddress()));
+        }
         mv.addObject("userActivity", userActivity);
 
 
