@@ -355,15 +355,14 @@ function userActivityComment(value) {
                     });
                 }
             });
-
-            if (login===true){
-                replyCheck=` <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>`;
-            }
             // 댓글을 commentTimestamp 기준으로 내림차순 정렬
             commentsList.sort((a, b) => new Date(b.commentTimestamp) - new Date(a.commentTimestamp));
 
             // 정렬된 댓글을 HTML로 생성
             commentsList.forEach(comment => {
+                if (login===true){
+                    replyCheck=` <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>`;
+                }
                 let commentHtml = `
                         <div class="comment-content">
                             <a href="/mypage/${comment.userNo}">
