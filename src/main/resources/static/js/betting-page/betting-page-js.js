@@ -31,7 +31,7 @@ const initBettingPage = function () {
     popupSettingContent.style.display = 'none';
 
     const resultModal = document.getElementById("myModal");
-    resultModal.style.display = 'none';
+    resultModal.style.display = 'flex';
 }
 window.addEventListener('load', initBettingPage);
 
@@ -775,7 +775,7 @@ var yesBtn = document.getElementById("yesBtn");
 var noBtn = document.getElementById("noBtn");
 
 btn.onclick = function() {
-    modal.style.display = "block";
+    modal.style.display = "flex";
 }
 span.onclick = function() {
     modal.style.display = "none";
