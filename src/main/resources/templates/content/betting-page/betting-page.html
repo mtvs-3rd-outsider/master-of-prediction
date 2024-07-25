@@ -48,7 +48,10 @@
                         <li th:text="${subject.getSubjectSettlementTimestamp().toString().split(' ')[0]}"></li>
                         <li id="betting-state" th:text="${subject.subjectStatus}"></li>
                         <li th:text="${userAuthority}"></li>
-                        <li><button class="accountBtn" th:text="'정산하기'" th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}">aaa</button></li>
+                        <li><button class="accountBtn"
+                                    th:text="'정산하기'"
+                                    th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}"
+                                    id="openModalBtn">aaa</button></li>
                     </ul>
                     <h2 th:text="${subject.subjectTitle}"></h2>
                 </div>
@@ -181,6 +184,14 @@
 </div>
 <div class="batting_modal-container">
 
+</div>
+<div id="myModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>승리 결과를 선택해주세요</p>
+        <button id="yesBtn">Yes</button>
+        <button id="noBtn">No</button>
+    </div>
 </div>
 
 <input type="hidden" id="loggedSubjectNo" th:value="${subject.getSubjectNo()}"/>
