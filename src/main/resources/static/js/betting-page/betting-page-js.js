@@ -786,12 +786,14 @@ window.onclick = function(event) {
     }
 }
 yesBtn.onclick = function() {
+
     fetch('accountResult', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ result: 'yes' })
+        body: JSON.stringify({ result: 'YES',subNo:subjectNo
+        })
     })
         .then(response => response.json())
         .then(data => {
@@ -808,7 +810,7 @@ noBtn.onclick = function() {
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ result: 'no' })
+        body: JSON.stringify({ result: 'NO',subNo:subjectNo })
     })
         .then(response => response.json())
         .then(data => {
