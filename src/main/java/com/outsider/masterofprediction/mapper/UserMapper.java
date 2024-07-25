@@ -64,6 +64,18 @@ public interface UserMapper {
             )
     long createUser(String name, String email, String password, String authority);
 
+
+    @Insert("insert into tbl_user(" +
+            "user_name, " +
+            "user_email, " +
+            "user_password, " +
+            "user_authority" +
+            ") VALUES  (#{name}, #{email}, #{password}, #{authority})")
+    @ResultMap("userResultMap")
+    @Options(useGeneratedKeys = true, keyProperty = "id")
+    void createUserObject(User user);
+
+
     @Update("UPDATE tbl_user SET " +
             "user_name = #{name}, " +
             "user_password = #{password}, " +
