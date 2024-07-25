@@ -21,10 +21,11 @@
 
                 <form style="display: flex;" action="/search" method="get">
                     <md-outlined-text-field name="searchWord" value=""
-                                            id="header-search-parent" placeholder="Search markets" style="width: 90%">
-                        <md-icon class="child" slot="leading-icon">search</md-icon>
+                                            id="header-search-parent" placeholder="Search markets" style="width: 90%"
+                                            onkeypress="enterKey(event)" type="text">
+                        <md-icon class="child" slot="leading-icon" onclick="clickKey(event)">search</md-icon>
                     </md-outlined-text-field>
-                    <button type="submit" id="searchBtn">검색</button>
+<!--                    <button type="submit" id="searchBtn">검색</button>-->
                 </form>
 
             </div>
@@ -92,6 +93,28 @@
             </ul>
         </div>
     </div>
+    <script>
+        function enterKey(event){
+            if (event.keyCode === 13) {
+                var inputValue =  document.getElementById('header-search-parent').value;
+
+                if(inputValue === null || inputValue === ''){
+                    // 동작 x
+                }else {
+                    window.location.href = '/search?searchWord=' + encodeURIComponent(inputValue);
+                }
+            }
+        }
+
+        function clickKey(event){
+            var inputValue = document.getElementById('header-search-parent').value;
+            if(inputValue === null || inputValue === ''){
+                // 동작 x
+            }else {
+                window.location.href = '/search?searchWord=' + encodeURIComponent(inputValue)
+            }
+        }
+    </script>
     <script type="module">
         const anchorEl = document.body.querySelector('#usage-submenu-anchor');
         const menuEl = document.body.querySelector('#usage-submenu');
@@ -108,6 +131,15 @@
 
             href = "/";
         };
+
+        document.getElementById("header-search-parent").onkeypress = function(){
+          if(event.keyCode == 13){
+              console.log(1234);
+          }
+        };
+
+
+
     </script>
     <md-dialog type="alert" id='sign-up-dialog'>
         <div slot="headline">회원가입</div>
