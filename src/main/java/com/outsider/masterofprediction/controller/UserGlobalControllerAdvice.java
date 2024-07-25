@@ -40,7 +40,7 @@ public class UserGlobalControllerAdvice {
             return;
         }
         Long userId = UserSession.getUserId();
-        if (userId != 0) {
+        if (userId!=null && userId != 0) {
             String userImage = null;
             if(userManagementService.getAttachmentsByUserNo(userId) ==null)
             {
