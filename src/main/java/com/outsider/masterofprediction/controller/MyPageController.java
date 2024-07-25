@@ -101,31 +101,36 @@ public class MyPageController {
     @GetMapping(value = {"", "{userId}"})
     public ModelAndView getMyPage( @PathVariable(required = false) Long  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
         if (userId ==null) {
-            return new ModelAndView("redirect:/mypage/" + user.getId());
+            return new ModelAndView("redirect:/mypage/" + userId);
         }
-        boolean isMine =  userManagementService.isUserSessionValid(userId,user.getId());
-        mv.addObject("isMine",isMine);
-        TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(user.getId());
+        boolean isMine =false;
+        if (user != null) {
+             isMine =  userManagementService.isUserSessionValid(userId,user.getId());
+        }
 
+        mv.addObject("isMine",isMine);
+
+        TblAttachmentDTO attachmentDTO = userManagementService.getAttachmentsByUserNo(userId);
+       User user1 =userManagementService.getUser(userId);
         mv.setViewName("layout/my-page/index");
         mv.addObject("view", "content/my-page/my-page");
-        mv.addObject("name",user.getUsername() );
+        mv.addObject("name",user1.getName() );
         String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
-        String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user.getTierNo());
-        TblTierDTO tblTierDTO = tierService.findByTierNo(user.getTierNo());
+        String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user1.getTierNo());
+        TblTierDTO tblTierDTO = tierService.findByTierNo(user1.getTierNo());
         mv.addObject("tierImgUrl", tierImgUrl);
         mv.addObject("tierName", tblTierDTO.getTierContent());
-        mv.addObject("userJoinDate",user.getJoinDate(String.class));
+        mv.addObject("userJoinDate",user1.getJoinDate(String.class));
 //      현재 포지션 가치
-        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user.getId()).toString() +" P");
+        mv.addObject("positionValue",bettingOrderService.getTotalPositionValueByUserId(user1.getId()).toString() +" P");
 //      한달 손익률
-        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user.getId()).toString() +" %");
+        mv.addObject("monthProfit",bettingOrderService.getMonthTotalProfitRateByUserId(user1.getId()).toString() +" %");
 //      한달 거래 포인트
-        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user.getId()).toString() +" P");
+        mv.addObject("volumeTraded",bettingOrderService.getMonthTotalPointsByUser(user1.getId()).toString() +" P");
 //      거래수
-        mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user.getId()));
+        mv.addObject("marketsTraded",bettingOrderService.getOrderCountByUserId(user1.getId()));
         
         return mv;
     }

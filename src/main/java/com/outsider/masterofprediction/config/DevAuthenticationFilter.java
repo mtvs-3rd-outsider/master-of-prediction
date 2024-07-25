@@ -19,7 +19,7 @@ import org.springframework.web.filter.GenericFilterBean;
 import java.io.IOException;
 
 @Profile("dev")
-    public class DevAuthenticationFilter extends GenericFilterBean {
+public class DevAuthenticationFilter extends GenericFilterBean {
 
 
     @Autowired
@@ -30,13 +30,13 @@ import java.io.IOException;
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain ) throws IOException, ServletException {
         // 개발용 임시 유저
-        String email = StringConstants.DEFAULT_USER_EMAIL;
-        CustomUserDetail user = new CustomUserDetail(userMapper.findByEmail(email));
-        //
-
-        PreAuthenticatedAuthenticationToken authentication =
-                new PreAuthenticatedAuthenticationToken(user, user.getPassword(), user.getAuthorities());
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String email = StringConstants.DEFAULT_USER_EMAIL;
+//        CustomUserDetail user = new CustomUserDetail(userMapper.findByEmail(email));
+//        //
+//
+//        PreAuthenticatedAuthenticationToken authentication =
+//                new PreAuthenticatedAuthenticationToken(user, user.getPassword(), user.getAuthorities());
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
 
 
 
