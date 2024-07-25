@@ -74,7 +74,6 @@ public class BettingController {
         String attachmentFileAddress = FileUtil.checkFileOrigin(attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress());
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 
-
         mv.setViewName("layout/index");
 //        mv.setViewName("content/betting-page/betting-page");
         mv.addObject("sumYPoint", sumYPoint);
@@ -94,18 +93,12 @@ public class BettingController {
         return mv;
     }
 
-    @PostMapping("accountResult")
-    public String handleAccountResult(@RequestBody Map<String, String> payload) {
+    @PostMapping("/accountResult")
+    public void handleYes(@RequestBody Map<String, String> payload) {
         String result = payload.get("result");
-        long subNo = Long.parseLong(payload.get("subNo"));
-        System.out.println("temp1");
-        boolean t1 = subjectService.setSubjectFinishResult(subNo,result);
-        boolean t2 = subjectService.BetSettlement(subNo);
-        System.out.println("t1 = " + t1);
-        System.out.println("t2 = " + t2);
-        System.out.println("temp2");
-
-        return "/https://master-of-prediction.shop:8081/betting/" + subNo;
+        long subNo =Long.parseLong(payload.get("subNo"));
+        subjectService.setSubjectFinishResult(subNo,result);
+        subjectService.BetSettlement(subNo);
     }
 
     /**

@@ -29,9 +29,6 @@ const initBettingPage = function () {
     // popup_setting-content 숨기기
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
-
-    const resultModal = document.getElementById("myModal");
-    resultModal.style.display = 'flex';
 }
 window.addEventListener('load', initBettingPage);
 
