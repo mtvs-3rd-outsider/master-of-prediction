@@ -101,7 +101,7 @@ public class MyPageController {
     @GetMapping(value = {"", "{userId}"})
     public ModelAndView getMyPage( @PathVariable(required = false) Long  userId, @AuthenticationPrincipal CustomUserDetail user,ModelAndView mv) {
         if (userId ==null) {
-            return new ModelAndView("redirect:/mypage/" + userId);
+            return new ModelAndView("redirect:/mypage/" + user.getId());
         }
         boolean isMine =false;
         if (user != null) {
@@ -115,7 +115,16 @@ public class MyPageController {
         mv.setViewName("layout/my-page/index");
         mv.addObject("view", "content/my-page/my-page");
         mv.addObject("name",user1.getName() );
-        String attachmentAddress = attachmentDTO.getAttachmentFileAddress();
+
+        String attachmentAddress = null;
+
+        if(attachmentDTO!=null)
+        {
+            attachmentAddress = attachmentDTO.getAttachmentFileAddress();
+        }else
+        {
+            attachmentAddress = "logo2.png";
+        }
         attachmentAddress=FileUtil.checkFileOrigin(attachmentAddress);
         mv.addObject("attachmentAddress", attachmentAddress);
         String tierImgUrl = this.tierImgUrl +'/'+tierService.getImgById(user1.getTierNo());
