@@ -20,7 +20,7 @@
                         <span th:text="${userStat.count}"></span>
                     </div>
                     <div class="rank-user-image">
-                        <img th:src="${user.getAttachmentFileAddress()}">
+                        <img th:src="${user.attachment.attachmentFileAddress}">
                     </div>
                     <div class="rank-user-name">
                         <span th:text="${user.userName}"></span>

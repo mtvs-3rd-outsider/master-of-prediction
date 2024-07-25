@@ -78,6 +78,10 @@ public class ActivityUserSubjectDTO {
     }
 
     public TblAttachmentDTO getAttachmentUser() {
+        if(attachmentUser == null) {
+            attachmentUser = new TblAttachmentDTO(0, "logo2.png", 0, 0, 0, 0, 0, 0, 0);
+        }
+
         return attachmentUser;
     }
 
@@ -86,6 +90,10 @@ public class ActivityUserSubjectDTO {
     }
 
     public TblAttachmentDTO getAttachmentSubject() {
+        if(attachmentSubject == null) {
+            attachmentSubject = new TblAttachmentDTO(0, "logo2.png", 0, 0, 0, 0, 0, 0, 0);
+        }
+
         return attachmentSubject;
     }
 
@@ -100,10 +108,10 @@ public class ActivityUserSubjectDTO {
                 ", orderAmount=" + orderAmount +
                 ", orderChoice='" + orderChoice + '\'' +
                 ", orderTimestamp=" + orderTimestamp +
-                ", user=" + user +
-                ", subject=" + subject +
-                ", attachmentUser=" + attachmentUser +
-                ", attachmentSubject=" + attachmentSubject +
+                ", \n user=" + user +
+                ", \n subject=" + subject +
+                ", \n attachmentUser=" + attachmentUser +
+                ", \n attachmentSubject=" + attachmentSubject +
                 '}';
     }
 }
