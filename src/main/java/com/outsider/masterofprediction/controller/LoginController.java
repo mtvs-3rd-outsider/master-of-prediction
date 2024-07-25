@@ -47,7 +47,8 @@ public class LoginController {
 //    }
     @PostMapping("/register")
     public RedirectView register(@ModelAttribute User user , @RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes) {
-        long id =userManagementService.createDefaultUser(user);
+        userManagementService.createDefaultUserObject(user);
+        long id = user.getId();
         System.out.println("/register "+ id);
         TblAttachmentDTO tblAttachmentDTO =new TblAttachmentDTO();
         tblAttachmentDTO.setAttachmentUserNo(id);
