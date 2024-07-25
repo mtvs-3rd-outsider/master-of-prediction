@@ -1,14 +1,14 @@
-<!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+    <!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>Login Page</title>
+    <title>Document</title>
+    <link href="login_page.css" rel="stylesheet">
+    <!-- <link rel="stylesheet" href="../header/styles.css"> -->
 </head>
 <body>
-<div class="login-wrap" th:fragment="content">
-        <link rel="stylesheet" th:href="@{css/login-page/login-page.css}">
-    <link rel="stylesheet" th:href="@{css/login-page/login-frame.css}">
+<div class="login-wrap">
     <div class="login-html">
         <input checked class="sign-in" id="tab-1" name="tab" type="radio"><label class="tab" for="tab-1">Sign In</label>
         <input class="sign-up" id="tab-2" name="tab" type="radio"><label class="tab" for="tab-2">Sign Up</label>
@@ -34,11 +34,6 @@
                 <div class="foot-lnk">
                     <a href="#forgot">Forgot Password?</a>
                 </div>
-                <md-filled-button class="google-button" id="google-login-button" th:href="@{/oauth2/authorization/google}">
-                    <img alt="Google" class="google-icon"
-                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-                    Sign in with Google
-                </md-filled-button>
             </div>
             <div class="sign-up-htm">
                 <div class="group">
@@ -71,28 +66,9 @@
                 <div class="foot-lnk">
                     <label for="tab-1">Already Member?</a>
                 </div>
-                <md-filled-button class="google-button" id="google-login-button" th:href="@{/oauth2/authorization/google}">
-                    <img alt="Google" class="google-icon"
-                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-                    Sign in with Google
-                </md-filled-button>
             </div>
-        </div>         <!--            <form class="sign-in-htm" method="post" th:action="@{/loginProc}">-->
-        <!--                <div class="pad"></div>-->
-        <!--                <div class="group">-->
-        <!--                    <label for="email" class="label">Email</label>-->
-        <!--                    <input id="email" type="email" class="input">-->
-        <!--                </div>-->
-        <!--                <div class="group">-->
-        <!--                    <label for="pw" class="label">Password</label>-->
-        <!--                    <input id="pw" type="password" class="input" data-type="password">-->
-        <!--                </div>-->
-        <!--                <div class="group">-->
-        <!--                    <input type="submit" class="button" value="Sign in with Google" >-->
-        <!--                </div>-->
-        <!--            </form>-->
+        </div>
     </div>
-</div>
 </div>
 </body>
 </html>
