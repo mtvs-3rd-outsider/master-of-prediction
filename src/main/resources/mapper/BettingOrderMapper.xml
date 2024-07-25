@@ -262,7 +262,6 @@ WHERE
             TBL_Subject c ON bo.order_subject_no = c.subject_no
         WHERE
             bo.order_user_no = #{userId}
-          AND c.subject_status = '진행중';
     </select>
     <select id="getTotalPositionValueByUserId" resultType="java.lang.Long">
         SELECT
