@@ -171,7 +171,7 @@ function createSideMain() {
             <li>
                 <div class="side-point-input">
                     <button onclick="changePoint(10)">+</button>
-                    <input type="number" id="inputPoint" onchange="calculateTotal()" step="10" min="0">
+                    <input type="number" id="inputPoint" onchange="calculateTotal()" step="10" min="0" onKeyUp="fnKeyupNum(this)">
                     <button onclick="changePoint(-10)">-</button>
                 </div>
             </li>
@@ -760,4 +760,67 @@ function graphChart(graphDTOList) {
             }
         }
     });
+}
+
+
+// *** 정산하기 모달 구현 부분 ***
+
+var modal = document.getElementById("myModal");
+var btn = document.getElementById("openModalBtn");
+var span = document.getElementsByClassName("close")[0];
+var yesBtn = document.getElementById("yesBtn");
+var noBtn = document.getElementById("noBtn");
+
+btn.onclick = function() {
+    modal.style.display = "block";
+}
+span.onclick = function() {
+    modal.style.display = "none";
+}
+window.onclick = function(event) {
+    if (event.target == modal) {
+        modal.style.display = "none";
+    }
+}
+yesBtn.onclick = function() {
+    fetch('accountResult', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ result: 'yes' })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            modal.style.display = "none";
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+noBtn.onclick = function() {
+    fetch('accountResult', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ result: 'no' })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Success:', data);
+            modal.style.display = "none";
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
+}
+
+// *** 모달 구현 부분 끝 ***
+
+
+function fnKeyupNum(evt) {
+    // 숫자가 아닌 문자인 경우 모두 빈('') 문자로 치환
+    evt.value = evt.value.replace(/[^0-9]/g, '');
 }
