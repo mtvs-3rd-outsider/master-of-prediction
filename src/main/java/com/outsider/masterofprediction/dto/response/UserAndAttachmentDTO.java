@@ -1,5 +1,6 @@
 package com.outsider.masterofprediction.dto.response;
 
+import com.outsider.masterofprediction.utils.AttachmentFileAddressable;
 import lombok.*;
 
 @Getter
@@ -7,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class UserAndAttachmentDTO {
+public class UserAndAttachmentDTO  implements AttachmentFileAddressable {
     private int userNo;
     private String userName;
     private int userPoint;
