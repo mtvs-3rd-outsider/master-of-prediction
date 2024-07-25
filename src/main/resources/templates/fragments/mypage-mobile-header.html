@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <style>
         swiper-container {
@@ -37,7 +37,7 @@
             <div class="search" style="margin :10px; width : 100%; ">
 
             </div>
-            <th:block th:replace="~{fragments/login-mypage-header-profile :: content}"/>
+            <th:block  sec:authorize="isAuthenticated()" th:replace="~{fragments/login-mypage-header-profile :: content}"/>
             <div style="position: relative">
                 <md-text-button id="usage-submenu-anchor-mobile" style="">
                     <md-icon-button id="header-icon-name-menu" toggle>

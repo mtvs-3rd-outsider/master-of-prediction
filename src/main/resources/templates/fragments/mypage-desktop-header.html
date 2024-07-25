@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <body>
 <header id="DeskHeader" class="header" th:fragment="content">
@@ -47,7 +47,7 @@
 <!--                    <th:block th:replace="~{fragments/logout-header-profile :: content}"/>-->
 <!--                </th:block>-->
 <!--                <th:block  th:unless="${userId == 0 }">-->
-                    <th:block th:replace="~{fragments/login-mypage-header-profile :: content}"/>
+                    <th:block sec:authorize="isAuthenticated()" th:replace="~{fragments/login-mypage-header-profile :: content}"/>
 <!--                </th:block>-->
 <!--            </div>-->
             <div style="position: relative">
