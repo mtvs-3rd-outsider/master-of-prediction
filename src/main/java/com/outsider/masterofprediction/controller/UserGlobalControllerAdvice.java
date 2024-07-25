@@ -7,6 +7,7 @@ import com.outsider.masterofprediction.service.UserSession;
 import com.outsider.masterofprediction.utils.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -26,6 +27,10 @@ public class UserGlobalControllerAdvice {
     public UserGlobalControllerAdvice(UserManagementService userManagementService, CategoryService categoryService) {
         this.userManagementService = userManagementService;
         this.categoryService = categoryService;
+    }
+    @ModelAttribute
+    public CustomUserDetail customPrincipal(Authentication a) {
+        return  a == null ? null : (CustomUserDetail) a.getPrincipal();
     }
 
     @ModelAttribute

@@ -34,7 +34,12 @@ public class UserManagementService {
         return userMapper.createUser(user.getName(), user.getEmail(),  user.getPassword(), user.getAuthority());
     }
 
-
+    public void createDefaultUserObject(User user) {
+        String pwd = user.getPassword();
+        user.setPassword(new SecurityConfig().passwordEncoder().encode(pwd));
+        user.setAuthority("ROLE_USER");
+         userMapper.createUserObject(user);
+    }
     public String getUserNameById(Long userId) {
         return userMapper.getUserById(userId).getName();
     }
