@@ -61,7 +61,7 @@ public class FileUtil {
     }
     public static String checkFileOrigin(String path) {
         if (path == null)
-            return path;
+            return combinePaths(imgUrl, "logo2"); ;
         if (!path.startsWith("https://")) {
             // Resolve the address with imgUrl
             path =combinePaths(imgUrl, path);

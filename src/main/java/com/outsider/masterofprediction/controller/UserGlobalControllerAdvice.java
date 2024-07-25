@@ -6,6 +6,7 @@ import com.outsider.masterofprediction.service.UserManagementService;
 import com.outsider.masterofprediction.service.UserSession;
 import com.outsider.masterofprediction.utils.FileUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -17,6 +18,10 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class UserGlobalControllerAdvice {
     private final UserManagementService userManagementService;
     private final CategoryService categoryService;
+    @Value("${file.imgUrl}")
+    private  String imgUrl;
+
+
 
     public UserGlobalControllerAdvice(UserManagementService userManagementService, CategoryService categoryService) {
         this.userManagementService = userManagementService;
@@ -36,8 +41,14 @@ public class UserGlobalControllerAdvice {
         }
         Long userId = UserSession.getUserId();
         if (userId != 0) {
-            String userImage = FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(userId)
-                            .getAttachmentFileAddress());
+            String userImage = null;
+            if(userManagementService.getAttachmentsByUserNo(userId) ==null)
+            {
+                userImage = FileUtil.combinePaths(imgUrl,"logo2.png");
+            }else
+            {
+                userImage = FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(userId).getAttachmentFileAddress());
+            }
             String userName = customUserDetail.getUsername();
             model.addAttribute("userImage",  userImage);
             model.addAttribute("userName", userName);
