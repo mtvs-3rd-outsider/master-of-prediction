@@ -27,18 +27,14 @@ import java.util.List;
 public class MainPageController {
 
     private final MainPageService mainPageService;
-    private final CategoryService categoryService;
     private final BettingOrderMapper bettingOrderMapper;
     private final UserMapper userMapper;
-    private final UserManagementService userManagementService;
 
     @Autowired
-    public MainPageController(MainPageService mainPageService, CategoryService categoryService, BettingOrderMapper bettingOrderMapper, UserMapper userMapper, UserManagementService userManagementService) {
+    public MainPageController(MainPageService mainPageService, BettingOrderMapper bettingOrderMapper, UserMapper userMapper) {
         this.mainPageService = mainPageService;
-        this.categoryService = categoryService;
         this.bettingOrderMapper = bettingOrderMapper;
         this.userMapper = userMapper;
-        this.userManagementService = userManagementService;
     }
 
     /**
@@ -53,18 +49,11 @@ public class MainPageController {
             return new ArrayList<>();
         }
 
-        // 리스트의 크기 계산
-        int size = originalList.size();
-        // 리스트의 절반 크기 계산 (소수점 이하 올림)
-        int halfSize = (size + 1) / 2;
-
         // 새로운 리스트 생성 및 요소 이동
-        List<T> halfList = new ArrayList<>(originalList.subList(0, halfSize));
+        List<T> halfList = new ArrayList<>(originalList.subList(0, IntConstants.MAIN_TOP_TEN_SPLIT));
 
         // 원본 리스트에서 절반 크기만큼 요소 제거
-        for (int i = 0; i < halfSize; i++) {
-            originalList.remove(0);
-        }
+        originalList.subList(0, IntConstants.MAIN_TOP_TEN_SPLIT).clear();
 
         return halfList;
     }
@@ -87,6 +76,9 @@ public class MainPageController {
             tblAttachmentDTO.getAttachmentUser().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentUser().getAttachmentFileAddress()));
             tblAttachmentDTO.getAttachmentSubject().setAttachmentFileAddress(FileUtil.checkFileOrigin(tblAttachmentDTO.getAttachmentSubject().getAttachmentFileAddress()));
         }
+
+        ConvertImageUrl.convert(leftUsers);
+        ConvertImageUrl.convert(rightUsers);
 
         mv.setViewName("layout/index"); // layout/index.html
         mv.addObject("subjects", mainPageSubjectDTOS);
