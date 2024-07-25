@@ -35,8 +35,6 @@ public class SearchPageController {
     public ModelAndView getSearchPage(ModelAndView mv,
                                       @RequestParam(value="searchWord", required=false, defaultValue = "") String searchWord) {
 
-        System.out.println(searchWord);
-
 /*        List<String> wordList = new ArrayList<String>();
 
         String[] splitStr = searchWord.split(" ");
