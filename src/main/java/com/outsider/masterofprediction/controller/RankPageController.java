@@ -28,10 +28,10 @@ public class RankPageController {
         mv.addObject("view", "content/rank-page");
 
         List<UserAttachmentDTO> userRank = rankFindService.findAllRank();
-        System.out.println(userRank);
 
-        ConvertImageUrl.convert(userRank);
         System.out.println(userRank);
+       // ConvertImageUrl.convert(userRank);
+
         mv.addObject("userRank", userRank);
         return mv;
     }
