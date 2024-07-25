@@ -42,4 +42,6 @@ logging:
             authentication: DEBUG
             web:
               authentication:  DEBUG
-
+server:
+  error:
+    path: /error
