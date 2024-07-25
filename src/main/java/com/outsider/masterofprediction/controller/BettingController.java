@@ -96,7 +96,9 @@ public class BettingController {
     @PostMapping("/accountResult")
     public void handleYes(@RequestBody Map<String, String> payload) {
         String result = payload.get("result");
-        System.out.println("Received result: " + result);
+        long subNo =Long.parseLong(payload.get("subNo"));
+        subjectService.setSubjectFinishResult(subNo,result);
+        subjectService.BetSettlement(subNo);
     }
 
     /**
