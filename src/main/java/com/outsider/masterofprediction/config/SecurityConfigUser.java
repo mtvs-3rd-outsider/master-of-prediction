@@ -73,6 +73,7 @@ public class SecurityConfigUser {
                         .anyRequest().authenticated()
                 )
                 .formLogin(auth -> auth
+                        .loginPage("/login")
                         .loginProcessingUrl("/loginProc")
                         .usernameParameter("email")// 로그인 처리를 위한 URL 설정
                         .passwordParameter("password")// 로그인 처리를 위한 URL 설정
@@ -81,7 +82,7 @@ public class SecurityConfigUser {
 
                 )
                 .oauth2Login(oauth2 -> oauth2
-//                        .loginPage("/login")
+                        .loginPage("/login")
                         .authorizationEndpoint(authorization -> authorization
                                 .baseUri("/oauth2/authorization"))
                         .redirectionEndpoint(redirection -> redirection

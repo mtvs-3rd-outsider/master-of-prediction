@@ -21,7 +21,7 @@ services:
       MYSQL_SSL_CA: ""
       MYSQL_SSL_CERT: ""
       MYSQL_SSL_KEY: ""
-
+      TZ: "Asia/Seoul"
     ports:
       - "3306:3306"
     volumes:

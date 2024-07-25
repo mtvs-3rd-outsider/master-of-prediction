@@ -27,16 +27,13 @@ public class UserManagementService {
     public boolean isUserSessionValid(Long userId, Long sessionId) {
         return userId != null && userId.equals(sessionId);
     }
-    public void createDefaultUser(User user) {
+    public long createDefaultUser(User user) {
         String pwd = user.getPassword();
         user.setPassword(new SecurityConfig().passwordEncoder().encode(pwd));
         user.setAuthority("ROLE_USER");
-        userMapper.createUser(user.getName(), user.getEmail(),  user.getPassword(), user.getAuthority());
+        return userMapper.createUser(user.getName(), user.getEmail(),  user.getPassword(), user.getAuthority());
     }
 
-    public String getUserNameById(Long userId) {
-        return userMapper.getUserById(userId).getName();
-    }
 
     public void updateUserProfile(UserProfileDTO userProfileDTO) {
         User user = convertToUser(userProfileDTO);
@@ -73,7 +70,10 @@ public class UserManagementService {
     {
         attachmentMapper.updateAttachmentByAttachmentUserNo(tblAttachmentDTO);
     }
-
+    public void registerUserImage(TblAttachmentDTO tblAttachmentDTO)
+    {
+        attachmentMapper.setAttachmentsByAttachmentUserNo(tblAttachmentDTO);
+    }
     private User convertToUser(UserWithdrawalStatusDTO dto) {
         User user = new User();
         user.setId(dto.getUserId());
