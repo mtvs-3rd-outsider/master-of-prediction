@@ -7,6 +7,22 @@ body{
 .clearfix:after{clear:both;display:block}
 a{color:inherit;text-decoration:none}
 
+ .avatar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 6rem;
+  height: 6rem;
+  overflow: hidden;
+  border-radius: 50%;
+  background-color: #4c4c4c;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f8f9fa;
+  margin: auto;
+}
+
 .login-wrap{
   width:100%;
   margin-left: auto;

@@ -33,3 +33,15 @@ spring:
 default_image: logo2.png
 file:
   tierImgUrl: images/tier
+
+logging:
+  level:
+    org:
+      springframework:
+        security:
+            authentication: DEBUG
+            web:
+              authentication:  DEBUG
+server:
+  error:
+    path: /error

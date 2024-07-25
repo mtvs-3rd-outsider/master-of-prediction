@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
+            rel="stylesheet"
+    />
+    <script type="importmap">
+        {
+          "imports": {
+            "@material/web/": "https://esm.run/@material/web/"
+          }
+        }
+    </script>
+    <script type="module">
+        import "@material/web/all.js";
+        import { styles as typescaleStyles } from "@material/web/typography/md-typescale-styles.js";
+        document.adoptedStyleSheets.push(typescaleStyles.styleSheet);
+    </script>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${errorCode} + ' 오류'">오류 페이지</title>
+    <link rel="stylesheet" th:href="@{/css/error.css}">
+</head>
+<body>
+<div class="exception-container">
+    <div class="surface">
+        <md-elevation></md-elevation>
+        <h1 th:text="${errorCode} + ' 오류'">오류 코드</h1>
+        <p th:text="${errorMessage}">오류 메시지</p>
+        <!-- 하이퍼링크를 통해 댓글 섹션으로 이동 -->
+        <md-text-button   th:href="@{/}">홈으로 돌아가기</md-text-button>
+    </div>
+</div>
+</body>
+</html>
+

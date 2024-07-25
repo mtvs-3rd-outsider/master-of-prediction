@@ -199,3 +199,5 @@ CREATE TABLE `TBL_USER`
 ) COMMENT = '회원';
 
 
+ALTER TABLE tbl_user
+    ADD CONSTRAINT unique_user_email UNIQUE (user_email);
