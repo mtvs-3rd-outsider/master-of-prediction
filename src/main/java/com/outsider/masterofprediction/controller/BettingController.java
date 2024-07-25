@@ -116,6 +116,8 @@ public class BettingController {
         return commentService.getCommentBySubjectNo(subjectNo);
     }
 
+
+
     @PostMapping(value = "/comment/{subjectNo}", produces = "application/json; charset=UTF-8")
     @ResponseBody
     public void addComment(@RequestBody TblCommentDTO commentDTO,@PathVariable("subjectNo") long subjectNo) {

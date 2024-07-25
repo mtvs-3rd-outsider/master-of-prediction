@@ -327,6 +327,7 @@ function userActivityComment(value) {
                         commentTimestamp: formattedDate,
                         commentUserName: comment.commentUserName,
                         imgUrl: comment.imgUrl,
+                        userNo: comment.userNo,
                         replies: []
                     };
                     commentsList.push(commentObj);
@@ -340,10 +341,12 @@ function userActivityComment(value) {
                         replyContent: comment.replyContent,
                         replyTimestamp: formattedReplyDate,
                         replyUserName: comment.replyUserName,
-                        replyImgUrl: comment.replyImgUrl
+                        replyImgUrl: comment.replyImgUrl,
+                        replyUserNo:comment.replyUserNo
                     });
                 }
             });
+
 
             // 댓글을 commentTimestamp 기준으로 내림차순 정렬
             commentsList.sort((a, b) => new Date(b.commentTimestamp) - new Date(a.commentTimestamp));
@@ -352,7 +355,9 @@ function userActivityComment(value) {
             commentsList.forEach(comment => {
                 let commentHtml = `
                         <div class="comment-content">
-                            <img src="${comment.imgUrl}" alt="Profile Image">
+                            <a href="/mypage/${comment.userNo}">
+                                <img src="${comment.imgUrl}" alt="Profile Image" id="comment-profile">
+                            </a>
                             <div class="comment-info">
                                 <p class="info-name">${comment.commentUserName}&nbsp;<span class="comment_input-time">${comment.commentTimestamp}</span></p>
                                 <p class="info-content">${comment.commentContent}</p>
@@ -371,7 +376,9 @@ function userActivityComment(value) {
                     comment.replies.forEach(reply => {
                         commentHtml += `
                                 <div class="recomment-content">
+                                <a href="/mypage/${reply.replyUserNo}">
                                     <img src="${reply.replyImgUrl}" alt="Profile Image">
+                                    </a>
                                     <div class="comment-info">
                                         <p class="info-name">${reply.replyUserName}&nbsp;<span class="comment_input-time">${reply.replyTimestamp}</span></p>
                                         <p class="info-content">${reply.replyContent}</p>
@@ -437,7 +444,28 @@ function addReply(commentNo) {
         });
 }
 
-
+// function commentProfile(userNo) {
+//     // 서버로 보낼 URL 구성
+//     const url = `commentProfile/${userNo}`;
+//
+//     // Fetch API를 사용하여 POST 요청 전송
+//     fetch(url, {
+//         method: 'POST',
+//         headers: {
+//             'Content-Type': 'application/json'
+//         },
+//         body: JSON.stringify({ userNo: userNo })
+//     })
+//         .then(response => response.json())
+//         .then(data => {
+//             // 서버 응답 처리
+//             console.log(data);
+//         })
+//         .catch(error => {
+//             // 에러 처리
+//             console.error(error);
+//         });
+// }
 
 function userActivityRanking(value) {
     const userActivityContent = document.querySelector('.user_active-content');
@@ -467,7 +495,9 @@ function userActivityRanking(value) {
                         html += `
               <ul>
                 <li>
+                <a href="/mypage/${ranking.userNo}">
                   <img src="${ranking.imgUrl}">
+                  </a>
                   ${ranking.name}
                 </li>
                 <li class="${className}-amount">${ranking.sum}</li>
@@ -528,7 +558,7 @@ function userActivityActive(value){
                 userActivityContent.innerHTML += `
                         <div class="user_activity-content">
                             <ul>
-                                <li><img src="${activity.imgUrl}"/><span class="active-name-span">${activity.name}</span>님께서 &nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;를&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> 만큼 &nbsp;<span>${purchaseOrSale}</span> 하였습니다</li>
+                                <li><a href="/mypage/${activity.userNo}"><img src="${activity.imgUrl}"/></a><span class="active-name-span">${activity.name}</span>님께서 &nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;를&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> 만큼 &nbsp;<span>${purchaseOrSale}</span> 하였습니다</li>
                                 <li>${formattedDate}</li>
                             </ul>
                         </div>`;
