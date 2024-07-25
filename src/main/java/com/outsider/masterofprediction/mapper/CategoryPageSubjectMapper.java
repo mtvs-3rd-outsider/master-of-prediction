@@ -82,8 +82,7 @@ public interface CategoryPageSubjectMapper {
             "            tbl_attachment " +
             "    ) ta ON s.subject_no = ta.subject_no " +
             "WHERE " +
-            "   s.subject_status = '진행중' " +
-            "   AND s.subject_category_no = #{ categoryNo } " +
+            "    s.subject_category_no = #{ categoryNo } " +
             "ORDER BY " +
             "    (s.subject_total_no_point + s.subject_total_yes_point) DESC;"
     )
@@ -161,8 +160,6 @@ public interface CategoryPageSubjectMapper {
             "        FROM " +
             "            tbl_attachment " +
             "    ) ta ON s.subject_no = ta.subject_no " +
-            "WHERE " +
-            "   s.subject_status = '진행중' " +
             "ORDER BY " +
             "    (s.subject_total_no_point + s.subject_total_yes_point) DESC;"
     )
@@ -240,8 +237,6 @@ public interface CategoryPageSubjectMapper {
             "        FROM " +
             "            tbl_attachment " +
             "    ) ta ON s.subject_no = ta.subject_no " +
-            "WHERE " +
-            "   s.subject_status = '진행중' " +
             "ORDER BY " +
             "    s.subject_register_timestamp DESC;"
     )
