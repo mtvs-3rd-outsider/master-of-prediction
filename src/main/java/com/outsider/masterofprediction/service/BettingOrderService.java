@@ -25,20 +25,30 @@ public class BettingOrderService {
     public int getOrderCountByUserId(Long userId) {
         return bettingOrderMapper.getOrderCountByUserId(userId);
     }
-
     public List<ActiveDTO> getBettingOrdersBySubjectNo(Long subjectNo) {
-        List<ActiveDTO> list =bettingOrderMapper.getBettingOrdersBySubjectNo(subjectNo);
+        List<ActiveDTO> list = bettingOrderMapper.getBettingOrdersBySubjectNo(subjectNo);
+
         for (ActiveDTO dto : list) {
-            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(dto.getUserNo()).getAttachmentFileAddress()));
+            TblAttachmentDTO attachment = userManagementService.getAttachmentsByUserNo(dto.getUserNo());
+            if (attachment != null && attachment.getAttachmentFileAddress() != null) {
+                dto.setImgUrl(FileUtil.checkFileOrigin(attachment.getAttachmentFileAddress()));
+            } else {
+                dto.setImgUrl("/images/upload/logo2.png"); // 기본 이미지 URL 설정
+            }
         }
         return list;
-
     }
 
     public List<RankingDTO> getRankingBySubjectNo(Long subjectNo) {
         List<RankingDTO> list = bettingOrderMapper.getRankingBySubjectNo(subjectNo);
-        for(RankingDTO dto :list){
-            dto.setImgUrl(FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo((long)dto.getUserNo()).getAttachmentFileAddress()));
+
+        for (RankingDTO dto : list) {
+            TblAttachmentDTO attachment = userManagementService.getAttachmentsByUserNo((long)dto.getUserNo());
+            if (attachment != null && attachment.getAttachmentFileAddress() != null) {
+                dto.setImgUrl(FileUtil.checkFileOrigin(attachment.getAttachmentFileAddress()));
+            } else {
+                dto.setImgUrl("/images/upload/logo2.png"); // 기본 이미지 URL 설정
+            }
         }
         return list;
     }
