@@ -65,12 +65,16 @@ public class SecurityConfigUser {
 
     @Bean
     public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-        http
+        http.requiresChannel(channel -> channel
+                        .anyRequest().requiresSecure()
+                )
                 .authorizeHttpRequests(auth -> auth
+
                         .requestMatchers("/css/**","/images/**").permitAll()
                         .requestMatchers("/","/login", "/register", "/loginProc").permitAll()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
+
                 )
                 .formLogin(auth -> auth
                         .loginPage("/login")
@@ -157,7 +161,7 @@ public class SecurityConfigUser {
                 .clientSecret(clientSecret)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUri(redirectUri)
+                .redirectUri("https://master-of-prediction.shop:8081/login/oauth2/code/google")
                 .scope( "profile", "email")
                 .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
                 .tokenUri("https://www.googleapis.com/oauth2/v4/token")
