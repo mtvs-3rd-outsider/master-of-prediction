@@ -61,26 +61,26 @@ public class FileUtil {
     }
     public static String checkFileOrigin(String path) {
         if (path == null)
-            return combinePaths(imgUrl, "logo2"); ;
+            return imgUrl +"/"+ "logo2"; ;
         if (!path.startsWith("https://")) {
             // Resolve the address with imgUrl
-            path =combinePaths(imgUrl, path);
+            path = imgUrl +"/"+ path;
         }
         return path;
     }
 
-    public static String combinePaths(String path1, String path2) {
-        // 운영 체제에 맞는 경로 구분자를 사용하여 경로를 병합합니다.
-        String separator = File.separator;
-
-        // 끝에 구분자가 없는 첫 번째 경로와 시작에 구분자가 없는 두 번째 경로를 병합합니다.
-        if (!path1.endsWith(separator)) {
-            path1 += separator;
-        }
-        if (path2.startsWith(separator)) {
-            path2 = path2.substring(1);
-        }
-
-        return path1 + path2;
-    }
+//    public static String combinePaths(String path1, String path2) {
+//        // 운영 체제에 맞는 경로 구분자를 사용하여 경로를 병합합니다.
+//        String separator = File.separator;
+//
+//        // 끝에 구분자가 없는 첫 번째 경로와 시작에 구분자가 없는 두 번째 경로를 병합합니다.
+//        if (!path1.endsWith(separator)) {
+//            path1 += separator;
+//        }
+//        if (path2.startsWith(separator)) {
+//            path2 = path2.substring(1);
+//        }
+//
+//        return path1 + path2;
+//    }
 }

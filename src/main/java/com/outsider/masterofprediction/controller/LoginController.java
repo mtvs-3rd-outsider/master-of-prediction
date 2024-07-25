@@ -48,13 +48,12 @@ public class LoginController {
     @PostMapping("/register")
     public RedirectView register(@ModelAttribute User user , @RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes) {
         long id =userManagementService.createDefaultUser(user);
-
+        System.out.println("/register "+ id);
         TblAttachmentDTO tblAttachmentDTO =new TblAttachmentDTO();
         tblAttachmentDTO.setAttachmentUserNo(id);
         tblAttachmentDTO.setAttachmentRegistUserNo(id);
         // 파일 처리
         if (!profileImage.isEmpty()) {
-                // 파일 처리 로직 (이전 파일 삭제 , 현재 파일 저장)
                 try {
                     processFileService.execute(tblAttachmentDTO, profileImage, userManagementService::registerUserImage);
 

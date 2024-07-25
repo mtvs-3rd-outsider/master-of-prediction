@@ -42,9 +42,9 @@ public class UserGlobalControllerAdvice {
         Long userId = UserSession.getUserId();
         if (userId!=null && userId != 0) {
             String userImage = null;
-            if(userManagementService.getAttachmentsByUserNo(userId) ==null)
+            if(userManagementService.getAttachmentsByUserNo(userId) == null)
             {
-                userImage = FileUtil.combinePaths(imgUrl,"logo2.png");
+                userImage = imgUrl+"/"+ "logo2.png";
             }else
             {
                 userImage = FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(userId).getAttachmentFileAddress());

@@ -53,11 +53,12 @@ public interface UserMapper {
             "user_authority" +
             ") VALUES  (#{name}, #{email}, #{password}, #{authority})")
     @ResultMap("userResultMap")
+    @Options(useGeneratedKeys = true, keyProperty = "user_no")
     @SelectKey
             (
                     statementType= StatementType.PREPARED,
                     statement="SELECT LAST_INSERT_ID()",
-                    keyProperty="seq",
+                    keyProperty="user_no",
                     before=false,
                     resultType=long.class
             )
