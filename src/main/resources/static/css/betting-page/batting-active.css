@@ -324,10 +324,10 @@
     color: green;
 }
 
-#ranking_yes-holders,#ranking_yes-shares{
+#ranking_yes-holders,#ranking_no-holders{
     color: black;
     font-size: 1.1em;
 }
-#ranking_no-holders,#ranking_no-shares{
+#ranking_yes-shares,#ranking_no-shares{
     font-size: 0.9em;
 }
