@@ -299,7 +299,6 @@ function userActivityComment(value) {
                     <input type="text" id="new-comment" placeholder="  Add a comment">
                     <button onclick="addComment(${value})">입력</button>
                 </div>`;
-        replyCheck=` <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>`;
     }else{
         loginCheck = '';
         replyCheck=`<button class="comment-recomment-btn">답글</button>`;
@@ -357,7 +356,9 @@ function userActivityComment(value) {
                 }
             });
 
-
+            if (login===true){
+                replyCheck=` <button class="comment-recomment-btn" onclick="showReplyInput(${comment.commentNo})">답글</button>`;
+            }
             // 댓글을 commentTimestamp 기준으로 내림차순 정렬
             commentsList.sort((a, b) => new Date(b.commentTimestamp) - new Date(a.commentTimestamp));
 
