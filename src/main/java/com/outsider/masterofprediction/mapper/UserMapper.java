@@ -8,6 +8,7 @@ import com.outsider.masterofprediction.dto.User;
 import com.outsider.masterofprediction.dto.UserAttachmentDTO;
 import com.outsider.masterofprediction.dto.response.UserAndAttachmentDTO;
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.mapping.StatementType;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -52,7 +53,15 @@ public interface UserMapper {
             "user_authority" +
             ") VALUES  (#{name}, #{email}, #{password}, #{authority})")
     @ResultMap("userResultMap")
-    void createUser(String name, String email, String password, String authority);
+    @SelectKey
+            (
+                    statementType= StatementType.PREPARED,
+                    statement="SELECT LAST_INSERT_ID()",
+                    keyProperty="seq",
+                    before=false,
+                    resultType=long.class
+            )
+    long createUser(String name, String email, String password, String authority);
 
     @Update("UPDATE tbl_user SET " +
             "user_name = #{name}, " +

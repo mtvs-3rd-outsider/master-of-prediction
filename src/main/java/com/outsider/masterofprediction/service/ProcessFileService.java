@@ -42,9 +42,12 @@ public class ProcessFileService {
             // 이전 파일 객체 생성
             // 유니크한 파일 이름 생성 및 저장
             uploadFile = fileStorageService.storeFile(profileImage);
-            File previousFile = previousFileUtils.create(tblAttachmentDTO);
-
-            if (!FileUtil.compareFiles(uploadFile, previousFile)) {
+            File previousFile =null;
+            if(tblAttachmentDTO.getAttachmentFileAddress()!=null && !tblAttachmentDTO.getAttachmentFileAddress().isEmpty())
+            {
+                 previousFile = previousFileUtils.create(tblAttachmentDTO);
+            }
+            if (previousFile !=null && !FileUtil.compareFiles(uploadFile, previousFile)) {
                 if (!StringConstants.BASIC_IMAGE.equals(tblAttachmentDTO.getAttachmentFileAddress())) {
                     previousFileUtils.delete(previousFile);
                 }
