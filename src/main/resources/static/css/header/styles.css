@@ -198,3 +198,7 @@ ul, li {
     --_hover-state-layer-color  : white;
     --_pressed-state-layer-color  : white;
 }
+
+a.header-menu-hover{
+    padding-right: 1rem;
+}
