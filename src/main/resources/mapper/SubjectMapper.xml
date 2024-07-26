@@ -3,6 +3,19 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.outsider.masterofprediction.mapper.SubjectMapper">
+    <resultMap id="tblSubjectResultMap" type="com.outsider.masterofprediction.dto.TblSubjectDTO">
+        <id property="subjectNo" column="subject_no" />
+        <result property="subjectTitle" column="subject_title" />
+        <result property="subjectTotalYesPoint" column="subject_total_yes_point" />
+        <result property="subjectStatus" column="subject_status" />
+        <result property="subjectRegisterTimestamp" column="subject_register_timestamp" />
+        <result property="subjectFinishTimestamp" column="subject_finish_timestamp" />
+        <result property="subjectCategoryNo" column="subject_category_no" />
+        <result property="subjectRegisterUserNo" column="subject_register_user_no" />
+        <result property="subjectFinishResult" column="subject_finish_result" />
+        <result property="subjectTotalNoPoint" column="subject_total_no_point" />
+        <result property="subjectSettlementTimestamp" column="subject_settlement_timestamp" />
+    </resultMap>
     <update id="updateTotalPointByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         UPDATE tbl_subject
         SET subject_total_yes_point = subject_total_yes_point + (CASE WHEN #{orderChoice} = 'Yes' THEN #{orderAmount} ELSE 0 END),
@@ -14,4 +27,6 @@
         SELECT subject_register_user_no FROM tbl_subject
         WHERE subject_no = #{ subjectNo }
     </select>
+
+
 </mapper>
