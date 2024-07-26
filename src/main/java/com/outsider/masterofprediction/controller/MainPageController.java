@@ -49,6 +49,11 @@ public class MainPageController {
             return new ArrayList<>();
         }
 
+        if (originalList.size() <= IntConstants.MAIN_TOP_TEN_SPLIT) {
+            List<T> halfList = new ArrayList<>(originalList.subList(0, originalList.size()));
+            originalList.subList(0, originalList.size()).clear();
+            return halfList;
+        }
         // 새로운 리스트 생성 및 요소 이동
         List<T> halfList = new ArrayList<>(originalList.subList(0, IntConstants.MAIN_TOP_TEN_SPLIT));
 

@@ -8,28 +8,27 @@
             <div>
                 <span>Activity</span>
             </div>
-            <div>
-
-            </div>
         </div>
         <div th:each="order : ${userActivity}" class="activity-content">
             <div class="activity-content-box">
                 <div class="activity-content-box-right">
                     <div class="activity-content-img">
-                        <img th:src="${order.attachmentSubject.attachmentFileAddress}">
+                        <img class="activity-content-img-tag" th:src="${order.attachmentSubject.attachmentFileAddress}">
                     </div>
                     <div class="activity-content-mid">
                         <div th:text="${order.subject.subjectTitle}"></div>
-                        <div>
-                            <img th:src="${order.attachmentUser.attachmentFileAddress}">
+                        <div class="activity-content-order">
+                            <div class="activity-content-order-img-div">
+                                <img class="activity-content-order-img" th:src="${order.attachmentUser.attachmentFileAddress}">
+                            </div>
                             <span th:if="${order.orderAmount >= 0}" th:text="|${order.user.userName}님이 ${order.orderChoice}를 ${order.orderAmount}원에 구매하셨습니다.|"></span>
                             <span th:if="${order.orderAmount < 0}" th:text="|${order.user.userName}님이 ${order.orderChoice}를 ${order.orderAmount * -1}원에 판매하셨습니다.|"></span>
                         </div>
                     </div>
                 </div>
-                <div class="activity-time">
-                    <span th:text="${order.orderTimestamp}"></span>
-                </div>
+                    <div class="activity-time">
+                        <span th:text="${order.orderTimestamp}"></span>
+                    </div>
             </div>
         </div>
     </div>
