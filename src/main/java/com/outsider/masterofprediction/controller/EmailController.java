@@ -4,6 +4,7 @@ import com.outsider.masterofprediction.dto.EmailCheckDto;
 import com.outsider.masterofprediction.dto.EmailRequestDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
+@Profile("user")
 public class EmailController {
     private final EmailSendService emailSendService;
 
