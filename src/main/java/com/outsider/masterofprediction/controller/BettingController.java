@@ -150,13 +150,25 @@ public class BettingController {
     public ResponseEntity<Map<String, String>> sellItem(@RequestBody TblBettingOrderDTO bettingOrderDTO ,@PathVariable("subjectNo") long subjectNo) {
         try {
             // 임시로 id를 90으로 설정
-            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
-            bettingOrderDTO.setOrderSubjectNo(subjectNo);
-            sellItemService.sellItemByDTO(bettingOrderDTO);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "판매 성공");
-            response.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
-            return ResponseEntity.ok(response);
+            TblSubjectDTO subjectDTO =subjectService.getSubjectBySubjectNo(subjectNo);
+            if (LocalDateTime.now().isAfter(subjectDTO.getSubjectSettlementTimestamp().toLocalDateTime())){
+                String errorMessage ="이미 끝난 게임입니다.";
+                Map<String, String> responseBody = new HashMap<>();
+                responseBody.put("message", errorMessage);
+                responseBody.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(responseBody);
+            }else {
+                bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
+                bettingOrderDTO.setOrderSubjectNo(subjectNo);
+                sellItemService.sellItemByDTO(bettingOrderDTO);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "판매 성공");
+                response.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
+                return ResponseEntity.ok(response);
+            }
+
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();
@@ -177,13 +189,25 @@ public class BettingController {
         try {
             //임시로 id를 90으로 설정
 //            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
-            bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
-            bettingOrderDTO.setOrderSubjectNo(subjectNo);
-            buyItemService.buyItemByDTO(bettingOrderDTO);
-            Map<String, String> response = new HashMap<>();
-            response.put("message", "구매 성공");
-            response.put("redirectUrl","/betting/" + bettingOrderDTO.getOrderSubjectNo());
-            return ResponseEntity.ok(response);
+            TblSubjectDTO subjectDTO =subjectService.getSubjectBySubjectNo(subjectNo);
+            if (LocalDateTime.now().isAfter(subjectDTO.getSubjectSettlementTimestamp().toLocalDateTime())){
+                String errorMessage ="이미 끝난 게임입니다.";
+                Map<String, String> responseBody = new HashMap<>();
+                responseBody.put("message", errorMessage);
+                responseBody.put("redirectUrl", "/betting/" + bettingOrderDTO.getOrderSubjectNo());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(responseBody);
+            }else{
+                bettingOrderDTO.setOrderUserNo(UserSession.getUserId());
+                bettingOrderDTO.setOrderSubjectNo(subjectNo);
+                buyItemService.buyItemByDTO(bettingOrderDTO);
+                Map<String, String> response = new HashMap<>();
+                response.put("message", "구매 성공");
+                response.put("redirectUrl","/betting/" + bettingOrderDTO.getOrderSubjectNo());
+                return ResponseEntity.ok(response);
+            }
+
         } catch (Exception e) {
             String errorMessage = e.getMessage();
             Map<String, String> responseBody = new HashMap<>();

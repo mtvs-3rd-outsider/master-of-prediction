@@ -645,13 +645,15 @@ WHERE
             order_user_no = #{userNo} AND order_subject_no = #{orderSubjectNo} AND order_choice = #{orderChoice}
     </select>
     <select id="getUsersBySubjectNo"
-            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" parameterType="hashmap">
         SELECT
-            order_user_no,order_subject_no
+            order_user_no
         FROM
             TBL_BETTING_ORDER
         WHERE
-            order_subject_no = #{orderSubjectNo}
+            order_subject_no = #{subjectNo} and
+            order_choice=#{result}
+        group by order_user_no;
     </select>
 
 </mapper>

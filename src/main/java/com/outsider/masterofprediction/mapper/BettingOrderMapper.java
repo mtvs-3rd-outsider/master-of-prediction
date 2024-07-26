@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.SelectProvider;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface BettingOrderMapper {
@@ -68,7 +69,7 @@ public interface BettingOrderMapper {
      * @return 사용자의 현재 포지션 가치 총합
      */
     Long getTotalPositionValueByUserId(Long userId);
-    List<TblBettingOrderDTO> getUsersBySubjectNo(Long subjectNo);
+    List<TblBettingOrderDTO> getUsersBySubjectNo(Map<String,Object> map);
     /**
      * 특정 사용자의 현재 포지션 가치를 조회합니다.
      *
