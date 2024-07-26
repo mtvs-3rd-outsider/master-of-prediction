@@ -1,12 +1,11 @@
 package com.outsider.masterofprediction.controller;
 
 
-import com.outsider.masterofprediction.dto.CustomUserDetail;
-import com.outsider.masterofprediction.dto.TblAttachmentDTO;
-import com.outsider.masterofprediction.dto.User;
-import com.outsider.masterofprediction.dto.UserWithdrawalStatusDTO;
+import com.outsider.masterofprediction.dto.*;
+import com.outsider.masterofprediction.dto.constatnt.StringConstants;
 import com.outsider.masterofprediction.mapper.UserMapper;
 import com.outsider.masterofprediction.service.ProcessFileService;
+import com.outsider.masterofprediction.service.TierService;
 import com.outsider.masterofprediction.service.UserManagementService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.view.RedirectView;
 
 import java.io.IOException;
+import java.util.List;
 
 
 //스프링 보안 테스트
@@ -34,10 +34,12 @@ import java.io.IOException;
 public class LoginController {
     private UserManagementService userManagementService;
     private final ProcessFileService processFileService;
+    private final TierService tierService;
 
-    public LoginController(UserManagementService userManagementService, ProcessFileService processFileService) {
+    public LoginController(UserManagementService userManagementService, ProcessFileService processFileService, TierService tierService) {
         this.userManagementService = userManagementService;
         this.processFileService = processFileService;
+        this.tierService = tierService;
     }
 
 //    @PostMapping("/loginProc")
@@ -47,6 +49,17 @@ public class LoginController {
 //    }
     @PostMapping("/register")
     public RedirectView register(@ModelAttribute User user , @RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes) {
+        List<TblTierDTO> tiers = tierService.findAll();
+        for (int i = 0; i < tiers.size(); i++) {
+            if (StringConstants.USER_DEFAULT_TIER.equals(tiers.get(i).getTierName())){
+                user.setTierNo(tiers.get(i).getTierNo());
+            }
+        }
+//        기본 티어이름에 매핑되는 값이 없다면 0번째로 조회된 티어를 가져갑니다
+        if (user.getTierNo() == null){
+             user.setTierNo(tiers.get(0).getTierNo());
+        }
+//        user.setTierNo();
         userManagementService.createDefaultUserObject(user);
         long id = user.getId();
         System.out.println("/register "+ id);

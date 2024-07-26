@@ -10,6 +10,6 @@ import java.util.List;
 @Mapper
 public interface SearchPageMapper {
 
-    List<SearchPageSubjectDTO> findSearchPageSubjectList(String searchWord);
+    List<SearchPageSubjectDTO> findSearchPageSubjectList(List<String> wordList);
 
 }

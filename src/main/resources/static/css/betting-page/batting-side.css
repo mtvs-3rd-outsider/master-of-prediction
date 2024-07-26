@@ -1,3 +1,4 @@
+
 .side-container {
     width: 25%; /* side-container의 너비 설정 */
     max-width: 300px;
@@ -10,7 +11,9 @@
     right: calc((100vw - 1100px) / 2);
     top: 200px;
 }
-
+@media screen and(max-width: 760px){
+    .side-container{display: none}
+}
 .side_title-content{
     border-bottom: 1px solid rgba(128,128,128,0.5);
     flex-wrap: wrap;
@@ -47,6 +50,7 @@
     color: gray;
     font-weight:bold ;
 }
+
 
 .side_main-container ul {
     list-style-type: none;

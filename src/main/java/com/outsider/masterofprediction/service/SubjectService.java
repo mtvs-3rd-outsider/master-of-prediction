@@ -43,43 +43,60 @@ public class SubjectService {
         for (TblSubjectDTO tblSubjectDTO : subjectDTOS) {
             if(isSubjectSubjectSettlementTimestampAfterCurrentTime(tblSubjectDTO))
             {
+                if (!SubjectStatus.COMPLETED.getValue().equals(tblSubjectDTO.getSubjectStatus())){
                 tblSubjectDTO.setSubjectStatus(SubjectStatus.SETTLEMENT.getValue());
                 subjectMapper.updateSubject(tblSubjectDTO);
+                }
+
             }
         }
     }
+
     @Transactional
-    public boolean BetSettlement(long subjectNo) {
-
-        //결과 상품의 정보 가져오기
-        TblSubjectDTO subjectDTO = subjectMapper.getSubjectById(subjectNo);
-        if (subjectDTO != null && "정산".equals(subjectDTO.getSubjectStatus())) {
-            // 해당 상품 승리에 베팅한 사람들의 정보 가져오기
-            List<TblBettingOrderDTO> users = bettingOrderMapper.getUsersBySubjectNo(subjectNo);
-            for (TblBettingOrderDTO user : users) {
-                // 승리 여부에 따라 베팅 주문 가져오기
-                String result = subjectDTO.getSubjectFinishResult();
-                List<TblBettingOrderDTO> userBettingOrders = bettingOrderMapper.getBettingOrdersByUserSubjectDTO(new UserSubjectDTO(user.getOrderUserNo(), user.getOrderSubjectNo(), result));
-
-                // 총 소모 포인트 계산
-                long totalUserBettingPoint = userBettingOrders.stream().mapToLong(TblBettingOrderDTO::getOrderAmount).sum();
-
-                // BigDecimal 객체로 변환
-                BigDecimal totalUserBettingPointBD = new BigDecimal(totalUserBettingPoint);
-                BigDecimal subjectTotalYesPointBD = new BigDecimal(subjectDTO.getSubjectTotalYesPoint());
-                BigDecimal subjectTotalNoPointBD = new BigDecimal(subjectDTO.getSubjectTotalNoPoint());
-
-                // 승리한 유저에게 수익포인트 + 베팅한 포인트를 돌려주기
-                BigDecimal profitPoint = calculateProfitPoint(result, totalUserBettingPointBD, subjectTotalYesPointBD, subjectTotalNoPointBD);
-                BigDecimal returnPoint = profitPoint.add(totalUserBettingPointBD);
-
-                // returnPoint를 이용한 로직 추가
-                userMapper.updateUserPointById(user.getOrderUserNo(),returnPoint);
+    public boolean BettingSettlement(long subjectNo, String result){
+        if (StringConstants.YES.equals(result) || StringConstants.NO.equals(result)){
+            TblSubjectDTO subjectDTO = subjectMapper.getSubjectById(subjectNo);
+            boolean time = LocalDateTime.now().isAfter(subjectDTO.getSubjectSettlementTimestamp().toLocalDateTime());
+            if (subjectDTO == null || !time) {
+                return false;
             }
+            this.setSubjectFinishResult(subjectNo,result);
+            this.BetSettlement(subjectNo, subjectDTO, result);
             return true;
         }
-        else {
-            return false;
+        return false;
+    }
+
+    @Transactional
+    public void BetSettlement(long subjectNo, TblSubjectDTO subjectDTO, String result) {
+
+        //결과 상품의 정보 가져오기
+
+        // 해당 상품 승리에 베팅한 사람들의 정보 가져오기
+        List<TblBettingOrderDTO> users = bettingOrderMapper.getUsersBySubjectNo(subjectNo);
+
+        for (TblBettingOrderDTO user : users) {
+
+
+            List<TblBettingOrderDTO> userBettingOrders = bettingOrderMapper.getBettingOrdersByUserSubjectDTO(new UserSubjectDTO(user.getOrderUserNo(),subjectNo, result));
+
+            // 총 소모 포인트 계산
+            long totalUserBettingPoint = userBettingOrders.stream().mapToLong(TblBettingOrderDTO::getOrderAmount).sum();
+
+
+            // BigDecimal 객체로 변환
+            BigDecimal totalUserBettingPointBD = new BigDecimal(totalUserBettingPoint);
+            BigDecimal subjectTotalYesPointBD = new BigDecimal(subjectDTO.getSubjectTotalYesPoint());
+            BigDecimal subjectTotalNoPointBD = new BigDecimal(subjectDTO.getSubjectTotalNoPoint());
+
+            // 승리한 유저에게 수익포인트 + 베팅한 포인트를 돌려주기
+            BigDecimal profitPoint = calculateProfitPoint(result, totalUserBettingPointBD, subjectTotalYesPointBD, subjectTotalNoPointBD);
+            BigDecimal returnPoint = profitPoint.add(totalUserBettingPointBD);
+
+
+
+            // returnPoint를 이용한 로직 추가
+            userMapper.updateUserPointById(user.getOrderUserNo(),returnPoint);
         }
     }
 

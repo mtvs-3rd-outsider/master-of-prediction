@@ -8,6 +8,10 @@ let chartInstance = null;
 var copyGraphDataList;
 var subjectNo= document.getElementById("subjectNo").value;
 let bettingState = document.getElementById("betting-state").textContent;
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+
 // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
 const initBettingPage = function () {
     if(document.getElementById("loggedInUserId").value==0){
@@ -29,7 +33,24 @@ const initBettingPage = function () {
     // popup_setting-content 숨기기
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
+
+    // const resultModal = document.getElementById("myModal");
+    // resultModal.style.display = 'flex';
+    //반응형
+    responsive();
 }
+
+function responsive() {
+    const bodyContainer = document.querySelector('.body-container');
+    const mainContainer = document.querySelector('.main-container');
+
+    if (width <= 760) {
+        bodyContainer.style.width = width;
+        mainContainer.style.width = '100%';
+        mainContainer.style.maxWidth = width;
+    }
+}
+
 window.addEventListener('load', initBettingPage);
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -796,6 +817,7 @@ yesBtn.onclick = function() {
         .then(data => {
             console.log('Success:', data);
             modal.style.display = "none";
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);
