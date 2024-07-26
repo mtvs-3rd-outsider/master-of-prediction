@@ -17,7 +17,7 @@ public class SearchPageService {
         this.searchPageMapper = searchPageMapper;
     }
 
-    public List<SearchPageSubjectDTO> findSearchPageSubjectList(String searchWord){
-        return searchPageMapper.findSearchPageSubjectList(searchWord);
+    public List<SearchPageSubjectDTO> findSearchPageSubjectList(List<String> wordList){
+        return searchPageMapper.findSearchPageSubjectList(wordList);
     }
 }
