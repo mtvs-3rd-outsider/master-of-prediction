@@ -20,6 +20,7 @@ const initBettingPage = function () {
         login=true;
     }
 
+    console.log(width);
 
     sideSelectBuy();
     graphSettingButton(5);
@@ -41,13 +42,13 @@ const initBettingPage = function () {
 }
 
 function responsive() {
-    const bodyContainer = document.querySelector('.body-container');
-    const mainContainer = document.querySelector('.main-container');
+    const htmlContainer = document.getElementById("top-div");
+    const currentWidth = htmlContainer.offsetWidth; // top-div의 너비 가져오기
 
-    if (width <= 760) {
-        bodyContainer.style.width = width;
-        mainContainer.style.width = '100%';
-        mainContainer.style.maxWidth = width;
+    if (currentWidth <= 760) {
+        document.querySelector(".html-container").style.width = currentWidth + "px"; // top-div의 너비에 맞춰 설정
+    } else {
+        document.querySelector(".html-container").style.width = ""; // 760px 초과 시 기본값으로 되돌리기
     }
 }
 
@@ -847,4 +848,17 @@ noBtn.onclick = function() {
 function fnKeyupNum(evt) {
     // 숫자가 아닌 문자인 경우 모두 빈('') 문자로 치환
     evt.value = evt.value.replace(/[^0-9]/g, '');
+}
+
+function sideCancle(){
+    document.querySelector('.side-container').style.display='none';
+}
+function sideOpen(){
+    const sideContainer =document.querySelector('.side-container');
+    if(sideContainer.style.display==="none"){
+        document.querySelector('.side-container').style.display='block';
+    }else{
+        document.querySelector('.side-container').style.display='none';
+    }
+
 }

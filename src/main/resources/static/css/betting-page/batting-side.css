@@ -145,6 +145,11 @@
     -moz-appearance: textfield;
     border:none;
 }
+#side-cancle{
+    display: none;
+    font-size: 30px;
+    padding-left: 130px;
+}
 
 .side-point-input input[type=number]::-webkit-outer-spin-button,
 .side-point-input input[type=number]::-webkit-inner-spin-button {
