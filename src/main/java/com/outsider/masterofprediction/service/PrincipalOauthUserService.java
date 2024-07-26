@@ -27,7 +27,13 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
         this.userMapper = userMapper;
         this.attachmentMapper = attachmentMapper;
     }
-
+    public void CheckWithdrawalStatus(User user) {
+        if(user.getWithdrawalStatus())
+        {
+            user.setWithdrawalStatus(false);
+            userMapper.updateWithdrawalStatusByUser(user);
+        }
+    }
     //구글로 부터 받은 userRequest 데이터에 대한 후처리되는 함수
     //함수 종료시 @AuthenticationPrincipal 어노테이션이 만들어진다.
     @Override
@@ -61,6 +67,7 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
         String pictureUrl = oAuth2UserInfo.getPictureUrl();
 
         User user = userMapper.findByEmail(email);
+        CheckWithdrawalStatus(user);
         //처음 서비스를 이용한 회원일 경우
         if(user == null) {
             LocalDateTime createTime = LocalDateTime.now();

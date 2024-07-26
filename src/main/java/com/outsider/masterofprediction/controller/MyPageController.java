@@ -153,9 +153,10 @@ public class MyPageController {
         return mv;
     }
     @PostMapping("/withdrawal")
-    public ModelAndView postWithdrawal(ModelAndView mv) {
-        mv.setViewName("/logout");
-        return mv;
+    public RedirectView postWithdrawal(ModelAndView mv, @AuthenticationPrincipal CustomUserDetail user) {
+        UserWithdrawalStatusDTO userWithdrawalStatusDTO =new UserWithdrawalStatusDTO(user.getId(),true);
+        userManagementService.updateUserWithdrawalStatus(userWithdrawalStatusDTO);
+        return new RedirectView("/logout");
     }
 //회원정보변경
     @GetMapping("/change-personal-information")

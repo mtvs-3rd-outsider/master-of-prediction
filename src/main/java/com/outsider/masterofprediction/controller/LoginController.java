@@ -74,7 +74,7 @@ public class LoginController {
                 } catch (IOException e) {
                     e.printStackTrace();
                     redirectAttributes.addFlashAttribute("flashMessage1", "파일 업로드 중 오류가 발생했습니다.");
-                    return new RedirectView("/login?");
+                    return new RedirectView("/login");
                 }
         }
         return new RedirectView("/login");
@@ -98,5 +98,13 @@ public class LoginController {
         mv.setViewName("layout/index");
         mv.addObject("view", "content/login");
         return mv;
+    }
+    @GetMapping(value="/logout")
+    public String logout(HttpServletRequest request, HttpServletResponse response) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated()) {
+            new SecurityContextLogoutHandler().logout(request, response, auth);
+        }
+        return "redirect:/";
     }
 }
