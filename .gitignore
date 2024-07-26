@@ -40,5 +40,5 @@ out/
 
 
 ### spring boot setting ###
-application.properties
+**/application.properties
 
