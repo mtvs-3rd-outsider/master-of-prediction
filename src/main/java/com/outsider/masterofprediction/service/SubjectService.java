@@ -53,7 +53,7 @@ public class SubjectService {
 
         //결과 상품의 정보 가져오기
         TblSubjectDTO subjectDTO = subjectMapper.getSubjectById(subjectNo);
-        if (subjectDTO != null && !SubjectStatus.SETTLEMENT.equals(SubjectStatus.fromValue(subjectDTO.getSubjectStatus()))) {
+        if (subjectDTO != null && "정산".equals(subjectDTO.getSubjectStatus())) {
             // 해당 상품 승리에 베팅한 사람들의 정보 가져오기
             List<TblBettingOrderDTO> users = bettingOrderMapper.getUsersBySubjectNo(subjectNo);
             for (TblBettingOrderDTO user : users) {
@@ -92,12 +92,12 @@ public class SubjectService {
     }
     // 수익 포인트 계산 함수
     private BigDecimal calculateProfitPoint(String result, BigDecimal totalUserBettingPointBD, BigDecimal subjectTotalYesPointBD, BigDecimal subjectTotalNoPointBD) {
-        BigDecimal profitPoint;
+        BigDecimal profitPoint=null;
         BigDecimal rate;
-        if ("YES".equals(result)) {
+        if ("Yes".equals(result) && !subjectTotalYesPointBD.equals(0)) {
             rate = totalUserBettingPointBD.divide(subjectTotalYesPointBD, 2, BigDecimal.ROUND_HALF_UP);
             profitPoint = rate.multiply(subjectTotalNoPointBD);
-        } else {
+        } else if("No".equals(result) && !subjectTotalNoPointBD.equals(0)){
             rate = totalUserBettingPointBD.divide(subjectTotalNoPointBD, 2, BigDecimal.ROUND_HALF_UP);
             profitPoint = rate.multiply(subjectTotalYesPointBD);
         }

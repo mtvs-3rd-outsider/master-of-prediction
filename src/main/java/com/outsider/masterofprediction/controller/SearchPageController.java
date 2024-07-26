@@ -48,11 +48,11 @@ public class SearchPageController {
 
         List<SearchPageSubjectDTO> searchPageSubjectDTOs =  searchPageService.findSearchPageSubjectList("*" + searchWord + "*");
 
-        mv.setViewName("layout/search/index");
+        mv.setViewName("layout/index");
         mv.addObject("subjects", searchPageSubjectDTOs);
         mv.addObject("categories", categoryService.findAll());
         mv.addObject("title", "Master Of Prediction");
-        mv.addObject("view", "content/search/search");
+        mv.addObject("view", "content/search");
 
         return mv;
     }
