@@ -69,8 +69,9 @@ public interface UserMapper {
             "user_name, " +
             "user_email, " +
             "user_password, " +
-            "user_authority" +
-            ") VALUES  (#{name}, #{email}, #{password}, #{authority})")
+            "user_authority, " +
+            "tier_no" +
+            ") VALUES  (#{name}, #{email}, #{password}, #{authority}, #{tierNo})")
     @ResultMap("userResultMap")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void createUserObject(User user);
