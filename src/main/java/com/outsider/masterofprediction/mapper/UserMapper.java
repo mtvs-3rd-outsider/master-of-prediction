@@ -89,7 +89,7 @@ public interface UserMapper {
     void deleteUser(String email);
         //id로 유저 포인트 업데이트
     @Update("UPDATE tbl_user SET " +
-            "user_point=#{point} " +
+            "user_point=user_point+#{point} " +
             "WHERE user_no=#{id}"
     )
     void updateUserPointById(Long id, BigDecimal point);
