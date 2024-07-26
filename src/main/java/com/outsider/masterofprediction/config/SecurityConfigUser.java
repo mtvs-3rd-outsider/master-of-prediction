@@ -2,6 +2,7 @@ package com.outsider.masterofprediction.config;
 
 
 
+import com.outsider.masterofprediction.dto.CustomUserDetail;
 import com.outsider.masterofprediction.mapper.AttachmentMapper;
 import com.outsider.masterofprediction.mapper.UserMapper;
 import com.outsider.masterofprediction.service.PrincipalOauthUserService;
@@ -9,9 +10,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -70,8 +74,8 @@ public class SecurityConfigUser {
                 )
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers("/css/**","/images/**").permitAll()
-                        .requestMatchers("/","/login", "/register", "/loginProc").permitAll()
+                        .requestMatchers("/css/**", "/images/**").permitAll()
+                        .requestMatchers("/", "/login", "/register", "/loginProc").permitAll()
                         .requestMatchers("/**").permitAll()
                         .anyRequest().authenticated()
 
@@ -86,31 +90,30 @@ public class SecurityConfigUser {
 
                 )
                 .oauth2Login(oauth2 -> oauth2
-                        .loginPage("/login")
-                        .authorizationEndpoint(authorization -> authorization
-                                .baseUri("/oauth2/authorization"))
-                        .redirectionEndpoint(redirection -> redirection
-                                .baseUri("/login/oauth2/code/*"))
-                        .userInfoEndpoint(userInfo -> userInfo
+                                .loginPage("/login")
+                                .authorizationEndpoint(authorization -> authorization
+                                        .baseUri("/oauth2/authorization"))
+                                .redirectionEndpoint(redirection -> redirection
+                                        .baseUri("/login/oauth2/code/*"))
+                                .userInfoEndpoint(userInfo -> userInfo
 //                                .oidcUserService(this.oidcUserService())
-                                .userService(this.oauth2UserService()))
-                        .defaultSuccessUrl("/", true)
-                ).logout(logout ->{
+                                        .userService(this.oauth2UserService()))
+                                .defaultSuccessUrl("/", true)
+                ).logout(logout -> {
                     logout.logoutUrl("/logout");
                     logout.deleteCookies("JSESSIONID"); // 로그아웃 시 사용자의 JSESSIONID 삭제
                     logout.invalidateHttpSession(true);// 세션을 소멸하도록 허용하는 것
                     logout.logoutSuccessUrl("/"); // 로그아웃시 이동할 페이지 설정
-                }).sessionManagement(session ->{
-                    session.maximumSessions(1).maxSessionsPreventsLogin(true);// session의 허용 개수를 제한
+                }).sessionManagement(session -> {
+                    session.maximumSessions(1)
+                            .maxSessionsPreventsLogin(true);// session의 허용 개수를 제한
                     session.invalidSessionUrl("/");
+                    session.sessionFixation().changeSessionId();
                 })
                 .csrf(auth -> auth.disable())
                 .sessionManagement(auth -> auth
                         .maximumSessions(1)
                         .maxSessionsPreventsLogin(true)
-                )
-                .sessionManagement(auth -> auth
-                        .sessionFixation().changeSessionId()
                 );
 
         return http.build();
@@ -118,10 +121,9 @@ public class SecurityConfigUser {
     private OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService( ) {
         final PrincipalOauthUserService delegate = new PrincipalOauthUserService(passwordEncoder(),userMapper ,attachmentMapper);
         return (userRequest) -> {
+
             // Delegate to the default implementation for loading a user
-            OAuth2User oAuth2User = delegate.loadUser(userRequest);
-
-
+            CustomUserDetail oAuth2User = (CustomUserDetail) delegate.loadUser(userRequest);
             return oAuth2User;
         };
 
