@@ -61,7 +61,7 @@
 <!--                    <md-menu-item>-->
 <!--                        <div>Sign Up</div>-->
 <!--                    </md-menu-item>-->
-                    <md-menu-item sec:authorize="isAnonymous()" class='open-login-dialog-btn'>
+                    <md-menu-item sec:authorize="isAnonymous()" class='open-login-dialog-btn' th:href="@{/login}">
                         <div>Log in</div>
                     </md-menu-item>
                     <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/mypage}">
