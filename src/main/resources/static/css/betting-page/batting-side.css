@@ -86,7 +86,17 @@
     cursor: pointer;
 }
 
-
+.batting-non-modal{
+    border-radius: 10px;
+    border: none;
+    background-color:#f0f0f0;
+    width: 100%;
+    font-size: 18px;
+    color: black;
+    font-weight: bold;
+    height: 50px;
+    cursor: pointer;
+}
 
 .side_main-container [type="number"] {
     width: 150px;
@@ -182,6 +192,10 @@
     justify-content: space-between;
 }
 .side-return-content{
+    display: flex;
+    justify-content: space-between;
+}
+.side-have-content{
     display: flex;
     justify-content: space-between;
 }
