@@ -1,14 +1,20 @@
 .rank-main{
-    display : flex;
+    /*display : flex;*/
+    /*flex-direction: column;*/
+    /*align-items: center;*/
+    /*border:none;*/
+    /*margin-top: 20px;*/
     flex-direction: column;
     align-items: center;
-    border:none;
+    border: none;
+    margin: 0 auto;
+    min-width: 1000px;
     margin-top: 20px;
 }
 
 .rank-title{
     display:flex;
-    width:80%;
+    /*width:80%;*/
     justify-content: space-around;
     padding-top:20px;
     padding-bottom: 20px;
@@ -17,6 +23,8 @@
 .rank-notice{
     font-size: x-large;
     margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
 }
 
 /* .submenu {
@@ -40,7 +48,7 @@
 }
 
 .rank-content{
-    width:50%;
+    /*width:50%;*/
 }
 
 .rank-title div span{
@@ -67,7 +75,7 @@
 
 .rank-user-ranking span{
     font-size: xx-large;
-    padding-right: 30px;
+    padding-right:  0.5em;
 }
 
 .rank-user-image{
@@ -92,4 +100,39 @@
 
 .rank-user-point span{
     font-size: x-large;
+}
+
+.main-content{
+    display: flex;
+}
+
+@media (min-width: 300px) {
+    .rank-main {
+        min-width: 375px;
+    }
+    .rank-title div span,
+    .rank-user-ranking span,
+    .rank-user-name span,
+    .rank-user-point span{
+        font-size:large
+    }
+    .rank-user-ranking span{
+        padding-right:  0.1em;
+    }
+
+}
+
+@media (min-width: 800px) {
+    .rank-main {
+        min-width: 1000px;
+    }
+    .rank-title div span,
+    .rank-user-ranking span,
+    .rank-user-name span,
+    .rank-user-point span{
+        font-size:xx-large
+    }
+    .rank-user-ranking span{
+        padding-right:  0.5em;
+    }
 }
