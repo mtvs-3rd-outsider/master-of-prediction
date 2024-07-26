@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<div th:fragment="content">
+<div id="top-div" th:fragment="content">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +14,8 @@
     <link rel="stylesheet" th:href="@{/css/betting-page/batting-side.css}"/>
     <link rel="stylesheet" th:href="@{/css/betting-page/batting-modal.css}"/>
     <link rel="stylesheet" th:href="@{/css/betting-page/batting-title.css}"/>
+    <link rel="stylesheet" th:href="@{/css/betting-page/betting-respon.css}" media="screen and (max-width: 760px)">
+
 </head>
 <body>
 <div class="html-container">
@@ -30,13 +32,20 @@
                         <li><span id="title-schedule-icon" class="material-symbols-outlined">schedule</span><span th:text="${subject.subjectRegisterTimestamp.toString().split(' ')[0]}"></span></li>
                         <li>~</li>
                         <li th:text="${subject.getSubjectSettlementTimestamp().toString().split(' ')[0]}"></li>
-                        <li id="betting-state" th:text="${subject.subjectStatus}"></li>
-                        <li th:text="${userAuthority}"></li>
+                        <li class="response-title-off" id="betting-state" th:text="${subject.subjectStatus}"></li>
+                        <li class="response-title-off" th:text="${userAuthority}"></li>
+                    </ul>
+                    <ul>
                         <li><button class="accountBtn"
                                     th:text="'정산하기'"
-                                    th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}"
-                                    id="openModalBtn">aaa</button></li>
-                        <li th:text="${subject.subjectFinishResult}" th:style="${isAccountBtnOn ? 'display:block;' : 'display:none;'}"></li>
+                                    th:style="${(isAccountBtnOn&&(subject.subjectFinishResult==null)) ? 'display:block;' : 'display:none;'}"
+                                    id="openModalBtn"
+                                    th:classappend="${hideButton} ? 'hideButton' : ''"
+                        >aaa</button></li>
+                        <li id="finishResult"
+                            th:text="${subject.subjectFinishResult} + ' 승리'"
+                            th:style="${(subject.subjectFinishResult != null) ? 'display:block;' : 'display:none;'}">
+                        </li>
                     </ul>
                     <h2 th:text="${subject.subjectTitle}"></h2>
                 </div>
@@ -157,6 +166,10 @@
                     <li class="sell-item">
                         <button onclick="sideSelectSell()">판매</button>
                     </li>
+                    <li  id="side-cancle">
+                        <span onclick="sideCancle()"
+                              class="material-symbols-outlined">close</span>
+                    </li>
                 </ul>
             </div>
             <div class="side_main-container">
@@ -170,7 +183,7 @@
 <div class="batting_modal-container" style="display: none;">
 
 </div>
-<div id="myModal" class="modal">
+<div id="myModal" class="modal" >
     <div class="modal-content">
         <span class="close">&times;</span>
         <p>승리 결과를 선택해주세요</p>
@@ -179,6 +192,10 @@
     </div>
 </div>
 
+<div class="buy-mobile-content">
+    <button onclick="sideOpen()">구매하기</button>
+</div>
+<input type="hidden" id="userPoint" th:value="${userPoint}">
 <input type="hidden" id="loggedSubjectNo" th:value="${subject.getSubjectNo()}"/>
 
 <input type="hidden" id="subjectNo" th:value="${subject.getSubjectNo()}"/>

@@ -18,9 +18,6 @@ public class UserAttachmentDTO implements AttachmentFileAddressable {
 
 
     public TblAttachmentDTO getAttachment() {
-        if(attachment == null) {
-            attachment = new TblAttachmentDTO(0, "/images/upload/logo2.png", 0, 0, 0, 0, 0, 0, 0);
-        }
         return attachment;
     }
 

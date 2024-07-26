@@ -52,6 +52,12 @@
     color: gray;
     background-color: white;
 }
+@media (max-width: 760px){
+    .popup_setting-content{
+        top: 0;
+        left: 140px;
+    }
+}
 
 .popup_setting-content p{
     display: flex;

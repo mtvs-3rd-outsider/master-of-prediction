@@ -1,3 +1,4 @@
+
 .side-container {
     width: 25%; /* side-container의 너비 설정 */
     max-width: 300px;
@@ -10,7 +11,9 @@
     right: calc((100vw - 1100px) / 2);
     top: 200px;
 }
-
+@media screen and(max-width: 760px){
+    .side-container{display: none}
+}
 .side_title-content{
     border-bottom: 1px solid rgba(128,128,128,0.5);
     flex-wrap: wrap;
@@ -47,6 +50,7 @@
     color: gray;
     font-weight:bold ;
 }
+
 
 .side_main-container ul {
     list-style-type: none;
@@ -141,6 +145,11 @@
     -moz-appearance: textfield;
     border:none;
 }
+#side-cancle{
+    display: none;
+    font-size: 30px;
+    padding-left: 130px;
+}
 
 .side-point-input input[type=number]::-webkit-outer-spin-button,
 .side-point-input input[type=number]::-webkit-inner-spin-button {
@@ -180,5 +189,8 @@
     color: #6750A4;
 }
 #returnPoint{
+    color: lightgreen;
+}
+#havePoint{
     color: lightgreen;
 }

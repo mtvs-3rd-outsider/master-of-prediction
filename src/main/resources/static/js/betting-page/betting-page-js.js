@@ -8,6 +8,10 @@ let chartInstance = null;
 var copyGraphDataList;
 var subjectNo= document.getElementById("subjectNo").value;
 let bettingState = document.getElementById("betting-state").textContent;
+const width = window.innerWidth;
+const height = window.innerHeight;
+
+
 // 페이지 로드 시와 창 크기 변경 시 업데이트 함수 호출
 const initBettingPage = function () {
     if(document.getElementById("loggedInUserId").value==0){
@@ -16,6 +20,7 @@ const initBettingPage = function () {
         login=true;
     }
 
+    console.log(width);
 
     sideSelectBuy();
     graphSettingButton(5);
@@ -29,7 +34,30 @@ const initBettingPage = function () {
     // popup_setting-content 숨기기
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
+    document.querySelector('.mobile-have-point').style.display='none';
+    // const resultModal = document.getElementById("myModal");
+    // resultModal.style.display = 'flex';
+    //반응형
+    responsive();
 }
+
+function responsive() {
+    const htmlContainer = document.getElementById("top-div");
+    const currentWidth = htmlContainer.offsetWidth; // top-div의 너비 가져오기
+
+    if (currentWidth <= 760) {
+        document.querySelector(".html-container").style.width = currentWidth + "px"; // top-div의 너비에 맞춰 설정
+        document.querySelector('.side-container').style.display='none';
+        document.querySelector('.mobile-have-point').style.display='block';
+        if (login===true){
+            document.getElementById('havePoint').innerText=document.getElementById('userPoint').value;
+        }
+    } else {
+        document.querySelector(".buy-mobile-content").style.display='none';
+        document.querySelector(".html-container").style.width = ""; // 760px 초과 시 기본값으로 되돌리기
+    }
+}
+
 window.addEventListener('load', initBettingPage);
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -185,9 +213,10 @@ function createSideMain() {
             </li>
             <li>
                 <div class="side-return-content">
-                    보유포인트 <span id="returnPoint"><span>Point</span></span>
+                    보유상품<span id="YesOrNo"></span> <span id="returnPoint"><span>Point</span></span>
                 </div>
             </li>
+            <li class="mobile-have-point"> <div> 보유포인트<span id="havePoint"><span>Point</span></span></div></li>
         </ul>
     </div>
     `;
@@ -198,6 +227,7 @@ function createSideMain() {
 }
 
 function yesButton(){
+    document.getElementById('YesOrNo').innerText="Yes";
     selectedChoice = 'YES';
     enableInput();
     updateReturnPoint(sumYPoint);
@@ -209,6 +239,7 @@ function yesButton(){
 }
 
 function noButton(){
+    document.getElementById("YesOrNo").innerText="No";
     selectedChoice = 'NO';
     enableInput();
     updateReturnPoint(sumNPoint);
@@ -796,6 +827,7 @@ yesBtn.onclick = function() {
         .then(data => {
             console.log('Success:', data);
             modal.style.display = "none";
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);
@@ -825,4 +857,20 @@ noBtn.onclick = function() {
 function fnKeyupNum(evt) {
     // 숫자가 아닌 문자인 경우 모두 빈('') 문자로 치환
     evt.value = evt.value.replace(/[^0-9]/g, '');
+}
+
+function sideCancle(){
+    document.querySelector('.side-container').style.display='none';
+}
+function sideOpen(){
+    const sideContainer =document.querySelector('.side-container');
+    const sideBuyContent =document.querySelector(".side_buy-content")
+    const sideSellContent = document.querySelector('.side_sell-content');
+
+    if(sideContainer.style.display==="none"){
+        sideContainer.style.display='block';
+    }else{
+        sideContainer.style.display='none';
+    }
+
 }

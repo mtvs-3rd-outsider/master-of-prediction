@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
         import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import java.util.HashMap;
@@ -70,7 +70,6 @@ public class BettingController {
             returnNRate = (int) (subject.getSubjectTotalNoPoint() / (float) (subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) * 100) + "% Chance";
         }
 
-        System.out.println(returnYRate);
         String attachmentFileAddress = FileUtil.checkFileOrigin(attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress());
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 
@@ -94,11 +93,15 @@ public class BettingController {
     }
 
     @PostMapping("/accountResult")
-    public void handleYes(@RequestBody Map<String, String> payload) {
+    public String handleAccountResult(@RequestBody Map<String, String> payload, RedirectAttributes redirectAttributes) {
         String result = payload.get("result");
         long subNo =Long.parseLong(payload.get("subNo"));
-        subjectService.setSubjectFinishResult(subNo,result);
-        subjectService.BetSettlement(subNo);
+        subjectService.BettingSettlement(subNo, result);
+//        subjectService.setSubjectFinishResult(subNo,result);
+//        subjectService.BetSettlement(subNo);
+        redirectAttributes.addFlashAttribute("hideButton", true);
+        System.out.println("!!!!!!!!!");
+        return "redirect:/https://master-of-prediction.shop:8081/betting/" + subNo;
     }
 
     /**

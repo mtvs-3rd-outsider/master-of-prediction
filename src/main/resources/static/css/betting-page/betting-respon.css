@@ -1,0 +1,382 @@
+.html-container {
+    margin: 0 auto;
+    padding: 0;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+#top-div {
+    display: flex;
+    flex-direction: column; /* 모바일에서 수직 방향으로 정렬 */
+}
+
+.body-container {
+    width: 100%; /* 모바일에서 너비를 100%로 설정 */
+    max-width: 1100px; /* 최대 너비 제한 */
+    transition: transform 0.2s;
+    display: flex;
+    flex-direction: column; /* 모바일에서 수직 방향으로 정렬 */
+    justify-content: space-between;
+    position: relative;
+}
+
+.main-container {
+    width: 100%; /* 모바일에서 너비를 100%로 설정 */
+    max-width: 800px;
+    background-color: #fff;
+    transition: transform 0.2s;
+}
+
+.batting_modal-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.accountBtn {
+    background: none;
+    border: none;
+    color: #007BFF;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+    text-align: left;
+    display: inline;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.accountBtn:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.accountBtn:focus {
+    outline: none;
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.accountBtn:active {
+    color: #003d7a;
+}
+
+.hideButton {
+    display: none;
+}
+
+.side-container {
+    width: 100%; /* 모바일에서 너비를 100%로 설정 */
+    max-width: 300px;
+    height: auto; /* 높이 자동 조정 */
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    border-radius: 15px;
+    position: static; /* 모바일에서 고정 위치 해제 */
+    margin-top: 20px; /* 모바일에서 상단 여백 추가 */
+}
+
+.side_title-content {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.5);
+    flex-wrap: wrap;
+}
+
+.side_title-content ul {
+    display: flex;
+    flex-wrap: wrap;
+    list-style: none;
+    margin: 0 5%;
+    padding: 0;
+}
+
+.side_title-content li {
+    margin: 0;
+    cursor: pointer;
+    font-weight: bolder;
+}
+
+.side_title-content button {
+    border: none;
+    width: 70px;
+    height: 50px;
+    font-size: 16px;
+    color: gray;
+    background-color: white;
+}
+
+.side_main-container {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+    font-size: 16px;
+    color: gray;
+    font-weight: bold;
+}
+
+.side_main-container ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.side_main-container li {
+    margin-bottom: 15px;
+}
+
+.side_main-container .yesno-button {
+    width: 130px;
+    height: 50px;
+    font-size: 16px;
+    border: none;
+    background-color: #f0f0f0;
+    text-align: center;
+    border-radius: 15px;
+    cursor: pointer;
+}
+
+.batting-buy-modal,
+.batting-sell-modal {
+    border-radius: 10px;
+    border: none;
+    background-color: #6750A4;
+    width: 100%;
+    font-size: 18px;
+    color: white;
+    font-weight: bold;
+    height: 50px;
+    cursor: pointer;
+}
+
+.side_main-container [type="number"] {
+    width: 100%;
+    height: 40px;
+    text-align: center;
+    font-size: 20px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    border-radius: 15px;
+}
+
+.side_main-container input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.buy-item button {
+    margin: 0;
+    padding: 0;
+    height: 50px;
+    width: 40px;
+    cursor: pointer;
+}
+
+.sell-item button {
+    width: 40px;
+    height: 50px;
+    margin-left: 20px;
+    padding: 0;
+    cursor: pointer;
+}
+
+.side_buy-yesno-li {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.side-point-input {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: 1px solid rgba(128, 128, 128, 0.5);
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+
+.side-point-input input[type="number"] {
+    -webkit-appearance: none;
+    -moz-appearance: textfield;
+}
+
+.side-point-input input[type="number"]::-webkit-outer-spin-button,
+.side-point-input input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.side-point-input input[type="number"]:focus {
+    outline: none;
+}
+
+.side-point-input button {
+    border: 0;
+    height: 30px;
+    width: 30px;
+    font-size: 25px;
+    margin-left: 10px;
+    margin-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.side_buy-content,
+.side_sell-content {
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+
+.side-sum-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+.side-return-content {
+    display: flex;
+    justify-content: space-between;
+}
+
+#totalPoint {
+    color: #6750A4;
+}
+
+#returnPoint {
+    color: lightgreen;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+    margin-left: 100px;
+    vertical-align: middle;
+}
+
+.switch input {
+    display: none;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+input:checked + .slider {
+    background-color: #6750A4;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #6750A4;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+    .body-container {
+        flex-direction: column;
+    }
+
+    .main-container {
+        width: 100%;
+    }
+
+    .side-container {
+        display: none;
+        position: fixed;
+        top: 100px;
+        left: 50px;
+    }
+
+    .graph_canvas-content canvas {
+        width: 100% !important;
+    }
+
+    .graph_setting-content ul {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .graph_setting-content ul li {
+        margin: 0 5px;
+    }
+
+    .side_main-container {
+        height: auto;
+    }
+
+    #inputPoint{
+        height: 35px;
+    }
+    #side-cancle{
+        display: block;
+    }
+    .side_title-content ul {
+        justify-content: center;
+    }
+    .title_text-content ul{
+        flex-direction: column;
+    }
+    .buy-mobile-content button{
+        display: block;
+        position: fixed;
+        bottom: 22px;
+        left: 22px;
+        width: 150px;
+        font-weight: 600;
+        background-color: rgba(252, 58, 21, 0.43);
+        text-align: center;
+        line-height: 50px;
+        color: #442E29;
+        font-size: 20px;
+        border-radius: 5px;
+        transition: all 0.2s;
+        box-shadow: 0 5px 0 0 #80564D;
+        border: none;
+    }
+    .buy-mobile-content button:hover{
+        bottom: 17px;
+        box-shadow: 0 0 0 0 #80564D;
+        cursor: pointer;
+    }
+}
+

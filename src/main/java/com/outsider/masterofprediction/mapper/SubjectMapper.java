@@ -117,7 +117,7 @@ public interface SubjectMapper {
     long getSubjectRegistUserNoBySubjectNo(long subjectNo);
 
     @Update("UPDATE tbl_subject SET " +
-            "subject_finish_result = #{result}, subject_finish_timestamp = #{now} " +
+            "subject_finish_result = #{result}, subject_finish_timestamp = #{now}, subject_status = '종료' " +
             "WHERE subject_no = #{subjectNo}")
     void setSubjectFinishResult(long subjectNo, String result, LocalDateTime now);
 

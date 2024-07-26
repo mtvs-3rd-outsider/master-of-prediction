@@ -35,18 +35,19 @@ public class SearchPageController {
     public ModelAndView getSearchPage(ModelAndView mv,
                                       @RequestParam(value="searchWord", required=false, defaultValue = "") String searchWord) {
 
-/*        List<String> wordList = new ArrayList<String>();
+        List<String> wordList = new ArrayList<String>();
 
         String[] splitStr = searchWord.split(" ");
+
         for(int i = 0; i < splitStr.length; i++) {
-            wordList.add(splitStr[i]);
+            if(splitStr[i].length() > 0) {
+                wordList.add(splitStr[i]);
+            }
         }
 
         System.out.println(wordList);
 
-        System.out.println("a");*/
-
-        List<SearchPageSubjectDTO> searchPageSubjectDTOs =  searchPageService.findSearchPageSubjectList("*" + searchWord + "*");
+        List<SearchPageSubjectDTO> searchPageSubjectDTOs =  searchPageService.findSearchPageSubjectList(wordList);
 
         mv.setViewName("layout/index");
         mv.addObject("subjects", searchPageSubjectDTOs);

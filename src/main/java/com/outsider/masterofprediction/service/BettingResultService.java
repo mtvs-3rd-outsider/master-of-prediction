@@ -17,7 +17,7 @@ public class BettingResultService {
 
     @Transactional
     public void updateBettingResult(Long subjectNo, String result) {
-        if (!subjectService.setSubjectFinishResult(subjectNo, result) || !subjectService.BetSettlement(subjectNo)) {
+        if (!subjectService.BettingSettlement(subjectNo, result)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data provided");
         }
     }

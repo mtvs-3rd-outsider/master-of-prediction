@@ -96,7 +96,7 @@
     <script>
         function enterKey(event){
             if (event.keyCode === 13) {
-                var inputValue =  document.getElementById('header-search-parent').value;
+                var inputValue =  document.getElementById('header-search-parent').value.toString();
 
                 if(inputValue === null || inputValue === ''){
                     // 동작 x
@@ -123,23 +123,6 @@
             menuEl.open = true;
             // menuEl.open = !menuEl.open;
         });
-
-        document.getElementById("searchBtn").onclick = function(){
-            let searchWord = document.getElementById("searchWord").value;
-
-            // let url = "/search?searchWord" + encodeURIComponent(searchWord);
-
-            href = "/";
-        };
-
-        document.getElementById("header-search-parent").onkeypress = function(){
-          if(event.keyCode == 13){
-              console.log(1234);
-          }
-        };
-
-
-
     </script>
     <md-dialog type="alert" id='sign-up-dialog'>
         <div slot="headline">회원가입</div>

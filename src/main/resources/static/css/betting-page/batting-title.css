@@ -15,6 +15,11 @@
     display: flex; /* flexbox 사용 */
     align-items: center; /* 세로 방향 중앙 정렬 */
 }
+#finishResult{
+    color: red;
+    font-size: 16px;
+}
+
 
 .title_text-content ul{
     list-style-type: none;
@@ -22,7 +27,7 @@
     display: flex;
     font-size: 13px;
     align-items: center;
-    margin-bottom: 0;
+    margin-bottom: 5px;
     color: gray;
 
 }
@@ -48,6 +53,11 @@
 }
 
 #betting-state{
+    font-size: 15px;
+    font-weight: bold;
+    color: red;
+}
+#betting-state2{
     font-size: 15px;
     font-weight: bold;
     color: red;

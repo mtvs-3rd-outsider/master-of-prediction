@@ -69,8 +69,9 @@ public interface UserMapper {
             "user_name, " +
             "user_email, " +
             "user_password, " +
-            "user_authority" +
-            ") VALUES  (#{name}, #{email}, #{password}, #{authority})")
+            "user_authority, " +
+            "tier_no" +
+            ") VALUES  (#{name}, #{email}, #{password}, #{authority}, #{tierNo})")
     @ResultMap("userResultMap")
     @Options(useGeneratedKeys = true, keyProperty = "id")
     void createUserObject(User user);
@@ -88,7 +89,7 @@ public interface UserMapper {
     void deleteUser(String email);
         //id로 유저 포인트 업데이트
     @Update("UPDATE tbl_user SET " +
-            "user_point=#{point} " +
+            "user_point=user_point+#{point} " +
             "WHERE user_no=#{id}"
     )
     void updateUserPointById(Long id, BigDecimal point);
