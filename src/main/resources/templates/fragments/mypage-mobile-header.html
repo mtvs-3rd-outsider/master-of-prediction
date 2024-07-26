@@ -48,6 +48,9 @@
                     <md-menu-item sec:authorize="isAuthenticated()" th:href="@{/logout}">
                         <div>Log Out</div>
                     </md-menu-item>
+                    <md-menu-item sec:authorize="isAnonymous()" th:href="@{/login}">
+                        <div>Login</div>
+                    </md-menu-item>
                     <md-menu-item th:href="@{/activitypage}">
                         <div>Activity</div>
                     </md-menu-item>
