@@ -34,7 +34,7 @@ const initBettingPage = function () {
     // popup_setting-content 숨기기
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
-
+    document.querySelector('.mobile-have-point').style.display='none';
     // const resultModal = document.getElementById("myModal");
     // resultModal.style.display = 'flex';
     //반응형
@@ -47,7 +47,13 @@ function responsive() {
 
     if (currentWidth <= 760) {
         document.querySelector(".html-container").style.width = currentWidth + "px"; // top-div의 너비에 맞춰 설정
+        document.querySelector('.side-container').style.display='none';
+        document.querySelector('.mobile-have-point').style.display='block';
+        if (login===true){
+            document.getElementById('havePoint').innerText=document.getElementById('userPoint').value;
+        }
     } else {
+        document.querySelector(".buy-mobile-content").style.display='none';
         document.querySelector(".html-container").style.width = ""; // 760px 초과 시 기본값으로 되돌리기
     }
 }
@@ -207,9 +213,10 @@ function createSideMain() {
             </li>
             <li>
                 <div class="side-return-content">
-                    보유포인트 <span id="returnPoint"><span>Point</span></span>
+                    보유상품<span id="YesOrNo"></span> <span id="returnPoint"><span>Point</span></span>
                 </div>
             </li>
+            <li class="mobile-have-point"> <div> 보유포인트<span id="havePoint"><span>Point</span></span></div></li>
         </ul>
     </div>
     `;
@@ -220,6 +227,7 @@ function createSideMain() {
 }
 
 function yesButton(){
+    document.getElementById('YesOrNo').innerText="Yes";
     selectedChoice = 'YES';
     enableInput();
     updateReturnPoint(sumYPoint);
@@ -231,6 +239,7 @@ function yesButton(){
 }
 
 function noButton(){
+    document.getElementById("YesOrNo").innerText="No";
     selectedChoice = 'NO';
     enableInput();
     updateReturnPoint(sumNPoint);
@@ -855,10 +864,13 @@ function sideCancle(){
 }
 function sideOpen(){
     const sideContainer =document.querySelector('.side-container');
+    const sideBuyContent =document.querySelector(".side_buy-content")
+    const sideSellContent = document.querySelector('.side_sell-content');
+
     if(sideContainer.style.display==="none"){
-        document.querySelector('.side-container').style.display='block';
+        sideContainer.style.display='block';
     }else{
-        document.querySelector('.side-container').style.display='none';
+        sideContainer.style.display='none';
     }
 
 }
