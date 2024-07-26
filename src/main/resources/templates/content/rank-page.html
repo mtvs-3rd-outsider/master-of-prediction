@@ -27,11 +27,37 @@
                     </div>
                 </div>
                 <div class="rank-user-point">
-                    <span th:text="${user.userPoint} + 포인트"></span>
+                    <span class="rank-page-user-point" th:text="${user.userPoint}"></span>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        function formatPoints(points) {
+            if (points >= 1e18) {
+                return (points / 1e18).toFixed(1) + 'P';
+            } else if (points >= 1e12) {
+                return (points / 1e12).toFixed(1) + 'T';
+            } else if (points >= 1e9) {
+                return (points / 1e9).toFixed(1) + 'G';
+            } else if (points >= 1e6) {
+                return (points / 1e6).toFixed(1) + 'M';
+            } else if (points >= 1e3) {
+                return (points / 1e3).toFixed(1) + 'K';
+            } else {
+                return points.toString();
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const pointElements = document.getElementsByClassName('rank-page-user-point');
+            for (let i = 0; i < pointElements.length; i++) {
+                const points = parseInt(pointElements[i].textContent.trim());
+                pointElements[i].textContent = formatPoints(points);
+            }
+        });
+    </script>
 </div>
 </html>
 
