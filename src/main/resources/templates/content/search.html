@@ -7,7 +7,9 @@
           rel="stylesheet"/>
     <div>
         <div class="main-body">
-            <div class="main-surface" th:each="subject: ${subjects}" th:value="${subject.subjectNo}" onclick="onClickSubject(event)">
+            <div class="main-surface" th:each="subject: ${subjects}"
+                 th:style="'background-color: ' + (${subject.subjectStatus.equals('진행중') ? 'white' : '#EDEDED'})"
+                 th:value="${subject.subjectNo}" onclick="onClickSubject(event)">
                 <div class="main-surface-content">
                     <div style="width: 100%">
                         <div class="main-surface-title">

@@ -45,9 +45,6 @@ public class SearchPageController {
         }
 
         List<SearchPageSubjectDTO> searchPageSubjectDTOs =  searchPageService.findSearchPageSubjectList(wordList);
-        for (SearchPageSubjectDTO searchPageSubjectDTO: searchPageSubjectDTOs){
-            System.out.println(searchPageSubjectDTO);
-        }
         ConvertImageUrl.convert(searchPageSubjectDTOs);
 
         mv.setViewName("layout/index");

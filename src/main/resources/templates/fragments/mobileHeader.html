@@ -78,15 +78,13 @@
         <div>
             <swiper-container class="mySwiper" slides-per-view="5"
                                   space-between="1" free-mode="true">
-<!--            <ul id="header-ul">-->
-                <swiper-slide><a class="a-attr-remove" href="">전체</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">인기</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">최신</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">많은</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">곧 마감</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">종료된</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="">찜한</a></swiper-slide>
-<!--            </ul>-->
+
+                <swiper-slide><a class="a-attr-remove" href="/category/all">전체</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="/recent">최신순</a></swiper-slide>
+                <swiper-slide th:each="category : ${categories}">
+                    <a class="a-attr-remove" th:href="'/category/' + ${category.categoryNo}"
+                       th:text="${category.categoryName}"></a>
+                </swiper-slide>
             </swiper-container>
         </div>
     </div>

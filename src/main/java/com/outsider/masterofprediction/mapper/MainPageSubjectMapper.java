@@ -81,6 +81,7 @@ public interface MainPageSubjectMapper {
             "        FROM " +
             "            tbl_attachment " +
             "    ) ta ON s.subject_no = ta.subject_no " +
+            "WHERE s.subject_status = '진행중' " +
             "ORDER BY " +
             "    (s.subject_total_no_point + s.subject_total_yes_point) DESC " +
             "LIMIT 12;"
