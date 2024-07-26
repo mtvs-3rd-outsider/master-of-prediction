@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+
+</head>
+<div class="main-active" th:fragment="content">
+    <link rel="stylesheet" th:href="@{/css/activity-page/activitypage.css}"/>
+    <div class="main-body-active">
+        <div class="main-body-see-all">
+            <span class="main-active-rank-title">Activity</span>
+        </div>
+        <div>
+            <div class="main-active-item" th:each="item: ${activity}">
+                <div class="main-active-item-div">
+                    <!--                    <img class="main-active-item-img" src="../images/logo.png"/>-->
+                    <img class="main-active-item-img" th:src="${item.attachmentSubject.attachmentFileAddress}"/>
+                </div>
+                <div style="flex: 1;">
+                    <p class="main-active-item-title" th:text="${item.subject.subjectTitle}">Will Joe Biden win the 2024
+                        Democratic Presidential
+                        Nomination?</p>
+                    <div class="main-active-item-user">
+                        <div class="main-active-item-user-div">
+                            <!--                            <img class="main-active-item-img" src="../images/logo2.png"/>-->
+                            <img class="main-active-item-img" th:src="${item.attachmentUser.attachmentFileAddress}"/>
+                        </div>
+                        <p class="main-active-item-title" th:text="${item.user.userName}">0x20Fdb9C 059Fb34...</p>
+                        <div th:switch="${item.orderChoice}">
+                            <p class="main-active-item-title"
+                               th:case="'Yes'">
+                                bought Yes at [[${item.orderAmount}]]p
+                            </p>
+                            <p class="main-active-item-title"
+                               th:case="'No'">
+                                sold Yes at [[${item.orderAmount}]] ([[${amount}]])p
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <!--                    <p th:text="${#dates.format(item.orderTimestamp, 'yyyy-MM-dd HH:mm')}">30s ago</p>-->
+<!--                    <p class="time-ago" th:text="${item.orderTimestamp}">30s ago</p>-->
+                    <p class="time-ago" th:attr="data-time=${item.orderTimestamp}">Loading...</p>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+        // 자바스크립트 함수를 페이지에 포함
+        function timeDifference(serverTime) {
+            const serverDate = new Date(serverTime);
+            const currentDate = new Date();
+            let diffInMs = currentDate - serverDate;
+            let diffInSeconds = Math.floor(diffInMs / 1000);
+
+            const days = Math.floor(diffInSeconds / (24 * 3600));
+            diffInSeconds -= days * 24 * 3600;
+            const hours = Math.floor(diffInSeconds / 3600);
+            diffInSeconds -= hours * 3600;
+            const minutes = Math.floor(diffInSeconds / 60);
+            const seconds = diffInSeconds - minutes * 60;
+
+            if (days > 0) {
+                return `${days}d`;
+            } else if (hours > 0) {
+                return `${hours}h`;
+            } else if (minutes > 0) {
+                return `${minutes}m`;
+            } else {
+                return `${seconds}s`;
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const elements = document.querySelectorAll('.time-ago');
+            elements.forEach(function(element) {
+                const serverTime = element.getAttribute('data-time');
+                const timeDiff = timeDifference(serverTime);
+                element.textContent = timeDiff + " ago";
+            });
+        });
+    </script>
+</div>
