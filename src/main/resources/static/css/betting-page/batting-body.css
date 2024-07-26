@@ -27,6 +27,7 @@
     transition: transform 0.2s; /* 줌아웃 시 부드러운 애니메이션 */
 }
 
+
 .batting_modal-container {
     position: absolute;
     top: 50%;
