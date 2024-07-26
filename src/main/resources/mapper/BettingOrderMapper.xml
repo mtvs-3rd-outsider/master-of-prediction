@@ -645,7 +645,7 @@ WHERE
     <select id="getUsersBySubjectNo"
             resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         SELECT
-            order_user_no
+            order_user_no,order_subject_no
         FROM
             TBL_BETTING_ORDER
         WHERE

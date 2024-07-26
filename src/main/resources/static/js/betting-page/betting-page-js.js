@@ -29,6 +29,11 @@ const initBettingPage = function () {
     // popup_setting-content 숨기기
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
+
+    // const resultModal = document.getElementById("myModal");
+    // resultModal.style.display = 'flex';
+    //반응형
+    responsive();
 }
 window.addEventListener('load', initBettingPage);
 
@@ -796,6 +801,7 @@ yesBtn.onclick = function() {
         .then(data => {
             console.log('Success:', data);
             modal.style.display = "none";
+            location.reload();
         })
         .catch((error) => {
             console.error('Error:', error);
