@@ -38,6 +38,7 @@ const initBettingPage = function () {
     // const resultModal = document.getElementById("myModal");
     // resultModal.style.display = 'flex';
     //반응형
+
     responsive();
 }
 
@@ -50,7 +51,7 @@ function responsive() {
         document.querySelector('.side-container').style.display='none';
         document.querySelector('.mobile-have-point').style.display='block';
         if (login===true){
-            document.getElementById('havePoint').innerText=document.getElementById('userPoint').value;
+            document.getElementById('havePoint').innerText=document.getElementById('userPoint').value+"Point";
         }
     } else {
         document.querySelector(".buy-mobile-content").style.display='none';
@@ -169,20 +170,20 @@ function createSideMain() {
             if (bettingState==="진행중"){
                 battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" >구매</button>`;
             }else {
-                battingModalStr = `<button class="batting-buy-modal">구매</button>`;
+                battingModalStr = `<button class="batting-non-modal">종료된 상품</button>`;
             }
         } else {
             if (bettingState==="진행중"){
                 battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
             }else{
-                battingModalStr = `<button class="batting-sell-modal"">판매</button>`;
+                battingModalStr = `<button class="batting-non-modal"">종료된 상품</button>`;
             }
         }
     } else {
         if (sideSelect === true) {
-            battingModalStr = `<button class="batting-buy-modal" >구매</button>`;
+            battingModalStr = `<button class="batting-non-modal">로그인 하세요</button>`;
         } else {
-            battingModalStr = `<button class="batting-sell-modal" >판매</button>`;
+            battingModalStr = `<button class="batting-non-modal">로그인 하세요</button>`;
         }
     }
     const sideHtml = `
@@ -216,7 +217,7 @@ function createSideMain() {
                     보유상품<span id="YesOrNo"></span> <span id="returnPoint"><span>Point</span></span>
                 </div>
             </li>
-            <li class="mobile-have-point"> <div> 보유포인트<span id="havePoint"><span>Point</span></span></div></li>
+            <li class="mobile-have-point"> <div class="side-have-content"> 보유포인트<span id="havePoint"><span>Point</span></span></div></li>
         </ul>
     </div>
     `;

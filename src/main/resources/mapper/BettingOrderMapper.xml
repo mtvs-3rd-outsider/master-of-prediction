@@ -275,11 +275,13 @@ WHERE
                         END
             ) AS total_position_value
         FROM
-            TBL_USER u
-                JOIN
-            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+
+            TBL_BETTING_ORDER bo
                 JOIN
             TBL_Subject c ON bo.order_subject_no = c.subject_no
+        WHERE
+            bo.order_user_no = #{userId}
+        AND c.subject_status = '진행중';
     </select>
     <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         INSERT INTO tbl_betting_order (
@@ -643,13 +645,15 @@ WHERE
             order_user_no = #{userNo} AND order_subject_no = #{orderSubjectNo} AND order_choice = #{orderChoice}
     </select>
     <select id="getUsersBySubjectNo"
-            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+            resultType="com.outsider.masterofprediction.dto.TblBettingOrderDTO" parameterType="hashmap">
         SELECT
-            order_user_no,order_subject_no
+            order_user_no
         FROM
             TBL_BETTING_ORDER
         WHERE
-            order_subject_no = #{orderSubjectNo}
+            order_subject_no = #{subjectNo} and
+            order_choice=#{result}
+        group by order_user_no;
     </select>
 
 </mapper>

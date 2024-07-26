@@ -7,7 +7,7 @@
         <id property="subjectNo" column="SUBJECT_NO"></id>
         <result property="subjectTitle" column="SUBJECT_TITLE"/>
         <result property="subjectStatus" column="SUBJECT_STATUS"/>
-        <result property="totalPoints" column="TOTAL_POINT"/>
+        <result property="totalPoints" column="TOTAL_POINTS"/>
         <result property="yesPercentage" column="YES_PERCENTAGE"/>
         <result property="noPercentage" column="NO_PERCENTAGE"/>
         <result property="totalCommentsReplies" column="TOTAL_COMMENTS_REPLIES"/>
@@ -95,6 +95,5 @@
             </foreach>
         ORDER BY
             (s.subject_total_no_point + s.subject_total_yes_point) DESC;
-
     </select>
 </mapper>

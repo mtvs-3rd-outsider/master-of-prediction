@@ -1,5 +1,6 @@
 package com.outsider.masterofprediction.service;
 
+import com.outsider.masterofprediction.dto.RankingDTO;
 import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
 import com.outsider.masterofprediction.dto.TblSubjectDTO;
 import com.outsider.masterofprediction.dto.UserSubjectDTO;
@@ -15,7 +16,10 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SubjectService {
@@ -73,10 +77,14 @@ public class SubjectService {
         //결과 상품의 정보 가져오기
 
         // 해당 상품 승리에 베팅한 사람들의 정보 가져오기
-        List<TblBettingOrderDTO> users = bettingOrderMapper.getUsersBySubjectNo(subjectNo);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("subjectNo",subjectNo);
+        map.put("result",result);
+
+        List<TblBettingOrderDTO> users =  bettingOrderMapper.getUsersBySubjectNo(map);
 
         for (TblBettingOrderDTO user : users) {
-
 
             List<TblBettingOrderDTO> userBettingOrders = bettingOrderMapper.getBettingOrdersByUserSubjectDTO(new UserSubjectDTO(user.getOrderUserNo(),subjectNo, result));
 

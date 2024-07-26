@@ -23,9 +23,18 @@ public class CustomUserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         User user = userMapper.findByEmail(userEmail);
+        CheckWithdrawalStatus(user);
         if (user != null){
             return new CustomUserDetail(user);
         }
         return null;
+    }
+
+    public void CheckWithdrawalStatus(User user) {
+        if(user.getWithdrawalStatus())
+        {
+            user.setWithdrawalStatus(false);
+            userMapper.updateWithdrawalStatusByUser(user);
+        }
     }
 }

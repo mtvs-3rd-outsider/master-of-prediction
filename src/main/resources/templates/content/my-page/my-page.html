@@ -348,9 +348,10 @@
                     const itemElement = document.createElement('a');
                     itemElement.classList.add('item');
                     itemElement.href = `/betting/${item.subjectNo}`;
-                    let subjectFinish;
+                    let subjectFinish="대기";
                     let color;
-
+                    if(item.subjectStatus =="종료")
+                    {
                     if (item.orderChoice === item.subjectFinishResult) {
                         subjectFinish = '승리';
                         color = 'green'; // 초록색
@@ -358,6 +359,8 @@
                         subjectFinish = '패배';
                         color = 'red'; // 빨간색
                     }
+                    }
+
                     itemElement.innerHTML=`
                 <span>${item.subjectTitle}</span>
                 <div class="flex">

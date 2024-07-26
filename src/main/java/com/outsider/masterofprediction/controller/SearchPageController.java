@@ -1,12 +1,12 @@
 package com.outsider.masterofprediction.controller;
 
-import com.mysql.cj.util.StringUtils;
-import com.outsider.masterofprediction.dto.CategoryPageSubjectDTO;
+
 import com.outsider.masterofprediction.dto.SearchPageSubjectDTO;
-import com.outsider.masterofprediction.mapper.SearchPageMapper;
+
 import com.outsider.masterofprediction.service.CategoryService;
 import com.outsider.masterofprediction.service.SearchPageService;
-import jakarta.servlet.http.HttpServletRequest;
+
+import com.outsider.masterofprediction.utils.ConvertImageUrl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 @Controller
 @RequestMapping("/search")
@@ -45,13 +44,14 @@ public class SearchPageController {
             }
         }
 
-        System.out.println(wordList);
-
         List<SearchPageSubjectDTO> searchPageSubjectDTOs =  searchPageService.findSearchPageSubjectList(wordList);
+        for (SearchPageSubjectDTO searchPageSubjectDTO: searchPageSubjectDTOs){
+            System.out.println(searchPageSubjectDTO);
+        }
+        ConvertImageUrl.convert(searchPageSubjectDTOs);
 
         mv.setViewName("layout/index");
         mv.addObject("subjects", searchPageSubjectDTOs);
-        mv.addObject("categories", categoryService.findAll());
         mv.addObject("title", "Master Of Prediction");
         mv.addObject("view", "content/search");
 

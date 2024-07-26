@@ -20,15 +20,15 @@
                     </div>
                 </div>
                 <div class="main-surface-button-box">
-                    <md-elevated-button class="main-surface-yes-button" th:text="${subject.yesPercentage} + 'Yes'">50%
+                    <md-elevated-button class="main-surface-yes-button" th:text="${subject.yesPercentage} + ' Yes'">50%
                         YES
                     </md-elevated-button>
-                    <md-elevated-button class="main-surface-no-button" th:text="${subject.noPercentage} + 'No'">50% No
+                    <md-elevated-button class="main-surface-no-button" th:text="${subject.noPercentage} + ' No'">50% No
                     </md-elevated-button>
                 </div>
                 <div class="main-surface-footer">
                     <div class="main-surface-footer-left">
-                        <span class="material-symbols-outlined">paid</span>
+                        <span class="material-symbols-outlined paid">paid</span>
                         <!--                            <span>144.5 Points</span>-->
                         <span th:text="${subject.totalPoints} + 'Points'">144.5 Points</span>
                     </div>
