@@ -275,11 +275,13 @@ WHERE
                         END
             ) AS total_position_value
         FROM
-            TBL_USER u
-                JOIN
-            TBL_BETTING_ORDER bo ON u.user_no = bo.order_user_no
+
+            TBL_BETTING_ORDER bo
                 JOIN
             TBL_Subject c ON bo.order_subject_no = c.subject_no
+        WHERE
+            bo.order_user_no = #{userId}
+        AND c.subject_status = '진행중';
     </select>
     <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
         INSERT INTO tbl_betting_order (
