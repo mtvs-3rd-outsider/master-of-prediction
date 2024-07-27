@@ -29,6 +29,7 @@ services:
       - ./my.cnf:/etc/mysql/my.cnf
 #      - ./DDL.sql:/docker-entrypoint-initdb.d/init.sql
   redis:
+    restart: always
     image: "redis:latest"
     container_name: "my-redis"
     ports:

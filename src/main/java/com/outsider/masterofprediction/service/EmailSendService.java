@@ -1,6 +1,7 @@
 package com.outsider.masterofprediction.service;
 
 import com.outsider.masterofprediction.config.RedisConfig;
+import com.outsider.masterofprediction.dto.EmailAuthDto;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,40 +15,56 @@ import org.springframework.stereotype.Service;
 import java.util.Objects;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 @Service
 @Profile("user")
 public class EmailSendService {
-    @Autowired
     private JavaMailSender javaMailSender;
-    @Autowired
     private RedisConfig redisConfig;
-    private int authNumber;
 
     /* 이메일 인증에 필요한 정보 */
     @Value("${spring.mail.username}")
     private String serviceName;
 
+    public EmailSendService(JavaMailSender javaMailSender, RedisConfig redisConfig) {
+        this.javaMailSender = javaMailSender;
+        this.redisConfig = redisConfig;
+    }
+
     /* 랜덤 인증번호 생성 */
-    public void makeRandomNum() {
+    public Integer makeRandomNum() {
         Random r = new Random();
         String randomNumber = "";
         for(int i = 0; i < 6; i++) {
             randomNumber += Integer.toString(r.nextInt(10));
         }
 
-        authNumber = Integer.parseInt(randomNumber);
+        return Integer.parseInt(randomNumber);
+    }
+    public void setData(String key, EmailAuthDto data) {
+        ValueOperations<String, Object> ops = redisConfig.redisTemplate().opsForValue();
+        ops.set(key, data , 180, TimeUnit.SECONDS);
+    }
+    public void updateData(String key, EmailAuthDto data) {
+        ValueOperations<String, Object> ops = redisConfig.redisTemplate().opsForValue();
+        ops.set(key, data);
+    }
+    public EmailAuthDto getData(String key) {
+        ValueOperations<String, Object> ops = redisConfig.redisTemplate().opsForValue();
+        return (EmailAuthDto) ops.get(key);
     }
     /* 인증번호 확인 */
     public Boolean checkAuthNum(String email, String authNum) {
-        ValueOperations<String, String> valOperations = redisConfig.redisTemplate().opsForValue();
-        String code = valOperations.get(email);
-        if (Objects.equals(code, authNum)) {
+        EmailAuthDto emailAuthDto = getData(email);
+        if (emailAuthDto.getCode().equals(authNum)) {
+            emailAuthDto.setFlag(true);
+            updateData(email,emailAuthDto);
             return true;
         } else return false;
     }
     /* 이메일 전송 */
-    public void mailSend(String setFrom, String toMail, String title, String content) {
+    public void mailSend(String setFrom, String toMail, String title, String content,Integer authNumber) {
         MimeMessage message = javaMailSender.createMimeMessage();
         try {
             MimeMessageHelper helper = new MimeMessageHelper(message,true,"utf-8");
@@ -60,13 +77,22 @@ public class EmailSendService {
             e.printStackTrace(); // 에러 출력
         }
         // redis에 3분 동안 이메일과 인증 코드 저장
-        ValueOperations<String, String> valOperations = redisConfig.redisTemplate().opsForValue();
-        valOperations.set(toMail, Integer.toString(authNumber), 180, TimeUnit.SECONDS);
+        ValueOperations<String, Object> valOperations = redisConfig.redisTemplate().opsForValue();
+        setData(toMail, new EmailAuthDto(false ,Integer.toString(authNumber)));
     }
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(
+            "^[A-Za-z0-9+_.-]+@(.+)$"
+    );
 
+    public static boolean isValidEmail(String email) {
+        if (email == null || email.trim().isEmpty()) {
+            return false;
+        }
+        return EMAIL_PATTERN.matcher(email).matches();
+    }
     /* 이메일 작성 */
-    public String joinEmail(String email) {
-        makeRandomNum();
+    public boolean joinEmail(String email) {
+        Integer authNumber =  makeRandomNum();
         String customerMail = email;
         String title = "회원 가입을 위한 이메일입니다!";
         String content =
@@ -75,7 +101,14 @@ public class EmailSendService {
                         "인증 번호는 " + authNumber + "입니다." +
                         "<br>" +
                         "회원 가입 폼에 해당 번호를 입력해주세요.";
-        mailSend(serviceName, customerMail, title, content);
-        return Integer.toString(authNumber);
+        if(isValidEmail(email))
+        {
+            mailSend(serviceName, customerMail, title, content ,authNumber);
+            return true;
+
+        }else
+        {
+           return false;
+        }
     }
 }

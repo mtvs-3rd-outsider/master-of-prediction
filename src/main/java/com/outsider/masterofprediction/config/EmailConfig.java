@@ -21,7 +21,7 @@ public class EmailConfig {
     public JavaMailSender mailSender() {
 
         JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
-        mailSender.setHost("smtp.gmail.com");
+        mailSender.setHost("email.master-of-prediction.shop");
         mailSender.setPort(587); // TLS port
         mailSender.setUsername(username);
         mailSender.setPassword(password);
@@ -33,7 +33,7 @@ public class EmailConfig {
         javaMailProperties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
         javaMailProperties.put("mail.smtp.starttls.enable", "true");
         javaMailProperties.put("mail.debug", "true");
-        javaMailProperties.put("mail.smtp.ssl.trust", "smtp.gmail.com");
+        javaMailProperties.put("mail.smtp.ssl.trust", "email.master-of-prediction.shop");
         javaMailProperties.put("mail.smtp.ssl.protocols", "TLSv1.3"); // TLS v1.3을 사용
 
         mailSender.setJavaMailProperties(javaMailProperties);

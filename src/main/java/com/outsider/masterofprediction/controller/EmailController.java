@@ -20,10 +20,12 @@ public class EmailController {
 
     /* Send Email: 인증번호 전송 버튼 click */
     @PostMapping("/signup/email")
-    public Map<String, String> mailSend(@RequestBody @Valid EmailRequestDto emailRequestDto) {
-        String code = emailSendService.joinEmail(emailRequestDto.getEmail());
+    public Map<String, Boolean> mailSend(@RequestBody @Valid EmailRequestDto emailRequestDto) {
+
+
+        boolean code = emailSendService.joinEmail(emailRequestDto.getEmail());
         // response를 JSON 문자열으로 반환
-        Map<String, String> response = new HashMap<>();
+        Map<String, Boolean> response = new HashMap<>();
         response.put("code", code);
 
         return response;

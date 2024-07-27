@@ -1,15 +1,18 @@
 package com.outsider.masterofprediction.controller;
 
 
+import com.outsider.masterofprediction.config.RedisConfig;
 import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.dto.constatnt.StringConstants;
 import com.outsider.masterofprediction.mapper.UserMapper;
+import com.outsider.masterofprediction.service.AuthService;
 import com.outsider.masterofprediction.service.ProcessFileService;
 import com.outsider.masterofprediction.service.TierService;
 import com.outsider.masterofprediction.service.UserManagementService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,14 +35,19 @@ import java.util.List;
 //스프링 보안 테스트
 @Controller
 public class LoginController {
+
+    private RedisConfig redisConfig;
+
     private UserManagementService userManagementService;
     private final ProcessFileService processFileService;
     private final TierService tierService;
-
-    public LoginController(UserManagementService userManagementService, ProcessFileService processFileService, TierService tierService) {
+    private AuthService authService;
+    public LoginController(RedisConfig redisConfig, UserManagementService userManagementService, ProcessFileService processFileService, TierService tierService, AuthService authService) {
+        this.redisConfig = redisConfig;
         this.userManagementService = userManagementService;
         this.processFileService = processFileService;
         this.tierService = tierService;
+        this.authService = authService;
     }
 
 //    @PostMapping("/loginProc")
@@ -49,6 +57,13 @@ public class LoginController {
 //    }
     @PostMapping("/register")
     public RedirectView register(@ModelAttribute User user , @RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes) {
+        EmailAuthDto emailAuthDto = authService.getEmailAuth(user.getEmail());
+
+        if (emailAuthDto == null || !emailAuthDto.getFlag()) {
+            redirectAttributes.addFlashAttribute("flashMessage1", "Registration failed: Email not authenticated.");
+            return new RedirectView("/register");
+        }
+
         List<TblTierDTO> tiers = tierService.findAll();
         for (int i = 0; i < tiers.size(); i++) {
             if (StringConstants.USER_DEFAULT_TIER.equals(tiers.get(i).getTierName())){
