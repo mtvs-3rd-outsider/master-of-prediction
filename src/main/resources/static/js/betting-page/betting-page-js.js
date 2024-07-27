@@ -884,15 +884,13 @@ function fnKeyupNum(evt) {
 function sideCancle(){
     document.querySelector('.side-container').style.display='none';
 }
-function sideOpen(){
-    const sideContainer =document.querySelector('.side-container');
-    const sideBuyContent =document.querySelector(".side_buy-content")
-    const sideSellContent = document.querySelector('.side_sell-content');
+function sideOpen() {
+    const sideContainer = document.querySelector('.side-container');
+    const computedStyle = window.getComputedStyle(sideContainer);
 
-    if(sideContainer.style.display==="none"){
-        sideContainer.style.display='block';
-    }else{
-        sideContainer.style.display='none';
+    if (computedStyle.display === "none") {
+        sideContainer.style.display = 'block';
+    } else {
+        sideContainer.style.display = 'none';
     }
-
 }
