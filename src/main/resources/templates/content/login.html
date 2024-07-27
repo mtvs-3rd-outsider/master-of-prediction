@@ -18,9 +18,10 @@
                 <div class="pad"></div>
                 <form th:action="@{/loginProc}" method="post">
                     <div class="group">
-                        <label class="label" for="user">Email</label>
+                        <label class="label" for="email">Email</label>
                         <input class="input" id="user" name="email" type="email">
                     </div>
+
                     <div class="group">
                         <label class="label" >Password</label>
                         <input class="input" data-type="password" name="password" id="password" type="password">
@@ -59,7 +60,64 @@
                         reader.readAsDataURL(input.files[0]);
                     }
                 </script>
+                <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+                <script type="text/javascript">
+                    $(document).ready(function () {
+                        $("#email-button").click(function () {
+                            var email = $("#email").val();
+                            var emailRequestDto = {
+                                email: email
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/signup/email",
+                                contentType: "application/json",
+                                data: JSON.stringify(emailRequestDto),
+                                success: function (response) {
+                                    if (response.code) {
+                                        console.log(response.code)
+                                        alert("입력하신 메일로 인증번호가 전송되었습니다.");
+                                    } else {
+                                        alert("인증번호를 받을 수 없습니다.");
+                                    }
+                                },
+                                error: function () {
+                                    alert("오류가 발생했습니다. 잠시 후 다시 시도해주세요.");
+                                }
+                            });
+                        });
 
+                        $("#auth-button").click(function () {
+                            var email = $("#email").val();
+                            var authNum = $("#authNum").val();
+                            var emailCheckDto = {
+                                email: email,
+                                authNum: authNum
+                            };
+                            $.ajax({
+                                type: "POST",
+                                url: "/signup/emailAuth",
+                                contentType: "application/json",
+                                data: JSON.stringify(emailCheckDto),
+                                success: function (message) {
+                                    if (message) {
+                                        alert("이메일 인증에 성공하였습니다.");
+                                    } else {
+                                        // 현 상태에서는 무의미한 코드 (추후 기능 구체화에 따라 수정)
+                                        alert("인증에 실패하였습니다.");
+                                    }
+                                },
+                                error: function(xhr, status, error) {
+                                    if (xhr.status == 500) {
+                                        alert("잘못된 인증번호이거나 시간 초과로 인증번호가 만료되었습니다.");
+                                    } else {
+                                        alert("오류가 발생했습니다: " + status);
+                                    }
+                                }
+                            });
+                        });
+                    });
+                </script>
 
                     <div>
                     <form th:action="@{/register}" method="post" enctype="multipart/form-data">
@@ -73,7 +131,11 @@
                         </div>
                         <div class="group">
                             <label class="label" for="user">Email</label>
-                            <input class="input" id="user2" name="email"   type="email">
+                            <input class="input" id="email" name="email"   type="email"> <input class="button" id="email-button" value="인증번호 전송">
+                        </div>
+                        <div class="group">
+                            <label class="label" for="authNum">인증번호 입력</label>
+                            <input class="input" id="authNum" name="authNum" type="number"><input class="button" id="auth-button" value="확인">
                         </div>
                         <div class="group">
                             <label class="label" for="pass2">Password</label>
@@ -92,12 +154,12 @@
                 <!--                <div class="foot-lnk">-->
                 <!--                    <label for="tab-1">Already Member?</a>-->
                 <!--                </div>-->
-                <md-filled-button class="google-button" id="google-login-button"
-                                  th:href="@{/oauth2/authorization/google}">
-                    <img alt="Google" class="google-icon"
-                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">
-                    Sign in with Google
-                </md-filled-button>
+<!--                <md-filled-button class="google-button" id="google-login-button"-->
+<!--                                  th:href="@{/oauth2/authorization/google}">-->
+<!--                    <img alt="Google" class="google-icon"-->
+<!--                         src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg">-->
+<!--                    Sign in with Google-->
+<!--                </md-filled-button>-->
             </div>
         </div>         <!--            <form class="sign-in-htm" method="post" th:action="@{/loginProc}">-->
         <!--                <div class="pad"></div>-->
@@ -115,6 +177,12 @@
         <!--            </form>-->
     </div>
 </div>
+<script>
+    const message = '[[${flashMessage1}]]';
+    if (message) {
+        alert(message)
+    }
+</script>
 </div>
 </body>
 </html>
