@@ -283,7 +283,10 @@ WHERE
             bo.order_user_no = #{userId}
         AND c.subject_status = '진행중';
     </select>
-    <insert id="insertBettingOrderByDTO" parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO">
+    <insert id="insertBettingOrderByDTO"
+            parameterType="com.outsider.masterofprediction.dto.TblBettingOrderDTO"
+            useGeneratedKeys="true"
+            keyProperty="orderNo">
         INSERT INTO tbl_betting_order (
             order_amount,
             order_choice,
@@ -655,5 +658,27 @@ WHERE
             order_choice=#{result}
         group by order_user_no;
     </select>
-
+    <select id="findActivityByOrderNo" resultMap="ActivityUserSubjectResultMap">
+        SELECT
+            A.ORDER_NO
+            , A.ORDER_AMOUNT
+            , A.ORDER_CHOICE
+            , A.ORDER_TIMESTAMP
+            , B.USER_NO
+            , B.USER_NAME
+            , C.SUBJECT_NO
+            , C.SUBJECT_TITLE
+            , D.ATTACHMENT_FILE_NO AS USER_ATTACHMENT_FILE_NO
+            , D.ATTACHMENT_FILE_ADDRESS AS USER_ATTACHMENT_FILE_ADDRESS
+            , E.ATTACHMENT_FILE_NO AS SUBJECT_ATTACHMENT_FILE_NO
+            , E.ATTACHMENT_FILE_ADDRESS AS SUBJECT_ATTACHMENT_FILE_ADDRESS
+        FROM
+            TBL_BETTING_ORDER A
+                LEFT JOIN TBL_USER B ON A.ORDER_USER_NO = B.USER_NO
+                LEFT JOIN TBL_SUBJECT C ON A.ORDER_SUBJECT_NO = C.SUBJECT_NO
+                LEFT JOIN TBL_ATTACHMENT D ON A.ORDER_USER_NO = D.ATTACHMENT_USER_NO
+                LEFT JOIN TBL_ATTACHMENT E ON A.ORDER_SUBJECT_NO = E.SUBJECT_NO
+        WHERE
+            A.ORDER_NO = #{orderNo}
+    </select>
 </mapper>
