@@ -60,8 +60,11 @@ public class SubjectService {
     public boolean BettingSettlement(long subjectNo, String result){
         if (StringConstants.YES.equals(result) || StringConstants.NO.equals(result)){
             TblSubjectDTO subjectDTO = subjectMapper.getSubjectById(subjectNo);
+            if (subjectDTO == null){
+                return  false;
+            }
             boolean time = LocalDateTime.now().isAfter(subjectDTO.getSubjectSettlementTimestamp().toLocalDateTime());
-            if (subjectDTO == null || !time) {
+            if (!UserSession.isAdmin() && !time) {
                 return false;
             }
             this.setSubjectFinishResult(subjectNo,result);
