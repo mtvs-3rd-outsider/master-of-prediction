@@ -41,6 +41,6 @@ out/
 
 ### spring boot setting ###
 **/application.properties
-
+.env
 
 **/keystore.p12
