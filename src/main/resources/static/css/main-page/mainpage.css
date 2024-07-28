@@ -539,3 +539,36 @@
 .see-all{
     padding: 10px;
 }
+
+
+@keyframes append-animate {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideDown {
+    from {
+        transform: scale(0);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.main-active-item {
+    animation: slideDown 0.5s ease-in-out;
+}
+
+/* animate new box */
+.new-box {
+    animation: append-animate 1.2s linear;
+}
+

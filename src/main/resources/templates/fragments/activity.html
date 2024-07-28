@@ -9,7 +9,7 @@
             <span class="main-active-rank-title">Recent Activity</span>
             <md-outlined-button class="see-all" onclick="location.href='/activitypage'">See all</md-outlined-button>
         </div>
-        <div>
+        <div id="main-active-item-container">
             <div class="main-active-item" th:each="item: ${activity}">
                 <div class="main-active-item-div">
                     <!--                    <img class="main-active-item-img" src="../images/logo.png"/>-->
@@ -25,26 +25,36 @@
                             <img class="main-active-item-img" th:src="${item.attachmentUser.attachmentFileAddress}"/>
                         </div>
                         <p class="main-active-item-title" th:text="${item.user.userName}">0x20Fdb9C 059Fb34...</p>
-                        <div th:switch="${item.orderChoice}">
-                            <p class="main-active-item-title"
-                               th:case="'Yes'">
-                                bought Yes at [[${item.orderAmount}]]p
-                            </p>
-                            <p class="main-active-item-title"
-                               th:case="'No'">
-                                sold Yes at [[${item.orderAmount}]] ([[${amount}]])p
-                            </p>
+                        <div th:if="${item.orderAmount} > 0">
+                            <div th:switch="${item.orderChoice}">
+                                <p class="main-active-item-title"
+                                   th:case="'Yes'">
+                                    bought <span style="color: #2ecc71">Yes</span> at [[${item.orderAmount}]]p
+                                </p>
+                                <p class="main-active-item-title"
+                                   th:case="'No'">
+                                    bought <span style="color: red">No</span> at [[${item.orderAmount}]]p
+                                </p>
+                            </div>
+                        </div>
+                        <div th:if="${item.orderAmount} < 0">
+                            <div th:switch="${item.orderChoice}">
+                                <p class="main-active-item-title"
+                                   th:case="'Yes'">
+                                    sold <span style="color: #2ecc71">Yes</span> at [[${item.orderAmount}]]p
+                                </p>
+                                <p class="main-active-item-title"
+                                   th:case="'No'">
+                                    sold <span style="color: red">No</span> at [[${item.orderAmount}]]p
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <!--                    <p th:text="${#dates.format(item.orderTimestamp, 'yyyy-MM-dd HH:mm')}">30s ago</p>-->
-<!--                    <p class="time-ago" th:text="${item.orderTimestamp}">30s ago</p>-->
                     <p class="time-ago" th:attr="data-time=${item.orderTimestamp}">Loading...</p>
-
                 </div>
             </div>
-
         </div>
     </div>
     <script>
@@ -73,13 +83,93 @@
             }
         }
 
-        document.addEventListener("DOMContentLoaded", function() {
+        document.addEventListener("DOMContentLoaded", function () {
             const elements = document.querySelectorAll('.time-ago');
-            elements.forEach(function(element) {
+            elements.forEach(function (element) {
                 const serverTime = element.getAttribute('data-time');
                 const timeDiff = timeDifference(serverTime);
                 element.textContent = timeDiff + " ago";
             });
+        });
+
+    </script>
+
+    <!--  activity 이벤트 등록  -->
+    <script type="module">
+        const sse = new EventSource("https://master-of-prediction.shop:5556/activity");
+
+        function newActivityItem(item){
+            const newItem = document.createElement('div');
+            newItem.classList.add('main-active-item', 'new-box');
+
+            newItem.innerHTML = `
+        <div class="main-active-item-div">
+            <img class="main-active-item-img" src="${item.attachmentSubject.attachmentFileAddress}" />
+        </div>
+        <div style="flex: 1;">
+            <p class="main-active-item-title">${item.subject.subjectTitle}</p>
+            <div class="main-active-item-user">
+                <div class="main-active-item-user-div">
+                    <img class="main-active-item-img" src="${item.attachmentUser.attachmentFileAddress}" />
+                </div>
+                <p class="main-active-item-title">${item.user.userName}</p>
+                ${item.orderAmount > 0 ? `
+                    <div>
+                        <div>
+                            ${item.orderChoice === 'Yes' ? `
+                                <p class="main-active-item-title">
+                                    bought <span style="color: #2ecc71">Yes</span> at ${item.orderAmount}p
+                                </p>
+                            ` : `
+                                <p class="main-active-item-title">
+                                    bought <span style="color: red">No</span> at ${item.orderAmount}p
+                                </p>
+                            `}
+                        </div>
+                    </div>
+                ` : `
+                    <div>
+                        <div>
+                            ${item.orderChoice === 'Yes' ? `
+                                <p class="main-active-item-title">
+                                    sold <span style="color: #2ecc71">Yes</span> at ${item.orderAmount}p
+                                </p>
+                            ` : `
+                                <p class="main-active-item-title">
+                                    sold <span style="color: red">No</span> at ${item.orderAmount}p
+                                </p>
+                            `}
+                        </div>
+                    </div>
+                `}
+            </div>
+        </div>
+        <div>
+            <p class="time-ago">${timeDifference(item.orderTimestamp)}</p>
+        </div>
+    `;
+            return newItem;
+        }
+
+        function addActivityItem(item) {
+            const container = document.getElementById('main-active-item-container');
+            const newItem = newActivityItem(item);
+
+            if (container.lastElementChild) {
+                container.removeChild(container.lastElementChild);
+            }
+            container.insertBefore(newItem, container.firstChild);
+        }
+
+        sse.addEventListener("activity", function (event) {
+            try {
+                const item = JSON.parse(event.data);
+                console.log(event.data);
+                if (typeof item === "object" && item !== null) {
+                    addActivityItem(item)
+                }
+            } catch (error) {
+            }
         });
     </script>
 </div>

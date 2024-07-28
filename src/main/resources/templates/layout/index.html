@@ -58,19 +58,7 @@
         </svg>
     </div>
 </div>
-<!--<md-dialog type="alert" id='login-dialog'>-->
-<!--        <div slot="headline">-->
-<!--        <div class="headline">로그인</div>-->
-<!--    </div>-->
-<!--    <form slot="content" id="form-id3" method="dialog">-->
-<!--        <div th:replace="~{content/login-page/login :: content}">Right Content</div>-->
-<!--    </form>-->
-<!--    <div slot="actions">-->
-<!--        <div class="register-btn-group">-->
-<!--            <md-text-button id="login-dialog-close-button" form="form-id2" value="cancel">취소</md-text-button>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</md-dialog>-->
+
 <script type="module">
     function updateHeader() {
         const width = window.innerWidth;
@@ -115,47 +103,6 @@
     }
 
     window.addEventListener("load", checkoutPathname);
-</script>
-<script type="module">
-    //TODO: signup dialog 비활성화
-    // const signUpDialog = document.getElementById('sign-up-dialog');
-    // const openSignUpDialogBtn = document.getElementById('open-sign-up-dialog-btn');
-    // const signUpForm = signUpDialog.querySelector('form');
-    // openSignUpDialogBtn.addEventListener('click', () => {
-    //     console.log("등록 됨")
-    //     signUpDialog.show(); // 다이얼로그를 엽니다.
-    // });
-    // const siginUpCloseButton = signUpDialog.querySelector('#inquiry-register-close-button');
-
-    // siginUpCloseButton.addEventListener('click', () => {
-    //     signUpForm.reportValidity()
-    //     signUpDialog.close();
-    //
-    // });
-    // const loginDialog = document.getElementById('login-dialog');
-    // const openLoginDialogBtn = document.getElementById('open-login-dialog-btn');
-
-    // const loginForm = loginDialog.querySelector('form');
-    // openLoginDialogBtn.addEventListener('click', () => {
-    //     console.log("등록 됨");
-    //     loginDialog.show(); // 다이얼로그를 엽니다.
-    // });
-    // const openLoginDialogBtns = document.querySelectorAll('.open-login-dialog-btn');
-    //
-    // // 여러 개의 버튼에 대해 클릭 이벤트 리스너 추가
-    // openLoginDialogBtns.forEach(btn => {
-    //     btn.addEventListener('click', () => {
-    //         console.log("등록 됨");
-    //         loginDialog.show(); // 다이얼로그를 엽니다.
-    //     });
-    // });
-    // const closeButton = loginDialog.querySelector('#login-dialog-close-button');
-
-    // closeButton.addEventListener('click', () => {
-    //     loginForm.reportValidity()
-    //     loginDialog.close();
-    //
-    // });
 </script>
 </body>
 </html>
