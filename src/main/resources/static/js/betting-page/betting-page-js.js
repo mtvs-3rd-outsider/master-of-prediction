@@ -20,7 +20,6 @@ const initBettingPage = function () {
         login=true;
     }
 
-    console.log(width);
 
     sideSelectBuy();
     graphSettingButton(5);
@@ -34,7 +33,7 @@ const initBettingPage = function () {
     // popup_setting-content 숨기기
     const popupSettingContent = document.querySelector('.popup_setting-content');
     popupSettingContent.style.display = 'none';
-    document.querySelector('.mobile-have-point').style.display='none';
+
     // const resultModal = document.getElementById("myModal");
     // resultModal.style.display = 'flex';
     //반응형
@@ -45,14 +44,21 @@ const initBettingPage = function () {
 function responsive() {
     const htmlContainer = document.getElementById("top-div");
     const currentWidth = htmlContainer.offsetWidth; // top-div의 너비 가져오기
+    const graphSettingContentButton = document.querySelectorAll('.graph_setting-content-button');
 
     if (currentWidth <= 760) {
+        graphSettingContentButton[1].style.display='none';
+        graphSettingContentButton[4].style.display='none';
         document.querySelector(".html-container").style.width = currentWidth + "px"; // top-div의 너비에 맞춰 설정
         document.querySelector('.side-container').style.display='none';
         document.querySelector('.mobile-have-point').style.display='block';
         if (login===true){
             document.getElementById('havePoint').innerText=document.getElementById('userPoint').value+"Point";
         }
+        document.querySelector('.title_desktop').style.display='none';
+        document.querySelectorAll('.title_mobile')[0].style.display='flex';
+        document.querySelectorAll('.title_mobile')[1].style.display='flex';
+
     } else {
         document.querySelector(".buy-mobile-content").style.display='none';
         document.querySelector(".html-container").style.width = ""; // 760px 초과 시 기본값으로 되돌리기
@@ -88,6 +94,7 @@ function sideSelectBuy() {
 }
 
 function sideSelectSell() {
+
     const buyButton = document.querySelector('.buy-item button');
     const sellButton = document.querySelector('.sell-item button');
 
@@ -170,20 +177,20 @@ function createSideMain() {
             if (bettingState==="진행중"){
                 battingModalStr = `<button class="batting-buy-modal" onclick="buyModal()" >구매</button>`;
             }else {
-                battingModalStr = `<button class="batting-non-modal">종료된 상품</button>`;
+                battingModalStr = `<button class="batting-buy-modal">종료된 상품</button>`;
             }
         } else {
             if (bettingState==="진행중"){
                 battingModalStr = `<button class="batting-sell-modal" onclick="sellModal()">판매</button>`;
             }else{
-                battingModalStr = `<button class="batting-non-modal"">종료된 상품</button>`;
+                battingModalStr = `<button class="batting-sell-modal"">종료된 상품</button>`;
             }
         }
     } else {
         if (sideSelect === true) {
-            battingModalStr = `<button class="batting-non-modal">로그인 하세요</button>`;
+            battingModalStr = `<button class="batting-buy-modal">로그인 하세요</button>`;
         } else {
-            battingModalStr = `<button class="batting-non-modal">로그인 하세요</button>`;
+            battingModalStr = `<button class="batting-sell-modal">로그인 하세요</button>`;
         }
     }
     const sideHtml = `
@@ -217,14 +224,21 @@ function createSideMain() {
                     보유상품<span id="YesOrNo"></span> <span id="returnPoint"><span>Point</span></span>
                 </div>
             </li>
-            <li class="mobile-have-point"> <div class="side-have-content"> 보유포인트<span id="havePoint"><span>Point</span></span></div></li>
+            <li class="mobile-have-point" style="display: none"> <div class="side-have-content"> 보유포인트<span id="havePoint"><span>Point</span></span></div></li>
         </ul>
     </div>
     `;
     sideMainContent.innerHTML = sideHtml;
     document.getElementById('inputPoint').disabled = true;
     document.querySelector(sideSelect ? '.batting-buy-modal' : '.batting-sell-modal').disabled = true;
+    const htmlContainer = document.getElementById("top-div");
+    const currentWidth = htmlContainer.offsetWidth; // top-div의 너비 가져오기
 
+    if (currentWidth <= 760) {
+        document.querySelector('.mobile-have-point').style.display='block';
+    }else{
+        document.querySelector('.mobile-have-point').style.display='none';
+    }
 }
 
 function yesButton(){
@@ -604,12 +618,19 @@ function userActivityActive(value){
                 if (activity.amount < 0) {
                     purchaseOrSale = '판매';
                 }
-
+                const htmlContainer = document.getElementById("top-div");
+                const currentWidth = htmlContainer.offsetWidth; // top-div의 너비 가져오기
+                let activeStr;
+                if (currentWidth <= 760) {
+                    activeStr = `<li><a href="/mypage/${activity.userNo}"><img src="${activity.imgUrl}"/></a><span class="active-name-span">${activity.name}</span>&nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> &nbsp;<span>${purchaseOrSale}</span></li>`;
+                } else {
+                    activeStr=`<li><a href="/mypage/${activity.userNo}"><img src="${activity.imgUrl}"/></a><span class="active-name-span">${activity.name}</span>님께서 &nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;를&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> 만큼 &nbsp;<span>${purchaseOrSale}</span> 하였습니다</li>
+                                <li>${formattedDate}</li>`;
+                }
                 userActivityContent.innerHTML += `
                         <div class="user_activity-content">
                             <ul>
-                                <li><a href="/mypage/${activity.userNo}"><img src="${activity.imgUrl}"/></a><span class="active-name-span">${activity.name}</span>님께서 &nbsp;<span class="${activeYesNoClass}">${activity.choice}</span>&nbsp;를&nbsp; <span class="${activeNumClass}">${Math.abs(activity.amount)}</span> 만큼 &nbsp;<span>${purchaseOrSale}</span> 하였습니다</li>
-                                <li>${formattedDate}</li>
+                                `+activeStr+`
                             </ul>
                         </div>`;
             });
@@ -873,3 +894,7 @@ function sideOpen() {
         sideContainer.style.display = 'none';
     }
 }
+
+
+
+
