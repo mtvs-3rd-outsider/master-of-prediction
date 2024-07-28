@@ -65,7 +65,6 @@ public class LoginController {
 //        user.setTierNo();
         userManagementService.createDefaultUserObject(user);
         long id = user.getId();
-        System.out.println("/register "+ id);
         TblAttachmentDTO tblAttachmentDTO =new TblAttachmentDTO();
         tblAttachmentDTO.setAttachmentUserNo(id);
         tblAttachmentDTO.setAttachmentRegistUserNo(id);

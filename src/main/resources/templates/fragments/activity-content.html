@@ -96,7 +96,7 @@
 
     <!--  activity 이벤트 등록  -->
     <script type="module">
-        const sse = new EventSource("https://master-of-prediction.shop:5556/activity");
+        const sse = new EventSource("/activity");
 
         function newActivityItem(item){
             const newItem = document.createElement('div');
