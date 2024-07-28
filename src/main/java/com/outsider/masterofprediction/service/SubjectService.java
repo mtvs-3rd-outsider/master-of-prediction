@@ -1,9 +1,6 @@
 package com.outsider.masterofprediction.service;
 
-import com.outsider.masterofprediction.dto.RankingDTO;
-import com.outsider.masterofprediction.dto.TblBettingOrderDTO;
-import com.outsider.masterofprediction.dto.TblSubjectDTO;
-import com.outsider.masterofprediction.dto.UserSubjectDTO;
+import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.dto.constatnt.SubjectStatus;
 import com.outsider.masterofprediction.dto.constatnt.StringConstants;
 import com.outsider.masterofprediction.mapper.BettingOrderMapper;
@@ -16,22 +13,22 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class SubjectService {
     private final SubjectMapper subjectMapper;
     private final BettingOrderMapper bettingOrderMapper;
     private final UserMapper userMapper;
-
+    private final FCMService fcmService;
+    private final FCMTokenService fcmTokenService;
     @Autowired
-    public SubjectService(SubjectMapper subjectMapper, BettingOrderMapper bettingOrderMapper, UserMapper userMapper) {
+    public SubjectService(SubjectMapper subjectMapper, BettingOrderMapper bettingOrderMapper, UserMapper userMapper, FCMService fcmService, FCMTokenService fcmTokenService) {
         this.subjectMapper = subjectMapper;
         this.bettingOrderMapper = bettingOrderMapper;
         this.userMapper = userMapper;
+        this.fcmService = fcmService;
+        this.fcmTokenService = fcmTokenService;
     }
     public boolean isSubjectSubjectSettlementTimestampAfterCurrentTime(TblSubjectDTO tblSubjectDTO) {
         Timestamp subjectSettlementTimestamp = tblSubjectDTO.getSubjectSettlementTimestamp();
@@ -81,6 +78,16 @@ public class SubjectService {
         Map<String,Object> map = new HashMap<>();
         map.put("subjectNo",subjectNo);
         map.put("result",result);
+        Map<String,Object> loseMap = new HashMap<>();
+        loseMap.put("subjectNo",subjectNo);
+        if("Yes".equals(result))
+        {
+            loseMap.put("result","No");
+        }else
+        {
+            loseMap.put("result","Yes");
+        }
+        List<TblBettingOrderDTO> loseUsers =  bettingOrderMapper.getUsersBySubjectNo(loseMap);
 
         List<TblBettingOrderDTO> users =  bettingOrderMapper.getUsersBySubjectNo(map);
 
@@ -105,6 +112,21 @@ public class SubjectService {
 
             // returnPoint를 이용한 로직 추가
             userMapper.updateUserPointById(user.getOrderUserNo(),returnPoint);
+            Set<String> tokens = fcmTokenService.getTokens(Long.toString(user.getOrderUserNo()));
+            if (tokens != null && !tokens.isEmpty()) {
+                tokens.forEach(token -> fcmService.sendNotificationToUser(Long.toString(user.getOrderUserNo()),token, subjectDTO.getSubjectTitle() + " 베팅에", "성공하셨습니다."));
+            } else {
+                System.out.println("No tokens available for user: " + user.getOrderUserNo());
+            }
+        }
+
+        for(TblBettingOrderDTO user:loseUsers){
+            Set<String> tokens = fcmTokenService.getTokens(Long.toString(user.getOrderUserNo()));
+            if (tokens != null && !tokens.isEmpty()) {
+                tokens.forEach(token -> fcmService.sendNotificationToUser(Long.toString(user.getOrderUserNo()),token, subjectDTO.getSubjectTitle() + " 베팅에", "실패하셨습니다."));
+            } else {
+                System.out.println("No tokens available for user: " + user.getOrderUserNo());
+            }
         }
     }
 
