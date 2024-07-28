@@ -38,9 +38,9 @@ out/
 /node_modules/
 /mysql_data*/
 
+src/main/resources/firebase
 
 ### spring boot setting ###
 **/application.properties
-.env
 
 **/keystore.p12
