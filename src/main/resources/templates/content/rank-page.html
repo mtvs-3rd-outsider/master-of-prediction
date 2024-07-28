@@ -19,9 +19,9 @@
                     <div class="rank-user-ranking">
                         <span th:text="${userStat.count}"></span>
                     </div>
-                    <div class="rank-user-image">
+                    <a class="rank-user-image" th:href="@{/mypage/{userNo}(userNo=${user.userNo})}">
                         <img th:src="${user.attachment.attachmentFileAddress}">
-                    </div>
+                    </a>
                     <div class="rank-user-name">
                         <span th:text="${user.userName}"></span>
                     </div>

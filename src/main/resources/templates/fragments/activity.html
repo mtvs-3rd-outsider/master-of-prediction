@@ -11,19 +11,20 @@
         </div>
         <div id="main-active-item-container">
             <div class="main-active-item" th:each="item: ${activity}">
-                <div class="main-active-item-div">
+                <a class="main-active-item-div" th:href="@{/betting/{subjectNo}(subjectNo=${item.subject.subjectNo})}"
+                >
                     <!--                    <img class="main-active-item-img" src="../images/logo.png"/>-->
                     <img class="main-active-item-img" th:src="${item.attachmentSubject.attachmentFileAddress}"/>
-                </div>
+                </a>
                 <div style="flex: 1;">
                     <p class="main-active-item-title" th:text="${item.subject.subjectTitle}">Will Joe Biden win the 2024
                         Democratic Presidential
                         Nomination?</p>
                     <div class="main-active-item-user">
-                        <div class="main-active-item-user-div">
+                        <a class="main-active-item-user-div"  th:href="@{/mypage/{userNo}(userNo=${item.user.userNo})}">
                             <!--                            <img class="main-active-item-img" src="../images/logo2.png"/>-->
                             <img class="main-active-item-img" th:src="${item.attachmentUser.attachmentFileAddress}"/>
-                        </div>
+                        </a>
                         <p class="main-active-item-title" th:text="${item.user.userName}">0x20Fdb9C 059Fb34...</p>
                         <div th:if="${item.orderAmount} > 0">
                             <div th:switch="${item.orderChoice}">
