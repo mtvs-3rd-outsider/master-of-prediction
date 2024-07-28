@@ -27,13 +27,21 @@
             <div class="title-content">
                 <img th:src="${subjectImage}" alt="배팅 이미지" onerror="this.onerror=null;this.src='me.jpg';">
                 <div class="title_text-content">
-                    <ul>
+                    <ul class="title_desktop">
                         <li>$&nbsp<span th:text="${subject.getSubjectTotalYesPoint()+subject.getSubjectTotalNoPoint()}"></span>&nbspPoint</li>
                         <li><span id="title-schedule-icon" class="material-symbols-outlined">schedule</span><span th:text="${subject.subjectRegisterTimestamp.toString().split(' ')[0]}"></span></li>
                         <li>~</li>
-                        <li th:text="${subject.getSubjectSettlementTimestamp().toString().split(' ')[0]}"></li>
+                        <li th:text="${subject.getSubjectSettlementTimestamp().toString()}"></li>
                         <li class="response-title-off" id="betting-state" th:text="${subject.subjectStatus}"></li>
-                        <li class="response-title-off" th:text="${userAuthority}"></li>
+                        <li class="response-title-off" th:text="${userAuthority}" style="display: none"></li>
+                    </ul>
+                    <ul class="title_mobile" style="display: none">
+                        <li>$&nbsp<span th:text="${subject.getSubjectTotalYesPoint()+subject.getSubjectTotalNoPoint()}"></span>&nbspPoint</li>
+                        <li th:text="${subject.getSubjectSettlementTimestamp().toString()}"></li>
+                    </ul>
+                    <ul class="title_mobile" style="display: none">
+                        <li class="response-title-off" id="betting-state3" th:text="${subject.subjectStatus}"></li>
+                        <li class="response-title-off" th:text="${userAuthority}" style="display: none"></li>
                     </ul>
                     <ul>
                         <li><button class="accountBtn"
@@ -208,3 +216,4 @@
 <script type="text/javascript" th:src="@{/js/betting-page/betting-page-js.js}"></script>
 </div>
 </html>
+
