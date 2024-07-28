@@ -28,6 +28,9 @@ public class PrincipalOauthUserService extends DefaultOAuth2UserService {
         this.attachmentMapper = attachmentMapper;
     }
     public void CheckWithdrawalStatus(User user) {
+        if (user == null){
+            return;
+        }
         if(user.getWithdrawalStatus())
         {
             user.setWithdrawalStatus(false);
