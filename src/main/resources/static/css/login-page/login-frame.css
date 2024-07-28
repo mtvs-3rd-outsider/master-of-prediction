@@ -115,6 +115,7 @@ a{color:inherit;text-decoration:none}
   padding:15px 20px;
   border-radius:25px;
   background:rgba(255,255,255,.1);
+  margin: 2px;
 }
 .login-form .group input[data-type="password"]{
   text-security:circle;
@@ -225,4 +226,8 @@ a{color:inherit;text-decoration:none}
 }
 .pad {
   margin: 100px 0px;
+}
+
+.button:hover{
+  opacity : 0.5;
 }
