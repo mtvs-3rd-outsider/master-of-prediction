@@ -1,19 +1,24 @@
 package com.outsider.masterofprediction.controller;
 
 
+import com.outsider.masterofprediction.config.RedisConfig;
 import com.outsider.masterofprediction.dto.*;
 import com.outsider.masterofprediction.dto.constatnt.StringConstants;
+import com.outsider.masterofprediction.mapper.UserMapper;
 import com.outsider.masterofprediction.service.AuthService;
 import com.outsider.masterofprediction.service.ProcessFileService;
 import com.outsider.masterofprediction.service.TierService;
 import com.outsider.masterofprediction.service.UserManagementService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,18 +36,25 @@ import java.util.List;
 @Controller
 public class LoginController {
 
+    private RedisConfig redisConfig;
 
     private UserManagementService userManagementService;
     private final ProcessFileService processFileService;
     private final TierService tierService;
     private AuthService authService;
-    public LoginController(UserManagementService userManagementService, ProcessFileService processFileService, TierService tierService, AuthService authService) {
+    public LoginController(RedisConfig redisConfig, UserManagementService userManagementService, ProcessFileService processFileService, TierService tierService, AuthService authService) {
+        this.redisConfig = redisConfig;
         this.userManagementService = userManagementService;
         this.processFileService = processFileService;
         this.tierService = tierService;
         this.authService = authService;
     }
 
+//    @PostMapping("/loginProc")
+//    public String loginProc()
+//    {
+//        return "redirect:/";
+//    }
     @PostMapping("/register")
     public RedirectView register(@ModelAttribute User user , @RequestParam("profileImage") MultipartFile profileImage, RedirectAttributes redirectAttributes) {
         EmailAuthDto emailAuthDto = authService.getEmailAuth(user.getEmail());

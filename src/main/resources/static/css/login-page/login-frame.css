@@ -204,8 +204,3 @@ a{color:inherit;text-decoration:none}
 .pad {
   margin: 100px 0px;
 }
-
-.button:hover{
-  cursor: pointer;
-  opacity : 0.9;
-}
