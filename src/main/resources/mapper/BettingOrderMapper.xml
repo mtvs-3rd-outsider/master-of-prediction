@@ -203,13 +203,13 @@ JOIN
 WHERE
             bo.order_user_no = #{userId}
         AND bo.order_timestamp >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-        AND c.subject_status = '완료';
+        AND c.subject_status = '종료';
     </select>
-    <select id="getMonthTotalProfitsByUserId" resultMap="ProfitLossResultMap">
+    <select id="getMonthTotalProfitsByUserId" resultType="java.lang.Long">
         -- 사용자의 수익 포인트와 손실 포인트 계산
         SELECT
-            SUM(profit_points) AS total_profit_points,
-            SUM(loss_points) AS total_loss_points,
+--             SUM(profit_points) AS total_profit_points,
+--             SUM(loss_points) AS total_loss_points,
             SUM(profit_points) - SUM(loss_points) AS net_profit_points
         FROM (
                  SELECT
@@ -234,7 +234,7 @@ WHERE
                  WHERE
                      bo.order_user_no = #{userId}
                    AND bo.order_timestamp >= DATE_SUB(CURDATE(), INTERVAL 1 MONTH)
-                   AND c.subject_status = '완료'
+                   AND c.subject_status = '종료'
              ) AS UserBettingData;
     </select>
 
