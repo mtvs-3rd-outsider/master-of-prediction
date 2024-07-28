@@ -61,7 +61,7 @@ public class LoginController {
 
         if (emailAuthDto == null || !emailAuthDto.getFlag()) {
             redirectAttributes.addFlashAttribute("flashMessage1", "Registration failed: Email not authenticated.");
-            return new RedirectView("/register");
+            return new RedirectView("/login?error");
         }
 
         List<TblTierDTO> tiers = tierService.findAll();
