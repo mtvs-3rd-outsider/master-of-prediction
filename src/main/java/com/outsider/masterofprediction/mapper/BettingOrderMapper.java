@@ -102,4 +102,5 @@ public interface BettingOrderMapper {
 
     List<ActivityUserSubjectDTO> findActivityCount(int count);
 
+    ActivityUserSubjectDTO findActivityByOrderNo(long orderNo);
 }
