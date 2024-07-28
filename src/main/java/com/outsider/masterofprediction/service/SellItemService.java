@@ -38,7 +38,11 @@ public class SellItemService {
                     + bettingOrderDTO.getOrderChoice().toLowerCase().substring(1);
             bettingOrderDTO.setOrderChoice(status);
             // 해당 게임의 로그인 중인 아이디의 Yes구매를 활동내역으로 부터 가져와 합계를 얻습니다.
-            sum=bettingOrderMapper.getYesSumPointByDTO(bettingOrderDTO);
+            if ("Yes".equals(status))
+                sum=bettingOrderMapper.getYesSumPointByDTO(bettingOrderDTO);
+            else
+                // 해당 게임의 로그인 중인 아이디의 No구매를 활동내역으로 부터 가져와 합계를 얻습니다.
+                sum=bettingOrderMapper.getNoSumPointByDTO(bettingOrderDTO);
 
             if (bettingOrderDTO.getOrderAmount() > sum) {
                 throw new IllegalStateException("보유한 " + status +"포인트가 부족합니다.");

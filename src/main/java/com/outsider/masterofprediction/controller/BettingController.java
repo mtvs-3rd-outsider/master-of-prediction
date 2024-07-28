@@ -63,6 +63,9 @@ public class BettingController {
 
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
+
+        System.out.println(sumYPoint);
+        System.out.println(sumNPoint);
         String returnYRate = "0% Chance";
         String returnNRate = "0% Chance";
         if ((subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) != 0) {
@@ -70,6 +73,8 @@ public class BettingController {
             returnNRate = (int) (subject.getSubjectTotalNoPoint() / (float) (subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) * 100) + "% Chance";
         }
 
+        System.out.println(returnNRate);
+        System.out.println(returnYRate);
         String attachmentFileAddress = FileUtil.checkFileOrigin(attachmentMapper.getAttachmentsBySubjectNo(subjectNo).getAttachmentFileAddress());
         subject.setSubjectRegisterUserNo(subjectMapper.getSubjectRegistUserNoBySubjectNo(subject.getSubjectNo()));
 

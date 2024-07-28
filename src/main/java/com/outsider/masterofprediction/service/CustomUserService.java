@@ -31,6 +31,9 @@ public class CustomUserService implements UserDetailsService {
     }
 
     public void CheckWithdrawalStatus(User user) {
+        if (user == null){
+            return;
+        }
         if(user.getWithdrawalStatus())
         {
             user.setWithdrawalStatus(false);
