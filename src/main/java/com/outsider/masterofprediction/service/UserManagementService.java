@@ -33,7 +33,9 @@ public class UserManagementService {
         user.setAuthority("ROLE_USER");
         return userMapper.createUser(user.getName(), user.getEmail(),  user.getPassword(), user.getAuthority());
     }
-
+    public User findUserByEmail(String email) {
+        return userMapper.findByEmail(email);
+    }
     public void createDefaultUserObject(User user) {
         String pwd = user.getPassword();
         user.setPassword(new SecurityConfig().passwordEncoder().encode(pwd));
