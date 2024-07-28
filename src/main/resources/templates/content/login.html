@@ -19,12 +19,12 @@
                 <form th:action="@{/loginProc}" method="post">
                     <div class="group">
                         <label class="label" for="email">Email</label>
-                        <input class="input" id="user" name="email" type="email">
+                        <input class="input" id="user" name="email" type="email" required pattern=".*\S+.*">
                     </div>
 
                     <div class="group">
                         <label class="label" >Password</label>
-                        <input class="input" data-type="password" name="password" id="password" type="password">
+                        <input class="input" data-type="password" name="password" id="password" type="password" required pattern=".*\S+.*">
                     </div>
                     <div class="group">
                         <input checked class="check" id="check" type="checkbox">
@@ -49,6 +49,40 @@
             <div class="sign-up-htm">
 
                 <script>
+                    var interval; // 전역 변수로 interval을 유지
+
+                    function startTimer(duration, display) {
+                        // 기존 타이머가 실행 중이라면 멈춤
+                        if (interval) {
+                            clearInterval(interval);
+                        }
+
+                        var timer = duration, minutes, seconds;
+                        display.style.display = 'inline'; // 타이머를 보이게 함
+
+                        interval = setInterval(function () {
+                            minutes = parseInt(timer / 60, 10);
+                            seconds = parseInt(timer % 60, 10);
+
+                            minutes = minutes < 10 ? "0" + minutes : minutes;
+                            seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                            display.textContent = minutes + ":" + seconds;
+
+                            if (--timer < 0) {
+                                clearInterval(interval);
+                                display.style.display = 'none'; // 타이머를 숨김
+                            }
+                        }, 1000);
+                    }
+
+                    // 이메일 인증코드 전송 시 호출되는 함수
+                    function onEmailSent() {
+                        var threeMinutes = 60 * 3,
+                            display = document.querySelector('#timer');
+                        startTimer(threeMinutes, display);
+                    }
+
                     function previewImage(event) {
                         const input = event.target;
                         const reader = new FileReader();
@@ -74,11 +108,12 @@
                                 contentType: "application/json",
                                 data: JSON.stringify(emailRequestDto),
                                 success: function (response) {
-                                    if (response.code) {
-                                        console.log(response.code)
-                                        alert("입력하신 메일로 인증번호가 전송되었습니다.");
+
+                                    if (response.code==200) {
+                                        onEmailSent()
+                                        alert(response.message);
                                     } else {
-                                        alert("인증번호를 받을 수 없습니다.");
+                                        alert(response.message);
                                     }
                                 },
                                 error: function () {
@@ -101,6 +136,10 @@
                                 data: JSON.stringify(emailCheckDto),
                                 success: function (message) {
                                     if (message) {
+                                        if (interval) {
+                                            clearInterval(interval);
+                                            display.style.display = 'none'; // 타이머를 숨김
+                                        }
                                         alert("이메일 인증에 성공하였습니다.");
                                     } else {
                                         // 현 상태에서는 무의미한 코드 (추후 기능 구체화에 따라 수정)
@@ -127,25 +166,30 @@
                         </div>
                         <div class="group">
                             <label class="label" for="pass2">UserName</label>
-                            <input class="input" id="pass2" name="name" type="text">
+                            <input class="input" id="pass2" name="name" type="text" required pattern=".*\S+.*">
                         </div>
                         <div class="group">
                             <label class="label" for="user">Email</label>
-                            <input class="input" id="email" name="email"   type="email">
+                            <div class="sub-group2">
+                            <input class="input email-register-width" id="email" name="email"   type="email" required pattern=".*\S+.*">
+                                <input class="button email-register-width" id="email-button" value="인증번호 전송">
+                            </div>
                         </div>
                         <div class="group">
-                            <input class="button login-email-button" id="email-button" value="인증번호 전송">
-                        </div>
-                        <div class="group">
+                            <div class="sub-group2">
                             <label class="label" for="authNum">인증번호 입력</label>
-                            <input class="input" id="authNum" name="authNum" type="number">
-                        </div>
-                        <div class="group">
-                            <input class="button login-email-button" id="auth-button" value="확인">
+                            <span class="timer" id="timer">03:00</span>
+                            </div>
+
+                            <div class="sub-group">
+                            <input class="input " id="authNum" name="authNum" type="text">
+
+                            <input class="button" id="auth-button" value="확인">
+                            </div>
                         </div>
                         <div class="group">
                             <label class="label" for="pass2">Password</label>
-                            <input class="input" data-type="password" id="pass2" name="password" type="password">
+                            <input class="input" data-type="password" id="pass2" name="password" type="password" required pattern=".*\S+.*">
                         </div>
 <!--                        <div class="group">-->
 <!--                            <label class="label" for="pass">Repeat Password</label>-->

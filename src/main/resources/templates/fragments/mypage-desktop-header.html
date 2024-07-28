@@ -15,7 +15,7 @@
                 </a>
                 <div style="width: 100%;display: flex;align-items: center;">
 
-                    <span style="font-size: 30px; color:black; white-space: nowrap;">예측의 달인</span>
+                    <a th:href="@{/}" style="text-decoration:none;  font-size: 30px; color:black; white-space: nowrap;">예측의 달인</a>
                 </div>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
@@ -73,8 +73,8 @@
             </div>
         </div>
         <div class="category">
-            <ul id="header-ul">
-                <li><a href="/mypage">마이 페이지 홈</a></li>
+            <ul id="header-ul" th:if="${isMine}">
+                <li><a  href="/mypage">마이 페이지 홈</a></li>
             </ul>
         </div>
     </div>

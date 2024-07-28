@@ -43,14 +43,14 @@ dependencies {
 // https://mvnrepository.com/artifact/org.thymeleaf.extras/thymeleaf-extras-springsecurity5
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
 	// email authentication
-	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.springframework.boot:spring-boot-starter-mail:3.3.0'
 
 	// validation
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-validation:3.3.0'
 
 	// redis
-	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.3.0'
+	implementation 'com.google.firebase:firebase-admin:9.2.0'
 }
 
 tasks.named('test') {

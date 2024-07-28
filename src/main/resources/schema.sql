@@ -194,7 +194,7 @@ CREATE TABLE `TBL_USER`
     `user_authority`    VARCHAR(100) DEFAULT 'ROLE_USER' NOT NULL COMMENT '권한',
     `user_withdrawal_status`    TINYINT DEFAULT 0 COMMENT '탈퇴여부',
     `user_point`    DECIMAL DEFAULT 30000 COMMENT '보유포인트',
-    `tier_no`    BIGINT DEFAULT 0 NOT NULL COMMENT '티어 번호',
+    `tier_no`    BIGINT DEFAULT 1 NOT NULL COMMENT '티어 번호',
     PRIMARY KEY ( `user_no` )
 ) COMMENT = '회원';
 

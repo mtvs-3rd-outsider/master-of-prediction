@@ -15,7 +15,9 @@
                             <div class="badge-text" th:text="${iter.count}"><span>1</span>
                             </div>
                         </div>
-                            <img class="main-active-item-img" th:src="${item.attachmentFileAddress}"/>
+                            <a  th:href="@{/mypage/{userNo}(userNo=${item.userNo})}">
+                                <img class="main-active-item-img" th:src="${item.attachmentFileAddress}"/>
+                            </a>
                         </div>
                     </div>
                     <div>

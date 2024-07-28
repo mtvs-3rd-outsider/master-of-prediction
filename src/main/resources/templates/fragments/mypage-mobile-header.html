@@ -30,7 +30,7 @@
     <div style="box-shadow: 0 2px 2px -2px gray;">
         <div style="display: flex;align-items: center; padding-right: 1rem;">
             <div class="logo" style="display: flex;">
-                <a href="header.html">
+                <a href="/">
                     <img height="90px" src="../images/logo2.png" width="90px">
                 </a>
             </div>
@@ -67,7 +67,7 @@
             <swiper-container class="mySwiper" slides-per-view="5"
                                   space-between="1" free-mode="true">
 <!--            <ul id="header-ul">-->
-                <swiper-slide><a href="/mypage" style="white-space: nowrap">마이 페이지 홈</a></swiper-slide>
+                <swiper-slide><a th:if="${isMine}" href="/mypage" style="white-space: nowrap">마이 페이지 홈</a></swiper-slide>
 <!--            </ul>-->
             </swiper-container>
         </div>

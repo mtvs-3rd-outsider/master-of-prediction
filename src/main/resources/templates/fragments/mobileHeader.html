@@ -80,11 +80,12 @@
                                   space-between="1" free-mode="true">
 
                 <swiper-slide><a class="a-attr-remove" href="/category/all">전체</a></swiper-slide>
-                <swiper-slide><a class="a-attr-remove" href="/recent">최신순</a></swiper-slide>
+                <swiper-slide><a class="a-attr-remove" href="/category/recent">최신순</a></swiper-slide>
                 <swiper-slide th:each="category : ${categories}">
                     <a class="a-attr-remove" th:href="'/category/' + ${category.categoryNo}"
                        th:text="${category.categoryName}"></a>
                 </swiper-slide>
+
             </swiper-container>
         </div>
     </div>

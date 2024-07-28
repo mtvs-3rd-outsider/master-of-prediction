@@ -2,6 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
+    <link rel="manifest" th:href="@{/manifest.json}" />
     <base th:href="@{/}">
     <link
             href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap"
@@ -33,6 +34,9 @@
             display: none;
         }
     </style>
+
+    <script type="text/javascript" th:src="@{service-worker-register.js}"></script>
+
 </head>
 <body>
 
@@ -41,6 +45,8 @@
 
 
 <div th:replace="~{${view} :: content}">Right Content</div>
+<div th:replace="~{fcm :: content}">Header</div>
+
 <!-- 이곳 -->
 <div   class="bottom-right-button-container">
     <div sec:authorize="isAuthenticated()" class="bounding-betting-add-page-entry">

@@ -26,7 +26,7 @@ public interface AttachmentMapper {
     @Select("SELECT * FROM tbl_attachment WHERE notice_no=#{id}")
     public TblAttachmentDTO getAttachmentsByNoticeNo(Long id);
 
-    @Select("SELECT * FROM tbl_attachment WHERE attachment_user_no=#{id}")
+    @Select("SELECT * FROM tbl_attachment WHERE attachment_user_no=#{id} LIMIT 1")
     public TblAttachmentDTO getAttachmentsByUserNo(Long id);
 
     @Select("SELECT * FROM tbl_attachment WHERE tier_no=#{id}")

@@ -1,7 +1,9 @@
 package com.outsider.masterofprediction.controller;
 
+import com.outsider.masterofprediction.config.RedisConfig;
 import com.outsider.masterofprediction.dto.CustomUserDetail;
 import com.outsider.masterofprediction.service.CategoryService;
+import com.outsider.masterofprediction.service.FCMTokenService;
 import com.outsider.masterofprediction.service.UserManagementService;
 import com.outsider.masterofprediction.service.UserSession;
 import com.outsider.masterofprediction.utils.FileUtil;
@@ -19,14 +21,16 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 public class UserGlobalControllerAdvice {
     private final UserManagementService userManagementService;
     private final CategoryService categoryService;
+    private final FCMTokenService fcmTokenService;
     @Value("${file.imgUrl}")
     private  String imgUrl;
 
 
 
-    public UserGlobalControllerAdvice(UserManagementService userManagementService, CategoryService categoryService) {
+    public UserGlobalControllerAdvice(UserManagementService userManagementService, CategoryService categoryService, FCMTokenService fcmTokenService) {
         this.userManagementService = userManagementService;
         this.categoryService = categoryService;
+        this.fcmTokenService = fcmTokenService;
     }
     @ModelAttribute
     public CustomUserDetail customPrincipal(Authentication a) {
@@ -55,9 +59,11 @@ public class UserGlobalControllerAdvice {
                 userImage = FileUtil.checkFileOrigin(userManagementService.getAttachmentsByUserNo(userId).getAttachmentFileAddress());
             }
             String userName = customUserDetail.getUsername();
+            model.addAttribute("userId", userId);
             model.addAttribute("userImage",  userImage);
             model.addAttribute("userName", userName);
             model.addAttribute("userPoint", userManagementService.getUserPoint());
+            model.addAttribute("fcmTokens", fcmTokenService.getTokens(userId.toString()));
         }
         model.addAttribute("categories", categoryService.findAll());
     }

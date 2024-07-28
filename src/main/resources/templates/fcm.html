@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="manifest" th:href="@{/manifest.json}" />
+    <script type="text/javascript"  th:src="@{service-worker-register.js}"></script>
+
+</head>
+<body>
+<th:block th:fragment="content">
+
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.1.0/firebase-messaging-compat.js"></script>
+<div style="display: contents" id="fcm" th:user-id-data="${userId}">
+
+
+
+<script type="text/javascript"   th:inline="javascript" >
+
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBRxGXjdHMYSssRJn2Y8BmPBMcT59akgt8",
+        authDomain: "master-of-prediction-384d0.firebaseapp.com",
+        projectId: "master-of-prediction-384d0",
+        storageBucket: "master-of-prediction-384d0.appspot.com",
+        messagingSenderId: "989843402526",
+        appId: "1:989843402526:web:1da513d205c118dacb630f",
+        measurementId: "G-3CZK9Z9LVB"
+    };
+    console.log("fcm");
+    firebase.initializeApp(firebaseConfig);
+    const messaging = firebase.messaging();
+
+    messaging.onMessage((payload) => {
+        console.log('Message received. ', payload);
+        const notificationTitle = payload.notification.title;
+        const notificationOptions = {
+            body: payload.notification.body,
+            icon: "/icon/icon-512x512.png",
+        };
+
+        new Notification(notificationTitle, notificationOptions);
+    });
+
+    function requestPermissionAndSendToken(userId) {
+        Notification.requestPermission()
+            .then((permission) => {
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                    return  window.currentToken;
+                } else {
+                    throw new Error('Notification permission not granted.');
+                }
+            })
+            .then((token) => {
+                console.log('FCM Token:', token);
+                sendTokenToServer(token, userId);
+            })
+            .catch((err) => {
+                console.log('Unable to get permission to notify.', err);
+            });
+    }
+
+
+    function sendTokenToServer(token, userId) {
+        fetch('/FCMToken', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ token: token, userId: userId }),
+        })
+            .then(response => response.json())
+            .then(data => console.log('Success:', data))
+            .catch((error) => console.error('Error:', error));
+    }
+    function onLogin(userId) {
+        requestPermissionAndSendToken(userId);
+    }
+
+    /*<![CDATA[*/
+    const fcmTokens = /*[[${fcmTokens}]]*/ '[[${fcmTokens}]]';
+    /*]]>*/
+    var userNo = document.getElementById("fcm").getAttribute("user-id-data");
+    if(userNo)
+    {
+         messaging.getToken( { vapidKey: "BHzDuDNOeit-xrwflV5FULJ_AbFc17dnJVTVrmeX6FJUYD6DJnIMXTHK3dQtvwgwlCn1YxcwW-AoU7XgvMe_0YU" } ).then(result => {
+             window.currentToken=result;
+
+             console.log(fcmTokens)
+             console.log( window.currentToken)
+             const tokenExists = fcmTokens.includes( window.currentToken);
+
+             if (!tokenExists) {
+                 onLogin(userNo);
+             }
+         })
+
+    }
+
+
+
+</script>
+</div>
+</th:block>
+
+</body>
+</html>
