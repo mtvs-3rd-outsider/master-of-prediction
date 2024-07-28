@@ -17,7 +17,7 @@ import java.util.List;
 @Configuration
 public class FCMConfig {
 
-    @Value("{firebase.config.path}")
+    @Value("${firebase.config.path}")
     private String firebaseConfigPath;
     @Bean
     FirebaseMessaging firebaseMessaging() throws IOException {
