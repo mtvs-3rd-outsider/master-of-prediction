@@ -45,10 +45,12 @@ function responsive() {
     const htmlContainer = document.getElementById("top-div");
     const currentWidth = htmlContainer.offsetWidth; // top-div의 너비 가져오기
     const graphSettingContentButton = document.querySelectorAll('.graph_setting-content-button');
-
+    const mobileHiddenStting=document.querySelectorAll('.mobile-hidden-setting');
     if (currentWidth <= 760) {
         graphSettingContentButton[1].style.display='none';
         graphSettingContentButton[4].style.display='none';
+        mobileHiddenStting[0].style.display='none';
+        mobileHiddenStting[1].style.display='none';
         document.querySelector(".html-container").style.width = currentWidth + "px"; // top-div의 너비에 맞춰 설정
         document.querySelector('.side-container').style.display='none';
         document.querySelector('.mobile-have-point').style.display='block';

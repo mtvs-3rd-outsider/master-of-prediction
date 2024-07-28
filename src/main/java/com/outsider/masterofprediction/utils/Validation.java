@@ -13,7 +13,6 @@ public class Validation {
                 tblSubjectDTO.getSubjectCategoryNo() == 0 ||
                 tblSubjectDTO.getSubjectSettlementTimestamp() == null ||
                 LocalDateTime.now().isAfter(tblSubjectDTO.getSubjectSettlementTimestamp().toLocalDateTime())){
-            System.out.println("Exception Handler: " + tblSubjectDTO);
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data provided");
         }
     }

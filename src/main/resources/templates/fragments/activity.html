@@ -97,7 +97,7 @@
 
     <!--  activity 이벤트 등록  -->
     <script type="module">
-        const sse = new EventSource("https://master-of-prediction.shop:5556/activity");
+        const sse = new EventSource("/activity");
 
         function newActivityItem(item){
             const newItem = document.createElement('div');
@@ -156,7 +156,8 @@
             const container = document.getElementById('main-active-item-container');
             const newItem = newActivityItem(item);
 
-            if (container.lastElementChild) {
+
+            if (container.lastElementChild && container.childElementCount >= 5) {
                 container.removeChild(container.lastElementChild);
             }
             container.insertBefore(newItem, container.firstChild);
@@ -165,7 +166,6 @@
         sse.addEventListener("activity", function (event) {
             try {
                 const item = JSON.parse(event.data);
-                console.log(event.data);
                 if (typeof item === "object" && item !== null) {
                     addActivityItem(item)
                 }

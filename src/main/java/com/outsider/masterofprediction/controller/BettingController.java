@@ -63,6 +63,7 @@ public class BettingController {
 
         long sumYPoint = userManagementService.getSumYPointByDTO(dto);
         long sumNPoint = userManagementService.getSumNPointByDTO(dto);
+
         String returnYRate = "0% Chance";
         String returnNRate = "0% Chance";
         if ((subject.getSubjectTotalNoPoint() + subject.getSubjectTotalYesPoint()) != 0) {
@@ -100,7 +101,6 @@ public class BettingController {
 //        subjectService.setSubjectFinishResult(subNo,result);
 //        subjectService.BetSettlement(subNo);
         redirectAttributes.addFlashAttribute("hideButton", true);
-        System.out.println("!!!!!!!!!");
         return "redirect:/https://master-of-prediction.shop:8081/betting/" + subNo;
     }
 

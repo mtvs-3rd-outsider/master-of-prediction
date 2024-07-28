@@ -72,11 +72,11 @@
                     <md-elevation></md-elevation>
                     <p id="popup-title">Chart Settings<span id="popup-cancle" onclick="popupCancle()"
                                                             class="material-symbols-outlined">close</span></p>
-                    <p>YES<label class="switch">
+                    <p><span class="chart-setting-text">YES</span><label class="switch">
                         <input id="yes-Switch"  type="checkbox" checked="checked" onchange="updateChart()">
                         <span class="slider round"></span>
                     </label></p>
-                    <p>NO<label class="switch">
+                    <p><span class="chart-setting-text">NO</span><label class="switch">
                         <input id="no-Switch" type="checkbox" checked="checked" onchange="updateChart()">
                         <span class="slider round"></span>
                     </label></p>
@@ -91,7 +91,7 @@
                                                 value=0 slot="selected">1H
                                 </md-text-button>
                             </li>
-                            <li>
+                            <li class="mobile-hidden-setting">
                                 <md-text-button class="graph_setting-content-button"
                                                 onclick="graphSettingButton(this.value)"
                                                 value=1>6H
@@ -109,7 +109,7 @@
                                                 value=3>1W
                                 </md-text-button>
                             </li>
-                            <li>
+                            <li class="mobile-hidden-setting">
                                 <md-text-button class="graph_setting-content-button"
                                                 onclick="graphSettingButton(this.value)"
                                                 value=4>1M
