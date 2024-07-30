@@ -175,6 +175,32 @@ ul, li {
     border: 0;
 }
 
+
+#mobile-header-search-parent {
+    --_focus-outline-color: #E4E4E5;
+    --_input-text-line-height: 0rem;
+    --_outline-color: #E4E4E4;
+    --_focus-outline-width: 0px;
+    --_container-shape-start-start: 10px;
+    --_container-shape-start-end: 10px;
+    --_container-shape-end-start: 10px;
+    --_container-shape-end-end: 10px;
+}
+
+#mobile-header-search-parent:hover {
+    background-color: #F6F6F6;
+}
+
+#mobile-header-search-parent:focus {
+    .child {
+        color: black;
+    }
+
+    border: 0;
+}
+
+
+
 .child {
     color: gray;
 }

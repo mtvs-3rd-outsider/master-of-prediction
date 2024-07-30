@@ -30,11 +30,11 @@
                             <div th:switch="${item.orderChoice}">
                                 <p class="main-active-item-title"
                                    th:case="'Yes'">
-                                    bought <span style="color: #2ecc71">Yes</span> at [[${item.orderAmount}]]p
+                                    bought <span style="color: #2ecc71">Yes</span> at [[${T(java.lang.Math).abs(item.orderAmount)}]]p
                                 </p>
                                 <p class="main-active-item-title"
                                    th:case="'No'">
-                                    bought <span style="color: red">No</span> at [[${item.orderAmount}]]p
+                                    bought <span style="color: red">No</span> at [[${T(java.lang.Math).abs(item.orderAmount)}]]p
                                 </p>
                             </div>
                         </div>
@@ -42,11 +42,11 @@
                             <div th:switch="${item.orderChoice}">
                                 <p class="main-active-item-title"
                                    th:case="'Yes'">
-                                    sold <span style="color: #2ecc71">Yes</span> at [[${item.orderAmount}]]p
+                                    sold <span style="color: #2ecc71">Yes</span> at [[${T(java.lang.Math).abs(item.orderAmount)}]]p
                                 </p>
                                 <p class="main-active-item-title"
                                    th:case="'No'">
-                                    sold <span style="color: red">No</span> at [[${item.orderAmount}]]p
+                                    sold <span style="color: red">No</span> at [[${T(java.lang.Math).abs(item.orderAmount)}]]p
                                 </p>
                             </div>
                         </div>
@@ -119,11 +119,11 @@
                         <div>
                             ${item.orderChoice === 'Yes' ? `
                                 <p class="main-active-item-title">
-                                    bought <span style="color: #2ecc71">Yes</span> at ${item.orderAmount}p
+                                    bought <span style="color: #2ecc71">Yes</span> at ${Math.abs(item.orderAmount)}p
                                 </p>
                             ` : `
                                 <p class="main-active-item-title">
-                                    bought <span style="color: red">No</span> at ${item.orderAmount}p
+                                    bought <span style="color: red">No</span> at ${Math.abs(item.orderAmount)}p
                                 </p>
                             `}
                         </div>
@@ -133,11 +133,11 @@
                         <div>
                             ${item.orderChoice === 'Yes' ? `
                                 <p class="main-active-item-title">
-                                    sold <span style="color: #2ecc71">Yes</span> at ${item.orderAmount}p
+                                    sold <span style="color: #2ecc71">Yes</span> at ${Math.abs(item.orderAmount)}p
                                 </p>
                             ` : `
                                 <p class="main-active-item-title">
-                                    sold <span style="color: red">No</span> at ${item.orderAmount}p
+                                    sold <span style="color: red">No</span> at ${Math.abs(item.orderAmount)}p
                                 </p>
                             `}
                         </div>

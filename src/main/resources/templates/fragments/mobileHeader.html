@@ -36,11 +36,13 @@
                 </a>
             </div>
             <div class="search" style="margin :10px; width : 100%; ">
-                <form style="display: flex;">
-                    <md-outlined-text-field id="header-search-parent" placeholder="Search markets" style="width: 90%">
-                        <md-icon class="child" slot="leading-icon">search</md-icon>
+                <form style="display: flex;" action="/search" method="get">
+                    <md-outlined-text-field name="searchWord" value=""
+                                            id="mobile-header-search-parent" placeholder="Search markets" style="width: 90%"
+                                            onkeypress="enterKey(event)" onkeydown="enterKey(events)" type="text">
+                        <md-icon class="child" slot="leading-icon" onclick="clickKey(event)">search</md-icon>
                     </md-outlined-text-field>
-
+                    <!--                    <button type="submit" id="searchBtn">검색</button>-->
                 </form>
             </div>
             <div style="position: relative">
@@ -89,6 +91,29 @@
             </swiper-container>
         </div>
     </div>
+    <script>
+        function enterKey(event){
+            console.log("TEST");
+            if (event.keyCode === 13 || event.key === 'Enter') {
+                var inputValue =  document.getElementById('mobile-header-search-parent').value.toString();
+
+                if(inputValue === null || inputValue === ''){
+                    // 동작 x
+                }else {
+                    window.location.href = '/search?searchWord=' + encodeURIComponent(inputValue);
+                }
+            }
+        }
+
+        function clickKey(event){
+            var inputValue = document.getElementById('mobile-header-search-parent').value;
+            if(inputValue === null || inputValue === ''){
+                // 동작 x
+            }else {
+                window.location.href = '/search?searchWord=' + encodeURIComponent(inputValue)
+            }
+        }
+    </script>
     <script type="module">
         const anchorEl = document.body.querySelector('#usage-submenu-anchor-mobile');
         const menuEl = document.body.querySelector('#usage-submenu-mobile');
