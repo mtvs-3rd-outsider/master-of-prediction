@@ -24,7 +24,6 @@ function askPermission() {
             if (permissionResult !== 'granted') {
                 throw new Error('푸시 알림 권한이 거부되었습니다.');
             } else {
-                subscribeUserToPush();
             }
         });
 }

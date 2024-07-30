@@ -136,8 +136,11 @@
                                 data: JSON.stringify(emailCheckDto),
                                 success: function (message) {
                                     if (message) {
+
+                                        console.log(message)
                                         if (interval) {
                                             clearInterval(interval);
+                                            const display = document.querySelector('#timer');
                                             display.style.display = 'none'; // 타이머를 숨김
                                         }
                                         alert("이메일 인증에 성공하였습니다.");
