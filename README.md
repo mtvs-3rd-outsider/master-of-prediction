@@ -93,7 +93,10 @@
 
 <br/>
 
-
+#### 시연영상
+<p align="center">
+<img src="https://github.com/user-attachments/assets/b2861b0b-0f2d-4218-8c0b-0ac78442ee5d"/>
+</p>
 
 
 ## 🏆 이렇게 진행해요.
